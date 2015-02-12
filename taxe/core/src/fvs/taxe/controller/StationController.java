@@ -65,7 +65,7 @@ public class StationController {
 			public void clicked(InputEvent event, float x, float y) {
 				if(Game.getInstance().getState() == GameState.NORMAL){
 					DialogStationMultitrain dia = new DialogStationMultitrain(station, context.getSkin(), context);
-					if(dia.getIsTrain()) {
+					if(dia.getHasTrain()) {
 						dia.show(context.getStage());
 					}
 				}
@@ -147,17 +147,6 @@ public class StationController {
 	private int trainsAtStation(Station station) {
 		int count = 0;
 
-		/*for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()) {
-			for(Resource resource : player.getResources()) {
-				if(resource instanceof Train) {
-					if(((Train) resource).getActor() != null) {
-						if(((Train) resource).getPosition().equals(station.getLocation())) {
-							count++;
-						}
-					}
-				}
-			}
-		}*/
 		Player player = context.getGameLogic().getPlayerManager().getCurrentPlayer();
 		for(Resource resource : player.getResources()) {
 			if(resource instanceof Train) {

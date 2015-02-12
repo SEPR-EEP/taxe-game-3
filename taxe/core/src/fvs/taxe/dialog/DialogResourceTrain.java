@@ -60,7 +60,7 @@ public class DialogResourceTrain extends Dialog {
         if (obj == "CLOSE") {
             this.remove();
         } else if (obj == "DELETE") {
-            clicked(Button.TRAIN_DROP);
+            clicked(Button.TRAIN_DELETE);
         } else if(obj == "PLACE") {
             clicked(Button.TRAIN_PLACE);
         } else if(obj == "ROUTE") {

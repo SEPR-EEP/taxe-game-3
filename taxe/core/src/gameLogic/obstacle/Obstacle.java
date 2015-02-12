@@ -8,7 +8,7 @@ public class Obstacle {
 	private Station station;						// station the obstacle is connected to
 	private ObstacleType type;						
 	private Boolean active;							// whether the obstacle is currently active
-	private int time;								// number of turns obstacle has left
+	private int time;								// number of turns obstacle has left active
 	private IPositionable position;					// position of obstacle
 	private ObstacleActor actor;					// corresponding actor for obstacle, for displaying it
 	
@@ -27,11 +27,11 @@ public class Obstacle {
 	public float getDestructionChance() {
 		switch(this.type){
 		case BLIZZARD:
-			return 1f;
+			return 0.7f;
 		case EARTHQUAKE:
-			return 1f;
+			return 0.9f;
 		case FLOOD:
-			return 1f;
+			return 0.5f;
 		case VOLCANO:
 			return 1f;
 		default:
@@ -52,7 +52,6 @@ public class Obstacle {
 	}
 	
 	public void start() {
-		// start the obstacle
 		this.active = true;
 		this.time = getDuration();
 	}

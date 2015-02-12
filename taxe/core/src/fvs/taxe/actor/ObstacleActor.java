@@ -9,14 +9,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class ObstacleActor extends Image {
 
- //   private Rectangle bounds;
-
 	private static int width = 50;
     private static int height = 50;
-    // TODO set size correctly (based upon disaster?
+
 	public ObstacleActor(Obstacle obstacle) {
 		super(getTexture(obstacle));
-		
 		obstacle.setActor(this);
 		setSize(width, height);
 		IPositionable position = obstacle.getPosition();

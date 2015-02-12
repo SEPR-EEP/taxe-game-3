@@ -13,6 +13,8 @@ import gameLogic.Game;
 import gameLogic.GameState;
 import gameLogic.GameStateListener;
 import gameLogic.TurnListener;
+import gameLogic.goal.Goal;
+import gameLogic.goal.GoalListener;
 import gameLogic.map.Map;
 import gameLogic.map.Station;
 import gameLogic.obstacle.Obstacle;
@@ -86,7 +88,7 @@ public class GameScreen extends ScreenAdapter {
             	System.out.println("animating called");
                 gameLogic.setState(GameState.ANIMATING);
                 topBarController.displayFlashMessage("Time is passing...", Color.GREEN, Color.BLACK, ANIMATION_TIME);
-                //goalController.showCurrentPlayerGoals();
+                goalController.showCurrentPlayerGoals();
             }
         });
         
@@ -127,6 +129,14 @@ public class GameScreen extends ScreenAdapter {
 				 if(gameLogic.getState() == GameState.ROUTING) {
 			            routeController.drawRoute(Color.BLACK);
 			        }
+			}
+		});
+       
+       context.getGameLogic().getGoalManager().subscribeGoalFinished(new GoalListener() {
+			@Override
+			public void finished(Goal goal) {
+				// if a goal has completed, change the display of goals
+				goalController.showCurrentPlayerGoals();
 			}
 		});
     }
@@ -173,9 +183,6 @@ public class GameScreen extends ScreenAdapter {
         resourceController.drawHeaderText();
         goalController.drawHeaderText();
         scoreController.drawScoreDetails();
-        
-        
-        
     }
 
     @Override
@@ -188,7 +195,6 @@ public class GameScreen extends ScreenAdapter {
         topBarController.addEndTurnButton();
         resourceController.drawPlayerResources(gameLogic.getPlayerManager().getCurrentPlayer());
         goalController.showCurrentPlayerGoals();
-        
     }
 
     

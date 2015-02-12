@@ -24,11 +24,10 @@ public class TopBarController {
 
     private Context context;
     private Color controlsColor = Color.LIGHT_GRAY;
+    private Color obstacleColor = Color.LIGHT_GRAY;
     private TextButton endTurnButton;
     private Label flashMessage;
     private Label obstacleLabel;
-
-	private Color obstacleColor = Color.LIGHT_GRAY;
     
     public TopBarController(final Context context) {
         this.context = context;
@@ -60,7 +59,7 @@ public class TopBarController {
 			public void ended(Obstacle obstacle) {
 			}		        	
         });
-        createFlashActor();
+        createFlashLabel();
         createObstacleLabel();
     }
 
@@ -74,6 +73,7 @@ public class TopBarController {
 		obstacleLabel.pack();
 		obstacleLabel.addAction(sequence(delay(2f),fadeOut(0.25f), run(new Runnable() {
 			public void run() {
+				// run action to reset obstacle label after it has finished displaying information
 				obstacleLabel.setText("");
 				obstacleColor = Color.LIGHT_GRAY;
 			}
@@ -87,7 +87,7 @@ public class TopBarController {
     	context.getStage().addActor(obstacleLabel);
 	}
 
-	private void createFlashActor() {
+	private void createFlashLabel() {
         flashMessage = new Label("", context.getSkin());
         flashMessage.setPosition(450, TaxeGame.HEIGHT - 24);
         flashMessage.setAlignment(0);

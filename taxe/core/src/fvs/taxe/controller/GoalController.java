@@ -1,7 +1,7 @@
 package fvs.taxe.controller;
 
 import fvs.taxe.TaxeGame;
-import fvs.taxe.dialog.GoalClickedListener;
+import fvs.taxe.dialog.GoalClicked;
 import gameLogic.Player;
 import gameLogic.PlayerChangedListener;
 import gameLogic.PlayerManager;
@@ -21,38 +21,6 @@ public class GoalController {
 
 	public GoalController(Context context) {
 		this.context = context;
-
-		context.getGameLogic().getGoalManager().subscribeGoalFinished(new GoalListener() {
-
-			@Override
-			public void finished(Goal goal) {
-				showCurrentPlayerGoals();
-			}
-
-		});
-
-		context.getGameLogic().getPlayerManager().subscribePlayerChanged(new PlayerChangedListener() {
-			@Override
-			public void changed() {
-				showCurrentPlayerGoals();
-			}
-		});
-	}
-
-	private List<String> playerGoalStrings() {
-		ArrayList<String> strings = new ArrayList<String>();
-		PlayerManager pm = context.getGameLogic().getPlayerManager();
-		Player currentPlayer = pm.getCurrentPlayer();
-
-		for (Goal goal : currentPlayer.getGoals()) {
-			if(goal.getComplete()) {
-				continue;
-			}
-
-			strings.add(goal.toString());
-		}
-
-		return strings;
 	}
 
 	public void showCurrentPlayerGoals() {
@@ -75,7 +43,7 @@ public class GoalController {
 			y-=30;
 			TextButton button  = new TextButton(goal.toString(), context.getSkin());
 			button.setPosition(x,y);
-			button.addListener(new GoalClickedListener(goal));
+			button.addListener(new GoalClicked(goal));
 			goalButtons.addActor(button);
 		}
 

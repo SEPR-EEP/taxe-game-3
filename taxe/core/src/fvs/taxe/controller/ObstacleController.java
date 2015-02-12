@@ -13,20 +13,18 @@ public class ObstacleController {
 	private Context context;
 	
 	public ObstacleController(Context context) {
-		// take care of rendering of stations (only rendered on map creation, visibility chanegd when active)
+		// take care of rendering of stations (only rendered on map creation, visibility changed when active)
 		this.context = context;
 		context.getGameLogic().subscribeObstacleChanged(new ObstacleListener() {
 			
 			@Override
 			public void started(Obstacle obstacle) {
-				System.out.println("Obstacle has started of type " + obstacle.getType() + " at " + obstacle.getStation().getName());
 				obstacle.start();
-				obstacle.getStation().setObstacle(obstacle); // maybe move to station controller?
+				obstacle.getStation().setObstacle(obstacle); 
 			}
 			
 			@Override
 			public void ended(Obstacle obstacle) {
-				System.out.println("Obstacle has ended of type " + obstacle.getType());
 				obstacle.getStation().clearObstacle();
 				obstacle.end();
 			}
