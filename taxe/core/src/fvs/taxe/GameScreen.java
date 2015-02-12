@@ -1,5 +1,8 @@
 package fvs.taxe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fvs.taxe.controller.Context;
 import fvs.taxe.controller.GoalController;
 import fvs.taxe.controller.ObstacleController;
@@ -12,6 +15,7 @@ import fvs.taxe.dialog.DialogEndGame;
 import gameLogic.Game;
 import gameLogic.GameState;
 import gameLogic.GameStateListener;
+import gameLogic.PlayerChangedListener;
 import gameLogic.TurnListener;
 import gameLogic.goal.Goal;
 import gameLogic.goal.GoalListener;
@@ -27,6 +31,8 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -53,6 +59,7 @@ public class GameScreen extends ScreenAdapter {
     private ScoreController scoreController;
     
 	private Rumble rumble;
+	private List<ParticleEffect> effects;
 
     public GameScreen(TaxeGame game) {
         this.game = game;
@@ -81,17 +88,32 @@ public class GameScreen extends ScreenAdapter {
         context.setTopBarController(topBarController);
         
         rumble = new Rumble();
-        
+        effects = new ArrayList<ParticleEffect>();
+		
+		effects.add(new ParticleEffect());
+		effects.get(0).load(Gdx.files.internal("effects/snow.p"), Gdx.files.internal("effects"));
+		
+		effects.add(new ParticleEffect());
+		effects.get(1).load(Gdx.files.internal("effects/flood.p"), Gdx.files.internal("effects"));
+		
+		effects.add(new ParticleEffect());
+		effects.get(2).load(Gdx.files.internal("effects/volcano.p"), Gdx.files.internal("effects"));
+		
         gameLogic.getPlayerManager().subscribeTurnChanged(new TurnListener() {
             @Override
             public void changed() {
             	System.out.println("animating called");
                 gameLogic.setState(GameState.ANIMATING);
                 topBarController.displayFlashMessage("Time is passing...", Color.GREEN, Color.BLACK, ANIMATION_TIME);
-                goalController.showCurrentPlayerGoals();
             }
         });
         
+        gameLogic.getPlayerManager().subscribePlayerChanged(new PlayerChangedListener() {
+			@Override
+			public void changed() {
+				goalController.showCurrentPlayerGoals();
+			}
+		});
         gameLogic.subscribeStateChanged(new GameStateListener() {
         	@Override
         	public void changed(GameState state){
@@ -113,6 +135,16 @@ public class GameScreen extends ScreenAdapter {
 				if (obstacle.getType() == ObstacleType.EARTHQUAKE) {
 					rumble = new Rumble();
 					rumble.rumble(context, 1f, 2f);
+				}
+				if (obstacle.getType() == ObstacleType.BLIZZARD) {
+					effects.get(0).setPosition(obstacle.getPosition().getX(), obstacle.getPosition().getY());
+					effects.get(0).start(); 
+				} else if (obstacle.getType() == ObstacleType.FLOOD) {
+					effects.get(1).setPosition(obstacle.getPosition().getX()-10, obstacle.getPosition().getY() + 50);
+					effects.get(1).start(); 
+				} else if (obstacle.getType() == ObstacleType.VOLCANO) {
+					effects.get(2).setPosition(obstacle.getPosition().getX(), obstacle.getPosition().getY()-10);
+					effects.get(2).start(); 
 				}
 			}
 			
@@ -169,8 +201,16 @@ public class GameScreen extends ScreenAdapter {
             }
         }
         
+        
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+        
+        game.batch.begin();
+        for (ParticleEffect effect: effects) {
+        	effect.draw(game.batch, Gdx.graphics.getDeltaTime());
+        }
+        game.batch.end();
+        
         
         if(gameLogic.getState() == GameState.NORMAL || gameLogic.getState() == GameState.PLACING){
         	stationController.displayNumberOfTrainsAtStations();
@@ -202,6 +242,7 @@ public class GameScreen extends ScreenAdapter {
     public void dispose() {
         mapTexture.dispose();
         stage.dispose();
+        effects.clear();
     }
 
 }

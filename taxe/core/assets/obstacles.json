@@ -1,17 +1,17 @@
 {
 	"obstacles": [
 	{ 
-	"type": "Earthquake",
+	"type": "Blizzard",
 	"station": "Copenhagen",
 	"prob": 1
 	},
 	{
-	"type": "Volcano",
+	"type": "Flood",
 	"station": "Berlin",
 	"prob": 1
 	},
 	{
-	"type": "Flood",
+	"type": "Volcano",
 	"station": "London",
 	"prob": 1
 	},
