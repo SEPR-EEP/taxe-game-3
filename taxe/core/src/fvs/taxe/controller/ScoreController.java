@@ -18,8 +18,8 @@ public class ScoreController {
 
         game.batch.begin();
         game.fontSmall.setColor(Color.BLACK);
-        game.fontSmall.draw(game.batch, "Scores:", (float) TaxeGame.WIDTH - 10.0f, (float) TaxeGame.HEIGHT - 490.0f);
-        game.fontSmall.draw(game.batch, player1String, (float) TaxeGame.WIDTH - 10.0f, (float) TaxeGame.HEIGHT - 515.0f);
+        game.fontSmall.draw(game.batch, "Scores:", 10.0f, (float) TaxeGame.HEIGHT - 490.0f);
+        game.fontSmall.draw(game.batch, player1String, 10.0f, (float) TaxeGame.HEIGHT - 515.0f);
         game.batch.end();
 	}
 
