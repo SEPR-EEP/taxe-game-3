@@ -1,19 +1,14 @@
 package fvs.taxe.controller;
 
-import fvs.taxe.TaxeGame;
-import fvs.taxe.dialog.GoalClicked;
-import gameLogic.Player;
-import gameLogic.PlayerChangedListener;
-import gameLogic.PlayerManager;
-import gameLogic.goal.Goal;
-import gameLogic.goal.GoalListener;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+
+import fvs.taxe.TaxeGame;
+import fvs.taxe.dialog.GoalClicked;
+import gameLogic.Player;
+import gameLogic.PlayerManager;
+import gameLogic.goal.Goal;
 
 public class GoalController {
 	private Context context;

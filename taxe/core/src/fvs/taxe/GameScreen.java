@@ -1,9 +1,5 @@
 package fvs.taxe;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import fvs.taxe.controller.Context;
 import fvs.taxe.controller.GoalController;
 import fvs.taxe.controller.ObstacleController;
@@ -27,13 +23,14 @@ import gameLogic.obstacle.ObstacleListener;
 import gameLogic.obstacle.ObstacleType;
 import gameLogic.obstacle.Rumble;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;

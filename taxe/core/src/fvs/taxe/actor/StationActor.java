@@ -1,14 +1,13 @@
 package fvs.taxe.actor;
 
 
+import gameLogic.map.IPositionable;
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
-
-import gameLogic.map.IPositionable;
 
 public class StationActor extends Image {
 	private static final int STATION_SIZE_INCREASE = 10;	// the size the station increases (x + y) when the station selected()
