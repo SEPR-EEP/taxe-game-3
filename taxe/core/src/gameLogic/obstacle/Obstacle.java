@@ -31,7 +31,7 @@ public class Obstacle {
 		case EARTHQUAKE:
 			return 0.9f;
 		case FLOOD:
-			return 0.5f;
+			return 0.6f;
 		case VOLCANO:
 			return 1f;
 		default:
@@ -78,13 +78,13 @@ public class Obstacle {
 	private int getDuration() {
 		// get the duration of the obstacle, based upon the type
 		if (type == ObstacleType.BLIZZARD){
-			return 4;
+			return 6;
 		} else if (type == ObstacleType.EARTHQUAKE) {
 			return 5;
 		} else if (type == ObstacleType.FLOOD) {
-			return 3;
+			return 4;
 		} else if (type == ObstacleType.VOLCANO) {
-			return 2;
+			return 8;
 		} else {
 			return -1; // invalid obstacle type!
 		}

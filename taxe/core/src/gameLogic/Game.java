@@ -112,14 +112,14 @@ public class Game {
 		return obstacleManager;
 	}
 	
-	public void obstacleStarted(Obstacle obstacle) {
+	private void obstacleStarted(Obstacle obstacle) {
 		// called whenever an obstacle starts, notifying all listeners that an obstacle has occured (handled by ... 
 		for (ObstacleListener listener : obstacleListeners) {
 			listener.started(obstacle);
 		}
 	}
 	
-	public void obstacleEnded(Obstacle obstacle) {
+	private void obstacleEnded(Obstacle obstacle) {
 		// called whenever an obstacle ends, notifying all listeners that an obstacle has occured (handled by ... 
 		for (ObstacleListener listener : obstacleListeners) {
 			listener.ended(obstacle);
@@ -130,10 +130,11 @@ public class Game {
 		obstacleListeners.add(listener);
 	}
 	
-	public void calculateObstacles() {
+	private void calculateObstacles() {
 		// randomly choose one obstacle, then make the obstacle happen with its associated probability
 		ArrayList<Tuple<Obstacle, Float>> obstacles = obstacleManager.getObstacles();
 		int index = MathUtils.random(obstacles.size()-1);
+		
 		
 		Tuple<Obstacle, Float> obstacleProbPair = obstacles.get(index);
 		boolean obstacleOccured = MathUtils.randomBoolean(obstacleProbPair.getSecond());
@@ -145,7 +146,7 @@ public class Game {
 		}
 	}
 	
-	public void decreaseObstacleTime() {
+	private void decreaseObstacleTime() {
 		// decreases any active obstacles time left active by 1
 		ArrayList<Tuple<Obstacle, Float>> obstacles = obstacleManager.getObstacles();
 		for (int i = 0; i< obstacles.size(); i++) {
