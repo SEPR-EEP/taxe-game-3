@@ -1,6 +1,7 @@
 package fvs.taxe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import fvs.taxe.controller.Context;
@@ -59,7 +60,7 @@ public class GameScreen extends ScreenAdapter {
     private ScoreController scoreController;
     
 	private Rumble rumble;
-	private List<ParticleEffect> effects;
+	private HashMap<String, ParticleEffect> effects;
 
     public GameScreen(TaxeGame game) {
         this.game = game;
@@ -88,16 +89,16 @@ public class GameScreen extends ScreenAdapter {
         context.setTopBarController(topBarController);
         
         rumble = new Rumble();
-        effects = new ArrayList<ParticleEffect>();
+        effects = new HashMap<String,ParticleEffect>();
 		
-		effects.add(new ParticleEffect());
-		effects.get(0).load(Gdx.files.internal("effects/snow.p"), Gdx.files.internal("effects"));
+		effects.put("Blizzard",new ParticleEffect());
+		effects.get("Blizzard").load(Gdx.files.internal("effects/snow.p"), Gdx.files.internal("effects"));
 		
-		effects.add(new ParticleEffect());
-		effects.get(1).load(Gdx.files.internal("effects/flood.p"), Gdx.files.internal("effects"));
+		effects.put("Flood", new ParticleEffect());
+		effects.get("Flood").load(Gdx.files.internal("effects/flood.p"), Gdx.files.internal("effects"));
 		
-		effects.add(new ParticleEffect());
-		effects.get(2).load(Gdx.files.internal("effects/volcano.p"), Gdx.files.internal("effects"));
+		effects.put("Volcano",new ParticleEffect());
+		effects.get("Volcano").load(Gdx.files.internal("effects/volcano.p"), Gdx.files.internal("effects"));
 		
         gameLogic.getPlayerManager().subscribeTurnChanged(new TurnListener() {
             @Override
@@ -137,14 +138,14 @@ public class GameScreen extends ScreenAdapter {
 					rumble.rumble(context, 1f, 2f);
 				}
 				if (obstacle.getType() == ObstacleType.BLIZZARD) {
-					effects.get(0).setPosition(obstacle.getPosition().getX(), obstacle.getPosition().getY());
-					effects.get(0).start(); 
+					effects.get("Blizzard").setPosition(obstacle.getPosition().getX(), obstacle.getPosition().getY());
+					effects.get("Blizzard").start(); 
 				} else if (obstacle.getType() == ObstacleType.FLOOD) {
-					effects.get(1).setPosition(obstacle.getPosition().getX()-10, obstacle.getPosition().getY() + 50);
-					effects.get(1).start(); 
+					effects.get("Flood").setPosition(obstacle.getPosition().getX()-10, obstacle.getPosition().getY() + 50);
+					effects.get("Flood").start(); 
 				} else if (obstacle.getType() == ObstacleType.VOLCANO) {
-					effects.get(2).setPosition(obstacle.getPosition().getX(), obstacle.getPosition().getY()-10);
-					effects.get(2).start(); 
+					effects.get("Volcano").setPosition(obstacle.getPosition().getX(), obstacle.getPosition().getY()-10);
+					effects.get("Volcano").start(); 
 				}
 			}
 			
@@ -206,7 +207,7 @@ public class GameScreen extends ScreenAdapter {
         stage.draw();
         
         game.batch.begin();
-        for (ParticleEffect effect: effects) {
+        for (ParticleEffect effect: effects.values()) {
         	effect.draw(game.batch, Gdx.graphics.getDeltaTime());
         }
         game.batch.end();
