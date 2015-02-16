@@ -1,5 +1,6 @@
 package fvs.taxe;
 
+import fvs.taxe.actor.ParticleEffectActor;
 import fvs.taxe.controller.Context;
 import fvs.taxe.controller.GoalController;
 import fvs.taxe.controller.ObstacleController;
@@ -57,7 +58,7 @@ public class GameScreen extends ScreenAdapter {
     private ScoreController scoreController;
     
 	private Rumble rumble;
-	private HashMap<String, ParticleEffect> effects;
+	private HashMap<String, ParticleEffectActor> effects;
 
     public GameScreen(TaxeGame game) {
         this.game = game;
@@ -72,7 +73,7 @@ public class GameScreen extends ScreenAdapter {
         map = gameLogic.getMap();
 
         tooltip = new Tooltip(skin);
-        stage.addActor(tooltip);
+        
 
         stationController = new StationController(context, tooltip);
         topBarController = new TopBarController(context);
@@ -86,7 +87,7 @@ public class GameScreen extends ScreenAdapter {
         context.setTopBarController(topBarController);
         
         rumble = new Rumble();
-        effects = new HashMap<String,ParticleEffect>();
+        /*effects = new HashMap<String,ParticleEffect>();
 		
 		effects.put("Blizzard",new ParticleEffect());
 		effects.get("Blizzard").load(Gdx.files.internal("effects/snow.p"), Gdx.files.internal("effects"));
@@ -96,6 +97,9 @@ public class GameScreen extends ScreenAdapter {
 		
 		effects.put("Volcano",new ParticleEffect());
 		effects.get("Volcano").load(Gdx.files.internal("effects/volcano.p"), Gdx.files.internal("effects"));
+		*/
+        
+        effects = obstacleController.getEffectActors();
 		
         gameLogic.getPlayerManager().subscribeTurnChanged(new TurnListener() {
             @Override
@@ -106,12 +110,6 @@ public class GameScreen extends ScreenAdapter {
             }
         });
         
-        gameLogic.getPlayerManager().subscribePlayerChanged(new PlayerChangedListener() {
-			@Override
-			public void changed() {
-				goalController.showCurrentPlayerGoals();
-			}
-		});
         gameLogic.subscribeStateChanged(new GameStateListener() {
         	@Override
         	public void changed(GameState state){
@@ -161,17 +159,8 @@ public class GameScreen extends ScreenAdapter {
 			        }
 			}
 		});
-       
-       context.getGameLogic().getGoalManager().subscribeGoalFinished(new GoalListener() {
-			@Override
-			public void finished(Goal goal) {
-				// if a goal has completed, change the display of goals
-				goalController.showCurrentPlayerGoals();
-			}
-		});
     }
-
-
+    
     // called every frame
     @Override
     public void render(float delta) {
@@ -203,11 +192,11 @@ public class GameScreen extends ScreenAdapter {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         
-        game.batch.begin();
+       /* game.batch.begin();
         for (ParticleEffect effect: effects.values()) {
         	effect.draw(game.batch, Gdx.graphics.getDeltaTime());
         }
-        game.batch.end();
+        game.batch.end();*/
         
         
         if(gameLogic.getState() == GameState.NORMAL || gameLogic.getState() == GameState.PLACING){
@@ -230,9 +219,11 @@ public class GameScreen extends ScreenAdapter {
     	obstacleController.drawObstacles();
     	stationController.renderConnections(map.getConnections(), Color.GRAY);
         stationController.renderStations();
+        obstacleController.drawObstacleEffects();
         topBarController.addEndTurnButton();
         resourceController.drawPlayerResources(gameLogic.getPlayerManager().getCurrentPlayer());
         goalController.showCurrentPlayerGoals();
+        stage.addActor(tooltip);
     }
 
     

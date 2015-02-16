@@ -7,8 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import fvs.taxe.TaxeGame;
 import fvs.taxe.dialog.GoalClicked;
 import gameLogic.Player;
+import gameLogic.PlayerChangedListener;
 import gameLogic.PlayerManager;
 import gameLogic.goal.Goal;
+import gameLogic.goal.GoalListener;
 
 public class GoalController {
 	private Context context;
@@ -16,6 +18,21 @@ public class GoalController {
 
 	public GoalController(Context context) {
 		this.context = context;
+		
+		context.getGameLogic().getGoalManager().subscribeGoalFinished(new GoalListener() {
+			@Override
+			public void finished(Goal goal) {
+				// if a goal has completed, change the display of goals
+				showCurrentPlayerGoals();
+			}
+		});
+		
+		context.getGameLogic().getPlayerManager().subscribePlayerChanged(new PlayerChangedListener() {
+			@Override
+			public void changed() {
+				showCurrentPlayerGoals();
+			}
+		});
 	}
 
 	public void showCurrentPlayerGoals() {
