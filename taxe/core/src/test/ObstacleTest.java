@@ -25,11 +25,13 @@ public class ObstacleTest extends LibGdxTest {
 		Station station = new Station("station", new Position(5, 5));
 		obstacle = new Obstacle(ObstacleType.VOLCANO, station);
 		assertEquals(station, obstacle.getStation());
+		assertEquals(station.getLocation(), obstacle.getPosition());
+		assertEquals(ObstacleType.VOLCANO, obstacle.getType());
 	}
 	
 	@Test
 	public void getDestructionChanceTest() {
-		assertEquals(0.1f, obstacle.getDestructionChance(), 2);
+		assertEquals(1f, obstacle.getDestructionChance(), 2);
 	}
 	
 	@Test
@@ -37,13 +39,13 @@ public class ObstacleTest extends LibGdxTest {
 		obstacle.start();
 		obstacle.decreaseTimeLeft();
 		obstacle.getTimeLeft();
-		assertEquals(1, obstacle.getTimeLeft());
+		assertEquals(7, obstacle.getTimeLeft());
 	}
 	
 	@Test
 	public void startTest() {
 		obstacle.start();
-		assertEquals(2,obstacle.getTimeLeft());
+		assertEquals(8,obstacle.getTimeLeft());
 		assertTrue(obstacle.isActive());
 	}
 
