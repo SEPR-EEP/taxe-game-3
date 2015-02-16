@@ -110,7 +110,7 @@ public class StationController {
 		context.getStage().addActor(collisionStationActor);
 	}
 
-	public void renderStations() {
+	public void drawStations() {
 		List<Station> stations = context.getGameLogic().getMap().getStations();
 
 		for (Station station : stations) {
@@ -122,7 +122,7 @@ public class StationController {
 		}
 	}
 
-	public void renderConnections(List<Connection> connections, final Color color) {
+	public void drawConnections(List<Connection> connections, final Color color) {
 		for (Connection connection : connections) {
 			final IPositionable start = connection.getStation1().getLocation();
 			final IPositionable end = connection.getStation2().getLocation();

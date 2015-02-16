@@ -4,6 +4,8 @@ import fvs.taxe.actor.ObstacleActor;
 import fvs.taxe.actor.ParticleEffectActor;
 import gameLogic.obstacle.Obstacle;
 import gameLogic.obstacle.ObstacleListener;
+import gameLogic.obstacle.ObstacleType;
+import gameLogic.obstacle.Rumble;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,22 +19,42 @@ public class ObstacleController {
 
 	private Context context;
 	private HashMap<String, ParticleEffectActor> effects;
+	private Rumble rumble;
 	
-	public ObstacleController(Context context) {
+	public ObstacleController(final Context context) {
 		// take care of rendering of stations (only rendered on map creation, visibility changed when active)
 		this.context = context;
 		effects = new HashMap<String, ParticleEffectActor>();
 		createParticleEffects();
+		rumble = new Rumble();
 		context.getGameLogic().subscribeObstacleChanged(new ObstacleListener() {
 			
 			@Override
 			public void started(Obstacle obstacle) {
 				obstacle.start();
 				obstacle.getStation().setObstacle(obstacle); 
+				// set the obstacle so its visible
+				obstacle.getActor().setVisible(true);
+				
+				// shake the screen if the obstacle is an earthquake
+				if (obstacle.getType() == ObstacleType.EARTHQUAKE) {
+					rumble.rumble(context, 1f, 2f);
+				}
+				if (obstacle.getType() == ObstacleType.BLIZZARD) {
+					effects.get("Blizzard").setPosition(obstacle.getPosition().getX(), obstacle.getPosition().getY());
+					effects.get("Blizzard").start(); 
+				} else if (obstacle.getType() == ObstacleType.FLOOD) {
+					effects.get("Flood").setPosition(obstacle.getPosition().getX()-10, obstacle.getPosition().getY() + 50);
+					effects.get("Flood").start(); 
+				} else if (obstacle.getType() == ObstacleType.VOLCANO) {
+					effects.get("Volcano").setPosition(obstacle.getPosition().getX(), obstacle.getPosition().getY()-10);
+					effects.get("Volcano").start(); 
+				}
 			}
 			
 			@Override
 			public void ended(Obstacle obstacle) {
+				obstacle.getActor().setVisible(false);
 				obstacle.getStation().clearObstacle();
 				obstacle.end();
 			}
@@ -77,12 +99,10 @@ public class ObstacleController {
 	public void drawObstacleEffects() {
 		for (ParticleEffectActor actor : effects.values()) {
 			context.getStage().addActor(actor);
-			
 		}
 	}
 
-	public HashMap<String, ParticleEffectActor> getEffectActors() {
-		return effects;
+	public Rumble getRumble() {
+		return rumble;
 	}
-	
 }

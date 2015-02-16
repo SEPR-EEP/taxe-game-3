@@ -23,19 +23,19 @@ public class GoalController {
 			@Override
 			public void finished(Goal goal) {
 				// if a goal has completed, change the display of goals
-				showCurrentPlayerGoals();
+				drawCurrentPlayerGoals();
 			}
 		});
 		
 		context.getGameLogic().getPlayerManager().subscribePlayerChanged(new PlayerChangedListener() {
 			@Override
 			public void changed() {
-				showCurrentPlayerGoals();
+				drawCurrentPlayerGoals();
 			}
 		});
 	}
 
-	public void showCurrentPlayerGoals() {
+	public void drawCurrentPlayerGoals() {
 		goalButtons.remove();
 		goalButtons.clear();
 

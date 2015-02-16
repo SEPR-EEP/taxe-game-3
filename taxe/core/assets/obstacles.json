@@ -2,13 +2,13 @@
 	"obstacles": [
 	{ 
 	"type": "Blizzard",
-	"station": "Copenhagen",
-	"prob": 0.1
+	"station": "Stockholm",
+	"prob": 0.4
 	},
 	{ 
 	"type": "Blizzard",
-	"station": "Stockholm",
-	"prob": 0.4
+	"station": "Copenhagen",
+	"prob": 0.1
 	},
 	{ 
 	"type": "Blizzard",

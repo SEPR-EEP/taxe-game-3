@@ -41,5 +41,4 @@ public class ConnectionActor extends Image{
 	public Color getConnectionColor(){
 		return this.color;
 	}
-
 }
