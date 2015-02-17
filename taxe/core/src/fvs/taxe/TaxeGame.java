@@ -47,6 +47,4 @@ public class TaxeGame extends Game {
 		font.dispose();
 		shapeRenderer.dispose();
 	}
-
-	
 }

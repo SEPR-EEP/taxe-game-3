@@ -30,12 +30,12 @@ public class DialogButtonClicked implements ResourceDialogClickListener {
     @Override
     public void clicked(Button button) {
         switch (button) {
-            case TRAIN_DROP:
+            case TRAIN_DELETE:
                 currentPlayer.removeResource(train);
                 break;
             case TRAIN_PLACE:
                 Pixmap pixmap = new Pixmap(Gdx.files.internal(train.getCursorImage()));
-                Gdx.input.setCursorImage(pixmap, 10, 25); // these numbers will need tweaking
+                Gdx.input.setCursorImage(pixmap, 20, 25); 
                 pixmap.dispose();
 
                 Game.getInstance().setState(GameState.PLACING);
