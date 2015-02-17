@@ -65,18 +65,18 @@ public class GoalManager {
 		ArrayList<Tuple<String, Object>> list =  new ArrayList<Tuple<String, Object>>();
 		System.out.println(routeLength);
 		//Add a constraint based on number of turns, based on the time taken for a Bullet Train to complete the route of Param routeLength
-		list.add(new Tuple<String, Object>("turns", (int)Math.ceil((routeLength / resourceManager.getTrainSpeed("Bullet Train")))));
+		list.add(new Tuple<String, Object>("turnCount", (int)Math.ceil((routeLength / resourceManager.getTrainSpeed("Bullet Train")))));
 		//Add a constraint based on the number of trains completing the same goal, with a random value of either 2 or 3
 		list.add(new Tuple<String, Object>("trainCount", new Random().nextInt(2) + 2));
 		//Add a constraint based on the train type, picking a random train type
-		list.add(new Tuple<String, Object>("train", resourceManager.getTrainNames().get(new Random().nextInt(resourceManager.getTrainNames().size()))));
+		list.add(new Tuple<String, Object>("trainType", resourceManager.getTrainNames().get(new Random().nextInt(resourceManager.getTrainNames().size()))));
 		//If the route is not linear between 2 points, then we can add an exclusion constraint from the idealRoute
 		if(idealRoute.size() > 2)
 		{
-			list.add(new Tuple<String, Object>("exclusion", idealRoute.get(1 + new Random().nextInt(idealRoute.size() - 2))));
+			list.add(new Tuple<String, Object>("exclusionStation", idealRoute.get(1 + new Random().nextInt(idealRoute.size() - 2))));
 		}
 		//Add a constraint of the maximum number of journeys a train can make to get between the 2 locations, the length of the ideal route + 1 (since the ideal route contains the origin)
-		list.add(new Tuple<String, Object>("locations", idealRoute.size()));
+		list.add(new Tuple<String, Object>("locationCount", idealRoute.size()));
 		return list;
 	}
 	

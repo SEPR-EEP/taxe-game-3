@@ -8,9 +8,6 @@ import gameLogic.PlayerManager;
 import gameLogic.goal.Goal;
 import gameLogic.goal.GoalListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -37,22 +34,6 @@ public class GoalController {
 				showCurrentPlayerGoals();
 			}
 		});
-	}
-
-	private List<String> playerGoalStrings() {
-		ArrayList<String> strings = new ArrayList<String>();
-		PlayerManager pm = context.getGameLogic().getPlayerManager();
-		Player currentPlayer = pm.getCurrentPlayer();
-
-		for (Goal goal : currentPlayer.getGoals()) {
-			if(goal.getComplete()) {
-				continue;
-			}
-
-			strings.add(goal.toString());
-		}
-
-		return strings;
 	}
 
 	public void showCurrentPlayerGoals() {

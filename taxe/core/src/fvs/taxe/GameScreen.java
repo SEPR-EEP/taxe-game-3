@@ -29,16 +29,36 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-
+/** This class displays the TaxeGame.java game state graphically to the player*/
 public class GameScreen extends ScreenAdapter {
+	
+	/**Stores the instance of TaxeGame.java that this GameScreen is displaying*/
     final private TaxeGame game;
+    
+    /**Stores the instance of Stage.java that is used to hold the actors used in the Game, and is setup in the Class instantiation method*/
     private Stage stage;
+    
+    /**Stores the texture used as the background of the game. This is set internally in the Class instantiation method using the gamemap.png Asset*/
     private Texture mapTexture;
+    
+    /**Stores the instance of Game.java used to hold the game variable's GameLogic. This variable exists as a reference point to the instance set in
+     * the Game.java class, which can be accessed statically
+     */
     private Game gameLogic;
+    
+    /**Stores resources for the UI, such as font, color etc.*/
     private Skin skin;
+    
+    /**Holds an instance of the Game map. This exists as a reference to the gameLogic variable's map instance*/
     private Map map;
+    
+    /**This float tracks how long the game has been in the Animating state for. If it's value passes the constant ANIMATION_TIME then the Game stops animating and returns to it's normal state*/
     private float timeAnimated = 0;
+    
+    /**This constant integer value holds how long the Game can stay in the animating state for before moving to it's next state*/
     public static final int ANIMATION_TIME = 2;
+    
+    
     private Tooltip tooltip;
     private Context context;
 
@@ -52,6 +72,9 @@ public class GameScreen extends ScreenAdapter {
     
 	private Rumble rumble;
 
+	/**Instantiation method. Sets up the game using the passed TaxeGame argument 
+	 *@param game The instance of TaxeGame to be passed to the GameScreen to display
+	*/
     public GameScreen(TaxeGame game) {
         this.game = game;
         stage = new Stage();

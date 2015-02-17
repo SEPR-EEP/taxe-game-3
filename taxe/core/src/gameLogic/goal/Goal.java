@@ -19,9 +19,9 @@ public class Goal {
 	private int turnCount = -1;
 	private int trainCount = -1;
 	private int locationCount = -1;
-	private int constraintCount = 0;
 	private Station exclusionStation;
 	private ArrayList<Train> completedTrains;
+	private int constraintCount = 0;
 	
 	public Goal(Station origin, Station destination, int turn) {
 		this.origin = origin;
@@ -32,11 +32,11 @@ public class Goal {
 	
 	public void addConstraint(String name, Object value) {
 		System.out.println(name);
-		if(name.equals("train")) {
+		if(name.equals("trainType")) {
 			//CASE train type
 			trainName = String.valueOf(value);
 		}
-		else if(name.equals("turns")) {
+		else if(name.equals("turnCount")) {
 			//CASE turn count constraint
 			int val = (Integer)value;
 			//Ensure that our value is valid
@@ -67,10 +67,10 @@ public class Goal {
 				throw new RuntimeException(val + " is not a valid train count. Must be >= 0");
 			}
 		} 
-		else if(name.equals("exclusion")){
+		else if(name.equals("exclusionStation")){
 			exclusionStation = (Station)value;
 		}
-		else if(name.equals("locations"))
+		else if(name.equals("locationCount"))
 		{
 			locationCount = (Integer)value;
 		}
