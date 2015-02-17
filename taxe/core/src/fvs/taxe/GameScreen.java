@@ -15,8 +15,6 @@ import gameLogic.GameStateListener;
 import gameLogic.TurnListener;
 import gameLogic.map.Map;
 import gameLogic.map.Station;
-import gameLogic.obstacle.Obstacle;
-import gameLogic.obstacle.ObstacleListener;
 import gameLogic.obstacle.Rumble;
 
 import com.badlogic.gdx.Gdx;
@@ -28,50 +26,67 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-/** This class displays the TaxeGame.java game state graphically to the player*/
+/** This class displays the Game.java game state graphically to the player.*/
 public class GameScreen extends ScreenAdapter {
 	
-	/**Stores the instance of TaxeGame.java that this GameScreen is displaying*/
+	/**Stores the main instance of TaxeGame.java.*/
     final private TaxeGame game;
     
-    /**Stores the instance of Stage.java that is used to hold the actors used in the Game, and is setup in the Class instantiation method*/
+    /**Stores the instance of Stage.java that is used to hold the actors used in the Game, and is setup in the Class instantiation method.*/
     private Stage stage;
     
-    /**Stores the texture used as the background of the game. This is set internally in the Class instantiation method using the gamemap.png Asset*/
+    /**Stores the texture used as the background of the game. This is set internally in the Class instantiation method using the gamemap.png Asset.*/
     private Texture mapTexture;
     
     /**Stores the instance of Game.java used to hold the game variable's GameLogic. This variable exists as a reference point to the instance set in
-     * the Game.java class, which can be accessed statically
+     * the Game.java class, which can be accessed statically.
      */
     private Game gameLogic;
     
     /**Stores resources for the UI, such as font, color etc.*/
     private Skin skin;
     
-    /**Holds an instance of the Game map. This exists as a reference to the gameLogic variable's map instance*/
+    /**Holds an instance of the Game map. This exists as a reference to the gameLogic variable's map instance.*/
     private Map map;
     
-    /**This float tracks how long the game has been in the Animating state for. If it's value passes the constant ANIMATION_TIME then the Game stops animating and returns to it's normal state*/
+    /**This float tracks how long the game has been in the Animating state for. If it's value passes the constant ANIMATION_TIME then the Game stops animating and returns to it's normal state.*/
     private float timeAnimated = 0;
     
-    /**This constant integer value holds how long the Game can stay in the animating state for before moving to it's next state*/
+    /**This constant integer value holds how long the Game can stay in the animating state for before moving to it's next state.*/
     public static final int ANIMATION_TIME = 2;
     
-    
+    /**The instance of Tooltip used to display notifications to the player.*/
     private Tooltip tooltip;
+    
+    /**The Context in which the game runs. This collects the Game and all of it's controllers.*/
     private Context context;
 
+    /**Controller for handling stations.*/
     private StationController stationController;
+    
+    /**Controller for handling the graphical bar at the top of the game.*/
     private TopBarController topBarController;
+    
+    /**Controller for handling resources.*/
     private ResourceController resourceController;
+    
+    /**Controller for handling each of the players' goals.*/
     private GoalController goalController;
+    
+    /**Controller for handling routing between stations.*/
     private RouteController routeController;
+    
+    /**Controller for handling and placing obstacles.*/
 	private ObstacleController obstacleController;
+	
+	/**Controller for handling the score.*/
 	private ScoreController scoreController;
 
+	/**Variable that is used to visibly "rumble" the game when an obstacle is placed.*/
 	private Rumble rumble;
-	/**Instantiation method. Sets up the game using the passed TaxeGame argument 
-	 *@param game The instance of TaxeGame to be passed to the GameScreen to display
+	
+	/**Instantiation method. Sets up the game using the passed TaxeGame argument. 
+	 *@param game The instance of TaxeGame to be passed to the GameScreen to display.
 	*/
 	public GameScreen(TaxeGame game) {
 		this.game = game;
@@ -130,7 +145,6 @@ public class GameScreen extends ScreenAdapter {
 		});
 	}
 
-	// called every frame
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -169,9 +183,8 @@ public class GameScreen extends ScreenAdapter {
 	}
 
 	@Override
-	// Called when GameScreen becomes current screen of the game
-	// order methods called matters for z-index!
 	public void show() {
+		// order methods called matters for z-index!
 		obstacleController.drawObstacles();
 		stationController.drawConnections(map.getConnections(), Color.GRAY);
 		stationController.drawStations();

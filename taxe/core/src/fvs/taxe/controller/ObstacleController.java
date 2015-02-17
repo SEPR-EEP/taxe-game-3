@@ -15,12 +15,22 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 
 import Util.Tuple;
 
+/**Controller for updating the game with graphics for obstacles.*/
 public class ObstacleController {
 
+	/**The context of the Game.*/
 	private Context context;
+	
+	/**Hashmap of particle effects with a corresponding string name*/
 	private HashMap<String, ParticleEffectActor> effects;
+	
+	/**The rumble is used to vibrate the Screen when an obstacle is placed*/
 	private Rumble rumble;
 	
+	/**The Instantiation method sets up the particle effects and creates a listener for when an Obstacle is started so that it can update
+	 * the graphics accordingly.
+	 * @param context The context of the game.
+	 */
 	public ObstacleController(final Context context) {
 		// take care of rendering of stations (only rendered on map creation, visibility changed when active)
 		this.context = context;
@@ -61,6 +71,7 @@ public class ObstacleController {
 		});
 	}
 
+	/**This method draws obstacles when the map is created. It leaves the obstacles invisible as resources that can be used at any time.*/
 	public void drawObstacles(){
 		// needs to only be called once, on map creation
 		// adds all obstacles to the stage but makes them invisible
@@ -70,6 +81,11 @@ public class ObstacleController {
 		}
 	}
 
+	/**This method renders an obstacle as an Actor.
+	 * @param obstacle The obstacle to be rendered.
+	 * @param visible The visibility of the obstacle.
+	 * @return The actor produced from rendering the obstacle.
+	 */
 	private ObstacleActor renderObstacle(Obstacle obstacle, boolean visible) {
 		// render the obstacle's actor with the visibility given
 		ObstacleActor obstacleActor = new ObstacleActor(obstacle);
@@ -79,6 +95,7 @@ public class ObstacleController {
 		return obstacleActor;
 	}
 	
+	/**This method sets up particle effects for use in the game. It needs to be called once to use effects, and loads effects from the internal files*/
 	private void createParticleEffects() {
 		ParticleEffect snowEffect = new ParticleEffect();
 		snowEffect.load(Gdx.files.internal("effects/snow.p"), Gdx.files.internal("effects"));
@@ -96,12 +113,14 @@ public class ObstacleController {
 		effects.put("Volcano", volcanoActor);
 	}
 	
+	/**This method draws the obstacle effects at their locations with their visibilities*/
 	public void drawObstacleEffects() {
 		for (ParticleEffectActor actor : effects.values()) {
 			context.getStage().addActor(actor);
 		}
 	}
 
+	/**@returns the Rumble used in the ObstacleController to shake the screen*/
 	public Rumble getRumble() {
 		return rumble;
 	}

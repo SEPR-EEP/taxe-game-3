@@ -10,10 +10,18 @@ import gameLogic.PlayerChangedListener;
 import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
 
+/**Controller for updating UI with resources.*/
 public class ResourceController {
+	
+	/**The context of the Game.*/
     private Context context;
+    
+    /**The group of resource buttons used in the Game GUI.*/
     private Group resourceButtons = new Group();
 
+    /**The instantiation method sets up a listener that updates the player Resources graphics when the player changes.
+     * @param context The context of the game
+     */
     public ResourceController(final Context context) {
         this.context = context;
 
@@ -25,6 +33,7 @@ public class ResourceController {
         });
     }
 
+    /**This method draws a header above the player resources.*/
     public void drawHeaderText() {
         TaxeGame game = context.getTaxeGame();
 
@@ -34,6 +43,9 @@ public class ResourceController {
         game.batch.end();
     }
 
+    /**This method draws a specific player's resources.
+     * @param player The active player who's resources should be drawn.
+     */
     public void drawPlayerResources(Player player) {
 
         float top = (float) TaxeGame.HEIGHT;

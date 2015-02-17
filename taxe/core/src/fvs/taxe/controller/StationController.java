@@ -25,10 +25,16 @@ import gameLogic.map.Station;
 import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
 
+/**Controller for the Graphical interface of stations*/
 public class StationController {
+	
+	/**The Width of a connection between stations, in pixels.*/
 	public final static int CONNECTION_LINE_WIDTH = 5;
 
+	/**The context of the game.*/
 	private Context context;
+	
+	/**The ToolTip to be used to display Station information.*/
 	private Tooltip tooltip;
 
 	/*
@@ -36,27 +42,38 @@ public class StationController {
     their handler's method, one case unsubscribes from the event removing itself from this list
     and this list implementation supports removing elements whilst iterating through it
 	 */
+	/**The collection of station click listeners that is populated externally using subscribeStationClick().*/
 	private static List<StationClickListener> stationClickListeners = new CopyOnWriteArrayList<StationClickListener>();
 
+	/**Instatiation method.
+	 * @param context The Context of the game.
+	 * @param tooltip The tooltip used to display Station information.
+	 */
 	public StationController(Context context, Tooltip tooltip) {
 		this.context = context;
 		this.tooltip = tooltip;
 	}
 
+	/**Adds a station to the stationClickListeners List.*/
 	public static void subscribeStationClick(StationClickListener listener) {
 		stationClickListeners.add(listener);
 	}
 
+	/**Removes a station from the stationClickListeners List.*/
 	public static void unsubscribeStationClick(StationClickListener listener) {
 		stationClickListeners.remove(listener);
 	}
 
+	/**When a station is clicked this method is called. The controller then passes this click notification to all of the stationClickListeners.*/
 	private static void stationClicked(Station station) {
 		for (StationClickListener listener : stationClickListeners) {
 			listener.clicked(station);
 		}
 	}
 
+	/**This method creates a StationActor from the station and adds Enter and Exit methods to it.
+	 * @param station The Station to used to create the StationActor.
+	 */
 	private void renderStation(final Station station) {
 		final StationActor stationActor = new StationActor(station.getLocation());
 
@@ -87,6 +104,9 @@ public class StationController {
 		context.getStage().addActor(stationActor);
 	}
 
+	/**This method creates a StationActor from the CollisionStation and adds Clicked, Enter and Exit methods to it.
+	 * @param collisionStation The CollisionStation to used to create the StationActor.
+	 */
 	private void renderCollisionStation(final CollisionStation collisionStation) {
 		final CollisionStationActor collisionStationActor = new CollisionStationActor(collisionStation.getLocation());
 
@@ -110,6 +130,7 @@ public class StationController {
 		context.getStage().addActor(collisionStationActor);
 	}
 
+	/**This method draws all of the stations, as Stations or CollisionStations.*/
 	public void drawStations() {
 		List<Station> stations = context.getGameLogic().getMap().getStations();
 
@@ -122,6 +143,10 @@ public class StationController {
 		}
 	}
 
+	/**This method draws all of the passed connections in a specified color.
+	 * @param connections The connections to be drawn.
+	 * @param color The color of the connections.
+	 */
 	public void drawConnections(List<Connection> connections, final Color color) {
 		for (Connection connection : connections) {
 			final IPositionable start = connection.getStation1().getLocation();
@@ -132,6 +157,7 @@ public class StationController {
 		}
 	}
 
+	/**This method creates a Text field at each station displaying the number of trains the current player has at that station.*/
 	public void displayNumberOfTrainsAtStations() {
 		TaxeGame game = context.getTaxeGame();
 		game.fontSmall.setColor(Color.BLACK);
@@ -144,6 +170,10 @@ public class StationController {
 		game.batch.end();
 	}
 
+	/**This method counts the number of trains the current player has at a specific station.
+	 * @param station The station to check.
+	 * @return The number of train's the current player has at the station.
+	 */
 	private int trainsAtStation(Station station) {
 		int count = 0;
 

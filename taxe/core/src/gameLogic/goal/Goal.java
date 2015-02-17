@@ -1,7 +1,6 @@
 package gameLogic.goal;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import Util.Tuple;
 import gameLogic.map.Station;
@@ -38,7 +37,7 @@ public class Goal {
 	
 	public void addConstraint(ResourceManager resourceManager, String name, Object value) {
 		
-		if(name.equals("train")) {
+		if(name.equals("trainType")) {
 			//CASE train type
 			trainName = String.valueOf(value);
 			System.out.println("Turn Count:" + value);

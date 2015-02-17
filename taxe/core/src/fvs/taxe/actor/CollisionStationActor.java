@@ -5,10 +5,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import gameLogic.map.IPositionable;
 
+/**This class is a type of image specifically for collisions for stations.*/
 public class CollisionStationActor extends Image {
-	private static int width = 16;
-    private static int height = 16;
+	/**The width of a Station's collision area in pixels.*/
+	private final int width =16;
+	
+	/**The height of a Station's collision area in pixels.*/
+	private final int height =16;
 
+
+    /**Instantiation method. Uses junction_dot.png as the texture for the station.
+     * @param location the location the station should be placed at.
+     */
     public CollisionStationActor(IPositionable location) {
         super(new Texture(Gdx.files.internal("junction_dot.png")));
 

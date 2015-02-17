@@ -12,10 +12,17 @@ import gameLogic.PlayerManager;
 import gameLogic.goal.Goal;
 import gameLogic.goal.GoalListener;
 
+/**Controller for updating UI with goals.*/
 public class GoalController {
+	/**The context of the Game.*/
 	private Context context;
+	
+	/**A group of buttons used for controlling the goals,*/
 	private Group goalButtons = new Group();
 
+	/**The instantation method sets up listeners for Goal changes and Player changes so that it can update the UI accordingly,
+	 * @param context The context of the game.
+	 */
 	public GoalController(Context context) {
 		this.context = context;
 		
@@ -35,6 +42,7 @@ public class GoalController {
 		});
 	}
 	
+	/**This method draws the current player's goals in the game UI.*/
 	public void drawCurrentPlayerGoals() {
 		goalButtons.remove();
 		goalButtons.clear();
@@ -62,6 +70,7 @@ public class GoalController {
 		context.getStage().addActor(goalButtons);
 	}
 
+	/**This method draws the header text (e.g. the current Player) for the goals.*/
 	public void drawHeaderText() {
 		TaxeGame game = context.getTaxeGame();
 		float top = (float) TaxeGame.HEIGHT;
@@ -74,6 +83,9 @@ public class GoalController {
 		game.batch.end();
 	}
 
+	/**This method generates a string for the Goal header.
+	 * @return A string consisting of "Player " + the player number + " Goals:".
+	 */
 	private String playerGoalHeader() {
 		return "Player " + context.getGameLogic().getPlayerManager().getCurrentPlayer().getPlayerNumber() + " Goals:";
 	}

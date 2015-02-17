@@ -9,17 +9,31 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
+/**This class is used to set up the graphical interface of the main menu for the player. It is first used when the TaxeGame.java is instantiated.*/
 public class MainMenuScreen extends ScreenAdapter {
-    TaxeGame game;
-    OrthographicCamera camera;
-    Rectangle playBounds;
-    Rectangle exitBounds;
-    Vector3 touchPoint;
-    Texture mapTexture;
-    Image mapImage;
+	
+	/**Stores the main instance of TaxeGame.java.*/
+    final private TaxeGame game;
+    
+    /**Stores an orthographic camera used in the menu to project clicks.*/
+    private OrthographicCamera camera;
+    
+    /**This rectange stores the bounds of the play button, and is used to detect whether a click has clicked the play button.*/
+    private Rectangle playBounds;
+    
+    /**This rectange stores the bounds of the exit button, and is used to detect whether a click has clicked the exit button.*/
+    private Rectangle exitBounds;
+    
+    /**This vector is set to the location of the most recent click on the screen.*/
+    private Vector3 touchPoint;
+    
+    /**Used to store the map texture which is placed in the background.*/
+    private Texture mapTexture;
 
+    /**Instantiation method. sets up bounds and camera.
+	 *@param game The main TaxeGame instance is assigned to the local variable game.
+    */
     public MainMenuScreen(TaxeGame game) {
         this.game = game;
         camera = new OrthographicCamera(TaxeGame.WIDTH, TaxeGame.HEIGHT);
@@ -29,9 +43,9 @@ public class MainMenuScreen extends ScreenAdapter {
         exitBounds = new Rectangle(TaxeGame.WIDTH/2 - 200, 200, 400, 100);
         touchPoint = new Vector3();
         mapTexture = new Texture(Gdx.files.internal("gamemap.png"));
-        mapImage = new Image(mapTexture);
     }
 
+    /**This method is called once every frame using the render method. It checks whether there has been a touch, and if so, checks whether this touch is within one of the buttons bounds.*/
     public void update() {
         if (Gdx.input.justTouched()) {
             camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -45,6 +59,7 @@ public class MainMenuScreen extends ScreenAdapter {
         }
     }
 
+    /**This method is called once every frame using the render method. It draws the main menu.*/
     public void draw() {
         GL20 gl = Gdx.gl;
         gl.glClearColor(1, 1, 1, 1);
