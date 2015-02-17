@@ -22,7 +22,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 
 public class TrainMoveController {
-	private static final float JUNCTION_FAILURE_CHANCE = 1f;
+	private static final float JUNCTION_FAILURE_CHANCE = 0.2f;
 	private Context context;
 	private Train train;
 	private InterruptableSequenceAction action;
@@ -59,8 +59,7 @@ public class TrainMoveController {
 				train.addHistory(station.getName(), context.getGameLogic().getPlayerManager().getTurnNumber());
 				System.out.println("Added to history: passed " + station.getName() + " on turn "
 						+ context.getGameLogic().getPlayerManager().getTurnNumber());
-				// train.setPosition(station.getLocation());
-					
+				
 				junctionFailure(station);
 				collisions(station);
 				obstacleCollision(station);
@@ -143,7 +142,7 @@ public class TrainMoveController {
 		if (station.hasObstacle() && MathUtils.randomBoolean(station.getObstacle().getDestructionChance())){
 			train.getActor().remove();
 			train.getPlayer().removeResource(train);
-			context.getTopBarController().displayFlashMessage("Your train was hit by a natural disaster...", Color.RED, 4);
+			context.getTopBarController().displayFlashMessage("Your train was hit by a natural disaster...", Color.BLACK, Color.RED, 4);
 		}
 	}
 

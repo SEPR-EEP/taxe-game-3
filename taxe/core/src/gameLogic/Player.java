@@ -38,6 +38,7 @@ public class Player {
     }
     
     public List<Resource> getActiveTrains() {
+    	// get all of the players trains that are active (placed)
     	List<Resource> activeResources = new ArrayList<Resource>();
     	for (Resource resource: resources) {
     		if (resource instanceof Train) {

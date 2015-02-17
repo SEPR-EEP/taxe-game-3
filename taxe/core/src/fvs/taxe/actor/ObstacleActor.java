@@ -9,14 +9,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class ObstacleActor extends Image {
 
- //   private Rectangle bounds;
-
 	private static int width = 50;
     private static int height = 50;
-    // TODO set size correctly (based upon disaster?
+
 	public ObstacleActor(Obstacle obstacle) {
 		super(getTexture(obstacle));
-		
 		obstacle.setActor(this);
 		setSize(width, height);
 		IPositionable position = obstacle.getPosition();
@@ -26,13 +23,13 @@ public class ObstacleActor extends Image {
 	private static Texture getTexture(Obstacle obstacle) {
 		switch(obstacle.getType()){
 		case VOLCANO:
-			return new Texture(Gdx.files.internal("volcano.png"));
+			return new Texture(Gdx.files.internal("obstacles/volcano.png"));
 		case BLIZZARD:
-			return new Texture(Gdx.files.internal("blizzard.png"));
+			return new Texture(Gdx.files.internal("obstacles/blizzard.png"));
 		case FLOOD:
-			return new Texture(Gdx.files.internal("flood.png"));
+			return new Texture(Gdx.files.internal("obstacles/flood.png"));
 		case EARTHQUAKE:
-			return new Texture(Gdx.files.internal("earthquake.png"));
+			return new Texture(Gdx.files.internal("obstacles/earthquake.png"));
 		default:
 			return null;
 		}

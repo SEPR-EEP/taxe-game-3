@@ -17,37 +17,33 @@ import gameLogic.resource.Train;
 public class DialogStationMultitrain extends Dialog {
 
 	private Context context;
-	private boolean isTrain = false;
+	private boolean hasTrain = false;
 
 	public DialogStationMultitrain(Station station, Skin skin, Context context) {
 		super(station.getName(), skin);
-
 		this.context = context;
-
-		System.out.println("hello");
 		
 		text("Choose which train you would like");
-
-		//int i = 0;
-		//Train train = null;
 		
 		List<Resource> activeTrains = context.getGameLogic().getPlayerManager().getCurrentPlayer().getActiveTrains();
-		List<Train> localTrains = new ArrayList<Train>();
+		List<Train> localTrains = new ArrayList<Train>(); // player's active trains at that station
 		for (Resource resource : activeTrains) {
 			if(((Train) resource).getPosition() == station.getLocation()) {
 				localTrains.add((Train) resource);
 			}
 		}
 		
-		System.out.println(localTrains);
 		if (localTrains.size() == 0) {
+			// if no active trains at station do nothing!
 			hide();
 			context.getTopBarController().displayFlashMessage("No Player " + context.getGameLogic().getPlayerManager().getCurrentPlayer().getPlayerNumber() + " trains at this station", Color.RED);
 		} else if (localTrains.size() == 1) {
+			// if one active train, skip the dialog and go straight to train
 			hide();
 			result(localTrains.get(0));
 			context.getGameLogic().setState(GameState.WAITING);
 		} else {
+			// if multiple trains, show dialog
 			for (Resource resource : localTrains){
 				String destination = "";
 				if(((Train) resource).getFinalDestination() != null) {
@@ -55,7 +51,7 @@ public class DialogStationMultitrain extends Dialog {
 				}
 				button(((Train) resource).getName() + destination + " (Player " + ((Train) resource).getPlayer().getPlayerNumber() + ")", ((Train) resource));
 				getButtonTable().row();
-				isTrain = true;
+				hasTrain = true;
 			}
 			context.getGameLogic().setState(GameState.WAITING);
 		}
@@ -88,7 +84,7 @@ public class DialogStationMultitrain extends Dialog {
 		
 	}
 
-	public boolean getIsTrain() {
-		return isTrain;
+	public boolean getHasTrain() {
+		return hasTrain;
 	}
 }
