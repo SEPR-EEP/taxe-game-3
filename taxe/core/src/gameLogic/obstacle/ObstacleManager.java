@@ -11,20 +11,27 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 
+/** This class creates and stores the Obstacles from the Obstacles.json files */
 public class ObstacleManager {
-
-	private static final float DEFAULT_OBSTACLE_PROBABILITY = 0.001f;
-	private ArrayList<Tuple<Obstacle,Float>> obstacles; 				// obstacle and the probability of obstacle occurring		
+	/** The default value for the probability of an obstacle occurring if no probability is set in Obstacles.json*/
+	private static final float DEFAULT_OBSTACLE_PROBABILITY = 0.1f;
+	
+	/** List of pairs of Obstacles and their associated probabilities of occurring */
+	private ArrayList<Tuple<Obstacle,Float>> obstacles; 				
+	
+	/* The map that the Obstacle's stations are connected with */
 	private Map map;
 	
+	/** Set the map accoridngly, populate the list of obstacle, probability pairings
+	 * @param map The map that the Game's stations are associated with
+	 */
 	public ObstacleManager(Map map) {
-		initialise(map);
+		this.map = map;
+		initialise();
 	}
 
-	private void initialise(Map map) {
-		// parse all of the obstacles from obstacles.json
-		this.map = map;
-
+	/** Get all of the obstacles, their types, stations and the probabilities of them occurring from Obstacles.json*/
+	private void initialise() {
 		JsonReader jsonReader = new JsonReader();
 		JsonValue jsonVal = jsonReader.parse(Gdx.files.local("obstacles.json"));
 
@@ -42,6 +49,7 @@ public class ObstacleManager {
 					probability = val.asFloat();
 				}
 			}
+			
 			Obstacle obstacle = createObstacle(typeName, stationName);
 			if (obstacle != null){
 				obstacles.add(new Tuple<Obstacle, Float>(obstacle, probability));
@@ -49,8 +57,12 @@ public class ObstacleManager {
 		}
 	}
 
+	/** Create the obstacle that has given type, and is located at the station assoicated with the given string
+	 * @param typeName The string that represents the name of the type of the obstacle (ObstacleType enum)
+	 * @param stationName The string that represents the station that the obstacle is associated with
+	 * @return An obstacle with type given, station given if both that type and station exist, otherwise null
+	 */
 	private Obstacle createObstacle(String typeName, String stationName) {
-		// create the obstacle from the strings given in json file
 		ObstacleType type = null;
 		Station station = null;
 		if (typeName.equalsIgnoreCase("volcano")){
@@ -74,8 +86,10 @@ public class ObstacleManager {
 		}
 	}
 
+	/** Get the list of pairs of the obstacles and the probability of that obstacle occurring
+	 * @return The list of pairs of obstacles and the associated probability of that obstacle occurring
+	 */
 	public ArrayList<Tuple<Obstacle, Float>> getObstacles() {
 		return this.obstacles;
 	}
-
 }

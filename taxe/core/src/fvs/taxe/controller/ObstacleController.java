@@ -48,7 +48,7 @@ public class ObstacleController {
 				
 				// shake the screen if the obstacle is an earthquake
 				if (obstacle.getType() == ObstacleType.EARTHQUAKE) {
-					rumble.rumble(context, 1f, 2f);
+					rumble.rumble(1f, 2f);
 				}
 				if (obstacle.getType() == ObstacleType.BLIZZARD) {
 					effects.get("Blizzard").setPosition(obstacle.getPosition().getX(), obstacle.getPosition().getY());
