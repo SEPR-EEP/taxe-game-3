@@ -93,7 +93,15 @@ public class GoalManager {
 		List<Station> removeAbleStations = Game.getInstance().getMap().getEditableRoute(idealRoute);
 		if(removeAbleStations.size() > 0)
 		{
-			list.add(new Tuple<String, Object>("exclusionStation", removeAbleStations.get(new Random().nextInt(removeAbleStations.size() - 1))));
+			if(removeAbleStations.size() == 1)
+			{
+				list.add(new Tuple<String, Object>("exclusionStation", removeAbleStations.get(0)));
+				
+			}
+			else
+			{
+				list.add(new Tuple<String, Object>("exclusionStation", removeAbleStations.get(new Random().nextInt(removeAbleStations.size()))));
+			}
 		}
 		//Add a constraint of the maximum number of journeys a train can make to get between the 2 locations, the length of the ideal route + 1 (since the ideal route contains the origin)
 		list.add(new Tuple<String, Object>("locationCount", idealRoute.size()));
