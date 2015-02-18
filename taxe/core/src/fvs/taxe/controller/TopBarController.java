@@ -17,16 +17,30 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-
+/**Controller for the Top Bar of the GUI, changes the Top Bar.*/
 public class TopBarController {
+	
+	/**The height of the Top Bar.*/
 	public final static int CONTROLS_HEIGHT = 40;
 
+	/**The Game Context.*/
 	private Context context;
-	TextButton endTurnButton;
+	
+	/**The end Turn Button used for the player to End the Turn.*/
+	private TextButton endTurnButton;
+	
+	/**Label for displaying a message to the player.*/
 	private Label flashMessage;
+	
+	/**Label for display obstacle events to the player.*/
 	private Label obstacleLabel;
+	
+	/**Actor for the background to the Top Bar*/
 	private TopBarActor topBarBackground;
 
+	/**Instantiation method sets up a listener for Events starting to display the Event message in the Top Bar.
+	 * @param context The game Context.
+	 */
 	public TopBarController(final Context context) {
 		this.context = context;
 
@@ -59,15 +73,19 @@ public class TopBarController {
 		});
 	}
 
+	/**This method adds the background to the game.*/
 	public void drawBackground() {
 		topBarBackground = new TopBarActor();
 		context.getStage().addActor(topBarBackground);
 	}
 	
+	/**This method calls the label drawing methods*/
 	public void drawLabels() {
 		drawFlashLabel();
 		drawObstacleLabel();
 	}
+	
+	/**This method draws a label for a message*/
 	public void drawFlashLabel() {
 		flashMessage = new Label("", context.getSkin());
 		flashMessage.setPosition(450, TaxeGame.HEIGHT - 24);
@@ -75,6 +93,7 @@ public class TopBarController {
 		context.getStage().addActor(flashMessage);
 	}
 
+	/**This method draws a label for obstacle messages*/
 	public void drawObstacleLabel() {
 		obstacleLabel = new Label("", context.getSkin());
 		obstacleLabel.setColor(Color.BLACK);
@@ -82,16 +101,31 @@ public class TopBarController {
 		context.getStage().addActor(obstacleLabel);
 	}
 
+	/**This method displays a message of a certain color in the Top Bar.
+	 * @param message The message to be displayed.
+	 * @param color The color of the message to be displayed.
+	 */
 	public void displayFlashMessage(String message, Color color) {
 		displayFlashMessage(message, color, 2f);
 	}
-
+	
+	/**This method displays a message of a certain color in the Top Bar for a certain amount of time.
+	 * @param message The message to be displayed.
+	 * @param color The color of the message to be displayed.
+	 * @param time The length of time to display the message, in seconds.
+	 */
 	public void displayFlashMessage(String message, Color color, float time) {
 		flashMessage.setText(message);
 		flashMessage.setColor(color);
 		flashMessage.addAction(sequence(delay(time), fadeOut(0.25f)));
 	}
 
+	/**This method displays a message of a certain color in the Top Bar for a certain amount of time while specifiying a background Color.
+	 * @param message The message to be displayed.
+	 * @param backgroundColor The color of the background to display behind the message.
+	 * @param textColor The color of the message to be displayed.
+	 * @param time The length of time to display the message, in seconds.
+	 */
 	public void displayFlashMessage(String message, Color backgroundColor, Color textColor, float time) {
 		topBarBackground.setObstacleColor(backgroundColor);
 		topBarBackground.setControlsColor(backgroundColor);
@@ -108,6 +142,10 @@ public class TopBarController {
 		})));
 	}
 
+	/**This method displays a message in the Top Bar with a specified background Color.
+	 * @param message The message to be displayed.
+	 * @param color The background color to be displayed behind the message.
+	 */
 	public void displayObstacleMessage(String message, Color color) {
 		// display a message to the obstacle topBar label, with topBarBackground color color and given message
 		// wraps automatically to correct size
@@ -126,6 +164,7 @@ public class TopBarController {
 		})));
 	}
 
+	/**This method adds an End Turn button to the game that captures an on click event and notifies the game when the turn is over.*/
 	public void drawEndTurnButton() {
 		endTurnButton = new TextButton("End Turn", context.getSkin());
 		endTurnButton.setPosition(TaxeGame.WIDTH - 100.0f, TaxeGame.HEIGHT - 33.0f);

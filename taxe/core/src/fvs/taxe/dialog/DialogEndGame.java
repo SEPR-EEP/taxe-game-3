@@ -10,9 +10,16 @@ import gameLogic.Player;
 import gameLogic.PlayerManager;
 import gameLogic.goal.Goal;
 
+/**This is a type of Dialogue specifically for the end of the game.*/
 public class DialogEndGame extends Dialog{
+	/**The Game instance.*/
 	private TaxeGame game;
 	
+	/**The instantiation sets up the Dialogue for the end of the game.
+	 * @param game The game type.
+	 * @param pm The player manager containing the players.
+	 * @param skin The skin used for the GUI.
+	 */
 	public DialogEndGame(TaxeGame game, PlayerManager pm, Skin skin) {
 		super("GAME OVER", skin);
 		this.game = game;

@@ -7,13 +7,22 @@ import gameLogic.map.Station;
 import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
 
+/**Controller for managing games graphics*/
 public class TrainController {
+	/**The game context.*/
     private Context context;
 
+    /**Instantiation method.
+     * @param context The game context.
+     */
     public TrainController(Context context) {
         this.context = context;
     }
 
+    /**This method renders a train by adding it to the Game as a TrainActor.
+     * @param train The train to be rendered.
+     * @return The TrainActor produced using the train.
+     */
     public TrainActor renderTrain(Train train) {
         TrainActor trainActor = new TrainActor(train);
         trainActor.addListener(new TrainClicked(context, train));
@@ -25,7 +34,10 @@ public class TrainController {
 
 
 
-    // Sets all trains on the map visible or invisible except one that we are routing for
+    /**This method sets all trains on the map to a visibility except for a specified train.
+     * @param train The train to be excluded.
+     * @param visible The visibility to set all the other resources to.
+     */
     public void setTrainsVisible(Train train, boolean visible) {
 
         for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()) {

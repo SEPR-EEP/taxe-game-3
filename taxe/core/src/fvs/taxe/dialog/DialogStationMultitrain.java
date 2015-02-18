@@ -14,11 +14,20 @@ import gameLogic.map.Station;
 import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
 
+/**This is a special type of dialogue used when there are multiple trains at a station.*/
 public class DialogStationMultitrain extends Dialog {
 
+	/**The context of the Game.*/
 	private Context context;
+	
+	/**Whether or not the station has a train on it.*/
 	private boolean hasTrain = false;
 
+	/**The instantiation method sets up the dialogue.
+	 * @param station The station to be used.
+	 * @param skin The skin for the GUI.
+	 * @param context The context of the game.
+	 */
 	public DialogStationMultitrain(Station station, Skin skin, Context context) {
 		super(station.getName(), skin);
 		this.context = context;
@@ -84,6 +93,7 @@ public class DialogStationMultitrain extends Dialog {
 		
 	}
 
+	/**@return True if the station has a train, false otherwise.*/
 	public boolean getHasTrain() {
 		return hasTrain;
 	}

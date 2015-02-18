@@ -1,5 +1,6 @@
 package gameLogic.map;
 
+	/**This class describes an abstract class of a 2 Dimensional Vector Coordinate with coordinates x and y.*/
     abstract public class IPositionable {
 
         public abstract int getX();

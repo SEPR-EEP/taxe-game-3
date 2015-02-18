@@ -8,16 +8,37 @@ import gameLogic.resource.Train;
 import java.util.ArrayList;
 import java.util.List;
 
+/**This class holds variables and methods for a single player.*/
 public class Player {
+	
+	/**The game's player manager. This allows the class to access other players.*/
     private PlayerManager pm;
+    
+    /**The resources that this player owns.*/
     private List<Resource> resources;
+    
+    /**The goals that this player has available to them.*/
     private List<Goal> goals;
+    
+    /**This player's easy goal, with 0 constraints.*/
     private Goal easyGoal;
+    
+    /**This player's medium goal, with 1 constraint.*/
     private Goal mediumGoal;
+    
+    /**This player's hard goal, with 2 constraints.*/
     private Goal hardGoal;
+    
+    /**The player's current score.*/
     private int score;
+    
+    /**This player's number, e.g. Player1, Player2.*/
     private int number;
 
+    /**Instantiation method.
+     * @param pm The PlayerManager of the Game that handles this player.
+     * @param playerNumber The player number, e.g. Player 1, Player 2.
+     */
     public Player(PlayerManager pm, int playerNumber) {
         goals = new ArrayList<Goal>();
         resources = new ArrayList<Resource>();
@@ -25,18 +46,22 @@ public class Player {
         number = playerNumber;
     }
     
+    /**@return The Player's current score.*/
     public int getScore() {
     	return score;
     }
-
+    
+    /**This method adds a integer score to the player's score.*/
     public void addScore(int score) {
     	this.score += score;
     }
 
+    /**@return The player's array of resources.*/
     public List<Resource> getResources() {
         return resources;
     }
     
+    /**@return The player's active trains.*/
     public List<Resource> getActiveTrains() {
     	// get all of the players trains that are active (placed)
     	List<Resource> activeResources = new ArrayList<Resource>();
@@ -50,17 +75,22 @@ public class Player {
     	return activeResources;
     }
 
+    /**This method adds a resource to the player's resources.*/
     public void addResource(Resource resource) {
         resources.add(resource);
         changed();
     }
 
+    /**This method removes a resource from the player's resources.*/
     public void removeResource(Resource resource) {
         resources.remove(resource);
         resource.dispose();
         changed();
     }
 
+    /**This method adds a goal to the player's goal, checking to ensure that the maximum number of goals has not been exceeded.
+     * @param goal The goal to add.
+     */
     public void addGoal(Goal goal) {
     	int incompleteGoals = 0;
     	for(Goal existingGoal : goals) {
@@ -77,13 +107,16 @@ public class Player {
         changed();
     }
     
+    /**This method checks if the Easy Goal has expired or is complete. If it is complete, it is regenerated.
+    * @param sender The GoalManager that sent the update post
+    */
     private void updateEasyTierGoal(GoalManager sender)
     {
     	if(easyGoal != null)
     	{
     		if(!easyGoal.getComplete())
     		{
-    			//The current Easy Goal is not complete, so bail out of themethod
+    			//The current Easy Goal is not complete, so bail out of the method
     			return;
     		}
     	}
@@ -91,7 +124,10 @@ public class Player {
     	easyGoal = sender.generateRandomGoal(getPlayerManager().getTurnNumber(), 0);
     	addGoal(easyGoal);
     }
-    
+
+    /**This method checks if the Medium Goal has expired or is complete. If it is complete, it is regenerated.
+    * @param sender The GoalManager that sent the update post
+    */
     private void updateMediumTierGoal(GoalManager sender)
     {
     	if(mediumGoal != null)
@@ -106,7 +142,10 @@ public class Player {
     	mediumGoal = sender.generateRandomGoal(getPlayerManager().getTurnNumber(), 1);
     	addGoal(mediumGoal);
     }
-    
+
+    /**This method checks if the Hard Goal has expired or is complete. If it is complete, it is regenerated.
+    * @param sender The GoalManager that sent the update post
+    */
     private void updateHardTierGoal(GoalManager sender)
     {
     	if(hardGoal != null)
@@ -122,6 +161,9 @@ public class Player {
     	addGoal(hardGoal);
     }
     
+    /**This method is called externally and updates all of the player's goals, clearing out any goal that has failed.
+     * @param sender The GoalManager that sent the update post
+     */
     public void updateGoals(GoalManager sender)
     {
     	for(Goal goal : goals)
@@ -136,6 +178,7 @@ public class Player {
     	updateHardTierGoal(sender);
     }
     
+    /**This method completes a goal, giving the player the reward score and setting the goal to complete.*/
     public void completeGoal(Goal goal) {
     	addScore(goal.getRewardScore());
     	goal.setComplete();
@@ -150,14 +193,17 @@ public class Player {
         
     }
 
+    /**Get's the player's goals.*/
     public List<Goal> getGoals() {
         return goals;
     }
     
+    /**Gets the PlayerManager instance used to create this player.*/
     public PlayerManager getPlayerManager() {
     	return pm;
     }
     
+    /**Returns which player this is, e.g. Player 1, player 2.*/
     public int getPlayerNumber() {
     	return number;
     }

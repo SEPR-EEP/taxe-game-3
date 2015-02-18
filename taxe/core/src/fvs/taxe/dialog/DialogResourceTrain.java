@@ -13,9 +13,18 @@ import gameLogic.GameState;
 import gameLogic.resource.Train;
 
 public class DialogResourceTrain extends Dialog {
+	/**List of Click Listeners. When a button is clicked, each Click Listener is notified.*/
     private List<ResourceDialogClickListener> clickListeners = new ArrayList<ResourceDialogClickListener>();
+    
+    /**The Game context.*/
 	private Context context;
 
+	/**The instantiation sets up the dialogue for a train resource.
+	 * @param context The context of the game.
+	 * @param train The train resource in use.
+	 * @param skin The skin for the GUI.
+	 * @param trainPlaced Whether the train has been placed.
+	 */
     public DialogResourceTrain(Context context, Train train, Skin skin, boolean trainPlaced) {
         super(train.toString(), skin);
         this.context = context;
@@ -44,12 +53,14 @@ public class DialogResourceTrain extends Dialog {
         hide(null);
     }
 
+    /**This method is called when a button is clicked. All of the registered click listeners are notified.*/
     private void clicked(Button button) {
         for(ResourceDialogClickListener listener : clickListeners) {
             listener.clicked(button);
         }
     }
 
+    /**This method adds a new ClickListener. When a button is clicked, the new listener will be notified.*/
     public void subscribeClick(ResourceDialogClickListener listener) {
         clickListeners.add(listener);
     }

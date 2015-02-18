@@ -1,5 +1,6 @@
 package gameLogic.map;
 
+/**This class describes a more specific version of IPositionable used for Positions in the Game world.*/
 public class Position extends IPositionable {
 	private int x;
 	private int y;

@@ -9,15 +9,24 @@ import gameLogic.GameState;
 import gameLogic.Player;
 import gameLogic.resource.Train;
 
+/**This is a special type of ClickListener for when a train is clicked.*/
 public class TrainClicked extends ClickListener {
+	/**The game context.*/
     private Context context;
+    
+    /**The train that the click listener corresponds to.*/
     private Train train;
 
+    /**Instantiation method.
+     * @param context The context of the game.
+     * @param train The train the TrainClicked corresponds to.
+     */
     public TrainClicked(Context context, Train train) {
         this.train = train;
         this.context = context;
     }
 
+    /**This method is called when the TrainClicked is Clicked. The GUI is updated accordingly.*/
     @Override
     public void clicked(InputEvent event, float x, float y) {
         if (Game.getInstance().getState() != GameState.NORMAL) return;
