@@ -5,7 +5,6 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
@@ -33,7 +32,7 @@ public class MainMenuScreen extends ScreenAdapter {
     private Vector3 touchPoint;
     
     /**Used to store the map texture which is placed in the background.*/
-    private Texture mapTexture;
+    private CustomTexture mapTexture;
 
     /**Instantiation method. sets up bounds and camera.
 	 *@param game The main TaxeGame instance is assigned to the local variable game.
@@ -47,7 +46,7 @@ public class MainMenuScreen extends ScreenAdapter {
         playBounds = new Rectangle(TaxeGame.WIDTH/2 - 200, 350, 400, 100);
         exitBounds = new Rectangle(TaxeGame.WIDTH/2 - 200, 200, 400, 100);
         touchPoint = new Vector3();
-        mapTexture = new Texture(Gdx.files.internal("gamemap.png"));
+        mapTexture = new CustomTexture(Gdx.files.internal("gamemap.png"));
     }
 
     /**This method is called once every frame using the render method. It checks whether there has been a touch, and if so, checks whether this touch is within one of the buttons bounds.*/

@@ -21,7 +21,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -37,7 +36,7 @@ public class GameScreen extends ScreenAdapter {
     private Stage stage;
     
     /**Stores the texture used as the background of the game. This is set internally in the Class instantiation method using the gamemap.png Asset.*/
-    private Texture mapTexture;
+    private CustomTexture mapTexture;
     
     /**Stores the instance of Game.java used to hold the game variable's GameLogic. This variable exists as a reference point to the instance set in
      * the Game.java class, which can be accessed statically.
@@ -98,7 +97,7 @@ public class GameScreen extends ScreenAdapter {
 		context = new Context(stage, skin, game, gameLogic);
 		Gdx.input.setInputProcessor(stage);
 
-		mapTexture = new Texture(Gdx.files.internal("gamemap.png"));
+		mapTexture = new CustomTexture(Gdx.files.internal("gamemap.png"));
 		map = gameLogic.getMap();
 
 		tooltip = new Tooltip(skin);

@@ -1,14 +1,15 @@
 package fvs.taxe.actor;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import fvs.taxe.CustomTexture;
 import gameLogic.Game;
 import gameLogic.GameState;
 import gameLogic.map.IPositionable;
 import gameLogic.resource.Train;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 /**This class is a type of image specifically for creating Actors for Trains.*/
 public class TrainActor extends Image {
@@ -40,9 +41,9 @@ public class TrainActor extends Image {
      * @param train The train to base the TrainActor off.
      */
     public TrainActor(Train train) {
-        super(new Texture(Gdx.files.internal(train.getLeftImage())));
+        super(new CustomTexture(Gdx.files.internal(train.getLeftImage())));
         leftDrawable = getDrawable();
-        rightDrawable = new Image(new Texture(Gdx.files.internal(train.getRightImage()))).getDrawable();
+        rightDrawable = new Image(new CustomTexture(Gdx.files.internal(train.getRightImage()))).getDrawable();
 
         IPositionable position = train.getPosition();
 
