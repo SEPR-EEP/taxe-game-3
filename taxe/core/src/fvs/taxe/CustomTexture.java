@@ -6,9 +6,15 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 
+/**
+ * @author Stefan Kokov sk1056@york.ac.uk
+ *Subclass of com.badlogic.gdx.graphics.Texture, defines a Texture object and sets
+ *a linear filter to that object upon creation. This class should be used for all images
+ *in order to avoid loss of quality of images upon resizing the game window.
+ */
 public class CustomTexture extends Texture {
 
-	public CustomTexture(String internalPath) {
+	CustomTexture(String internalPath) {
 		super(internalPath);
 		this.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	}

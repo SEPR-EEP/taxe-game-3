@@ -8,8 +8,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**This class is used to set up the graphical interface of the main menu for the player. It is first used when the TaxeGame.java is instantiated.*/
 public class MainMenuScreen extends ScreenAdapter {
@@ -17,15 +15,13 @@ public class MainMenuScreen extends ScreenAdapter {
 	/**Stores the main instance of TaxeGame.java.*/
     final private TaxeGame game;
     
-    private Stage stage;
-    
     /**Stores an orthographic camera used in the menu to project clicks.*/
     private OrthographicCamera camera;
     
-    /**This rectange stores the bounds of the play button, and is used to detect whether a click has clicked the play button.*/
+    /**This rectangle stores the bounds of the play button, and is used to detect whether a click has clicked the play button.*/
     private Rectangle playBounds;
     
-    /**This rectange stores the bounds of the exit button, and is used to detect whether a click has clicked the exit button.*/
+    /**This rectangle stores the bounds of the exit button, and is used to detect whether a click has clicked the exit button.*/
     private Rectangle exitBounds;
     
     /**This vector is set to the location of the most recent click on the screen.*/
@@ -39,7 +35,6 @@ public class MainMenuScreen extends ScreenAdapter {
     */
     public MainMenuScreen(TaxeGame game) {
         this.game = game;
-        stage = new Stage(new StretchViewport(TaxeGame.WIDTH, TaxeGame.HEIGHT));
         camera = new OrthographicCamera(TaxeGame.WIDTH, TaxeGame.HEIGHT);
         camera.setToOrtho(false);
 
@@ -109,11 +104,4 @@ public class MainMenuScreen extends ScreenAdapter {
         update();
         draw();
     }
-    
-	@Override
-	public void resize(int width, int height) {
-	    // use true here to center the camera
-	    // that's what you probably want in case of a UI
-	    stage.getViewport().update(width, height, true);
-	}
 }

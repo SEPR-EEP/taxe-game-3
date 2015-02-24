@@ -90,6 +90,7 @@ public class GameScreen extends ScreenAdapter {
 	*/
 	public GameScreen(TaxeGame game) {
 		this.game = game;
+		//add stretch viewport in order to support resizeability
 		stage = new Stage(new StretchViewport(TaxeGame.WIDTH, TaxeGame.HEIGHT));
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
