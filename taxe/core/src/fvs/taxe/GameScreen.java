@@ -25,6 +25,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /** This class displays the Game.java game state graphically to the player.*/
 public class GameScreen extends ScreenAdapter {
@@ -90,7 +91,7 @@ public class GameScreen extends ScreenAdapter {
 	*/
 	public GameScreen(TaxeGame game) {
 		this.game = game;
-		stage = new Stage();
+		stage = new Stage(new StretchViewport(TaxeGame.WIDTH, TaxeGame.HEIGHT));
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
 		gameLogic = Game.getInstance();
@@ -200,5 +201,12 @@ public class GameScreen extends ScreenAdapter {
 	public void dispose() {
 		mapTexture.dispose();
 		stage.dispose();
+	}
+	
+	@Override
+	public void resize(int width, int height) {
+	    // use true here to center the camera
+	    // that's what you probably want in case of a UI
+	    stage.getViewport().update(width, height, true);
 	}
 }

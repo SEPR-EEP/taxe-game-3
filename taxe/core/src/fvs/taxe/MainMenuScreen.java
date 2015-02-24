@@ -9,12 +9,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**This class is used to set up the graphical interface of the main menu for the player. It is first used when the TaxeGame.java is instantiated.*/
 public class MainMenuScreen extends ScreenAdapter {
 	
 	/**Stores the main instance of TaxeGame.java.*/
     final private TaxeGame game;
+    
+    private Stage stage;
     
     /**Stores an orthographic camera used in the menu to project clicks.*/
     private OrthographicCamera camera;
@@ -36,6 +40,7 @@ public class MainMenuScreen extends ScreenAdapter {
     */
     public MainMenuScreen(TaxeGame game) {
         this.game = game;
+        stage = new Stage(new StretchViewport(TaxeGame.WIDTH, TaxeGame.HEIGHT));
         camera = new OrthographicCamera(TaxeGame.WIDTH, TaxeGame.HEIGHT);
         camera.setToOrtho(false);
 
@@ -50,7 +55,9 @@ public class MainMenuScreen extends ScreenAdapter {
         if (Gdx.input.justTouched()) {
             camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
             if (playBounds.contains(touchPoint.x, touchPoint.y)) {
-                game.setScreen(new GameScreen(game));
+            	GameScreen gameScreen = new GameScreen(game);
+                game.setScreen(gameScreen);
+                Gdx.app.getGraphics().setDisplayMode(Gdx.graphics.getDesktopDisplayMode().width, Gdx.graphics.getDesktopDisplayMode().height, true);
                 return;
             }
             if (exitBounds.contains(touchPoint.x, touchPoint.y)) {
@@ -103,4 +110,11 @@ public class MainMenuScreen extends ScreenAdapter {
         update();
         draw();
     }
+    
+	@Override
+	public void resize(int width, int height) {
+	    // use true here to center the camera
+	    // that's what you probably want in case of a UI
+	    stage.getViewport().update(width, height, true);
+	}
 }
