@@ -1,7 +1,10 @@
-ADB
-====
+## **EEP** <-- ADB <-- FVS
 
-This repo contains the ADB extension of TaxE, including obstacles, quantifiable goals and scoring.
+![Build status](https://travis-ci.org/SEPR-EEP/taxe-game-3.svg?branch=master)
+
+
+
+This repo contains EEP's extension of ADB's version of FVS' TaxE, including obstacles, quantifiable goals and scoring.
 
 The .jar file is included in the root of the repo.
 
