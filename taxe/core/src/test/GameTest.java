@@ -41,7 +41,7 @@ public class GameTest extends LibGdxTest {
         pm.turnOver();
 
         // resource count should increase when p1 has another turn
-        assertEquals("Player should now have seven resources", 6, p1.getResources().size());
+        assertEquals("Player should now have six resources", 6, p1.getResources().size());
 
         // goal count
         assertEquals("Player should still have maximum of three goals", 3, p1.getGoals().size());
@@ -50,7 +50,7 @@ public class GameTest extends LibGdxTest {
         pm.turnOver();
 
         // resource count should increase when p1 has another turn
-        assertEquals("Player should still have maximum of seven resources", 7, p1.getResources().size());
+        assertEquals("Player should have maximum of seven resources", 7, p1.getResources().size());
 
         // goal count
         assertEquals("Player should still have maximum of three goals", 3, p1.getGoals().size());
