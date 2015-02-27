@@ -26,7 +26,7 @@ public class GameTest extends LibGdxTest {
     public void testPlayerChanged() throws Exception {
 
         assertEquals("Player should start with two resources", 2, p1.getResources().size());
-        assertEquals("Player should start with three goals", 3, p1.getGoals().size());
+        assertEquals("Player should start with three goals", 3, p1.getNumberOfIncompleteGoals());
 
         pm.turnOver();
         pm.turnOver();
@@ -35,7 +35,7 @@ public class GameTest extends LibGdxTest {
         assertEquals("Player should now have four resources", 4, p1.getResources().size());
 
         // goal count
-        assertEquals("Player should still have maximum of three goals", 3, p1.getGoals().size());
+        assertEquals("Player should still have maximum of three goals", 3, p1.getNumberOfIncompleteGoals());
 
         pm.turnOver();
         pm.turnOver();
@@ -44,7 +44,7 @@ public class GameTest extends LibGdxTest {
         assertEquals("Player should now have six resources", 6, p1.getResources().size());
 
         // goal count
-        assertEquals("Player should still have maximum of three goals", 3, p1.getGoals().size());
+        assertEquals("Player should still have maximum of three goals", 3, p1.getNumberOfIncompleteGoals());
 
         pm.turnOver();
         pm.turnOver();
@@ -53,7 +53,7 @@ public class GameTest extends LibGdxTest {
         assertEquals("Player should have maximum of seven resources", 7, p1.getResources().size());
 
         // goal count
-        assertEquals("Player should still have maximum of three goals", 3, p1.getGoals().size());
+        assertEquals("Player should still have maximum of three goals", 3, p1.getNumberOfIncompleteGoals());
 
 
 
