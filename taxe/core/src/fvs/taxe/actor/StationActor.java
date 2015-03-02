@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 /**This class is a type of image specifically for creating Station actors.*/
-public class StationActor extends Image {
+public class StationActor extends Image implements GenericActor {
 	
 	/**The amount to increase a StationActors's size (width and height) when it is selected  in pixels.*/
 	private static final int STATION_SIZE_INCREASE = 10;

@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import gameLogic.map.IPositionable;
 
 /**This class is a type of image specifically for collisions for stations.*/
-public class CollisionStationActor extends Image {
+public class CollisionStationActor extends Image implements GenericActor {
 	/**The width of a Station's collision area in pixels.*/
 	private final int width =16;
 	

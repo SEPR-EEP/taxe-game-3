@@ -11,7 +11,7 @@ import gameLogic.map.IPositionable;
 import gameLogic.resource.Train;
 
 /**This class is a type of image specifically for creating Actors for Trains.*/
-public class TrainActor extends Image {
+public class TrainActor extends Image implements GenericActor {
 	/**The width of a TrainActor in pixels.*/
     public static final int width = 36;
     

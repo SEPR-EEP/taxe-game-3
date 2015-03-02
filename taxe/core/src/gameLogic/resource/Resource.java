@@ -1,10 +1,11 @@
 package gameLogic.resource;
 
+import Util.HasActor;
 import gameLogic.Disposable;
 import gameLogic.Player;
 
 /** This abstract class represents any resource that can be used in game.*/
-public abstract class Resource implements Disposable {
+public abstract class Resource<Type> extends HasActor<Type> implements Disposable {
 	
 	/**This variable stores the string that represents the instantiated object */
 	protected String name;
