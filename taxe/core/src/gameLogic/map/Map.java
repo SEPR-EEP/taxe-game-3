@@ -388,6 +388,11 @@ public class Map {
 		//Simple method for finding the length of a route
 		int i = 1;
 		float length = 0.0f;
+
+        if (idealRoute.isEmpty()){
+            return length;
+        }
+
 		Station previousStation = idealRoute.get(0);
 		while(i < idealRoute.size())
 		{
