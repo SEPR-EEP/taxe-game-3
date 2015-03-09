@@ -46,14 +46,13 @@ public class GoalManager {
         List<Station> idealRoute;
 
         //We need to create a goal with two distinct stations that has a valid routing
-        do {
-            origin = map.getRandomStation();
-        } while ( origin instanceof CollisionStation );
+
 
         do {
+            origin = map.getRandomStation();
             destination = map.getRandomStation();
             idealRoute = generateGoalRoute(map, origin, destination);
-        } while ( destination == origin  || destination instanceof CollisionStation || idealRoute == null );
+        } while ( origin instanceof CollisionStation || destination == origin  || destination instanceof CollisionStation || idealRoute == null );
 
 
 		Goal goal = new Goal(origin, destination, turn, idealRoute);
