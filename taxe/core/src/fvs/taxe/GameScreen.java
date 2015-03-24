@@ -2,6 +2,7 @@ package fvs.taxe;
 
 import fvs.taxe.controller.Context;
 import fvs.taxe.controller.GoalController;
+import fvs.taxe.controller.MapController;
 import fvs.taxe.controller.ObstacleController;
 import fvs.taxe.controller.ResourceController;
 import fvs.taxe.controller.RouteController;
@@ -81,6 +82,9 @@ public class GameScreen extends ScreenAdapter {
 	
 	/**Controller for handling the score.*/
 	private ScoreController scoreController;
+	
+	/**Controller for handling connection modification.*/
+	private MapController mapController;
 
 	/**Variable that is used to visibly "rumble" the game when an obstacle is placed.*/
 	private Rumble rumble;
@@ -110,6 +114,7 @@ public class GameScreen extends ScreenAdapter {
 		routeController = new RouteController(context);
 		obstacleController = new ObstacleController(context);
 		scoreController = new ScoreController(context);
+		mapController = new MapController(context);
 
 		context.setRouteController(routeController);
 		context.setTopBarController(topBarController);
