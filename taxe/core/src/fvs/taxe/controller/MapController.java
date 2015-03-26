@@ -5,12 +5,16 @@ import fvs.taxe.actor.ConnectionActor;
 import gameLogic.Player;
 import gameLogic.map.Connection;
 import gameLogic.map.IPositionable;
-import gameLogic.map.Position;
 import gameLogic.map.Station;
 import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
 
+import java.util.List;
+
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Array;
 
 
 /**
@@ -70,7 +74,7 @@ public void editConnection(Station station){
 		if(context.getGameLogic().getMap().getConnection(origin.getName(), station.getName()) == null){
 			addConnection();
 		}else{
-//			removeConnection();
+			removeConnection();
 		}
 	}
 }
@@ -81,6 +85,7 @@ public void editConnection(Station station){
  * an existing one the function just returns.
  */
 private void addConnection(){
+	//Check if new connection intersects an existing one
 	for(Connection connection : context.getGameLogic().getMap().getConnections()){
 		if(intersect(connection.getStation1().getLocation(), 
 					connection.getStation2().getLocation(),
@@ -88,40 +93,30 @@ private void addConnection(){
 					destination.getLocation()) 
 				&& connection.getStation1()!= destination 
 				&& connection.getStation2() != origin){
-			
-//			System.out.println("Connections intersect:\n" +
-//								"Connection 1: " + connection.getStation1().getName() + "(" + 
-//								connection.getStation1().getLocation().getX() + ", " +
-//								connection.getStation1().getLocation().getY() + ")" + " - " + 
-//								connection.getStation2().getName() + "(" + 
-//								connection.getStation2().getLocation().getX() + ", " + 
-//								connection.getStation2().getLocation().getY() + ")" + "\n" +
-//								
-//								"Connection 2: " + origin.getName() + "(" + 
-//								origin.getLocation().getX() + ", " +
-//								origin.getLocation().getY() + ")" + " - " + 
-//								destination.getName() + "(" + 
-//								destination.getLocation().getX() + ", " +
-//								destination.getLocation().getY() +")" + "\n");
 			origin = null;
 			destination = null;
 			return;
 		}
 	}
+	
 	Connection connection = new Connection(origin, destination);
 	
+	//Create Actor for the new connection
 	final IPositionable start = connection.getStation1().getLocation();
 	final IPositionable end = connection.getStation2().getLocation();
 	ConnectionActor connectionActor = new ConnectionActor(Color.GRAY, start, end, CONNECTION_LINE_WIDTH);
 	connection.setActor(connectionActor);
 	
+	//Add connection to Map and Actor to Stage
 	context.getGameLogic().getMap().addConnection(connection.getStation1(), connection.getStation2());
 	context.getGameLogic().getMap().getConnection(connection.getStation1().getName(), connection.getStation2().getName()).setActor(connectionActor);
 	context.getStage().addActor(connectionActor);
 	
+	//Add actors for the stations again so they are on top
 	context.getStage().addActor(connection.getStation1().getActor());
 	context.getStage().addActor(connection.getStation2().getActor());
 	
+	//Add all train actors to the stage again so they are on top
 	for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()){
 		for(Resource train : player.getActiveTrains()){
 			context.getStage().addActor(((Train)train).getActor());
@@ -129,6 +124,63 @@ private void addConnection(){
 	}
 	
 	origin = null;
+	destination = null;
+}
+
+/**Removes an existing connection from the game map if there are no trains travelling along it.
+ * Causes all trains already on rout through the removed connection to change their final station
+ *  to the one before the removed connection.
+ */
+private void removeConnection(){
+	
+	for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()){
+		for(Resource resource : player.getActiveTrains()){
+			Train train = ((Train) resource);
+			
+			//If there is a train on the connection return without removing it
+			if(train.getHistory().get(train.getHistory().size()-1).getFirst().equals(origin.getName()) ||
+			train.getHistory().get(train.getHistory().size()-1).getFirst().equals(destination.getName()) &&
+			train.isMoving()){
+				origin = null;
+				destination = null;
+				return;
+				
+			//If a connection from a trains route is removed the new destination of the train is set to the origin of the removed connection
+			}else if(train.getRoute().contains(origin) && train.getRoute().contains(destination) && train.isMoving()){
+				Station endStation;
+				List<Station> route = train.getRoute();
+					
+				if(route.indexOf(origin) < route.indexOf(destination)){
+					endStation = origin;
+				}else{
+					endStation = destination;
+				}
+				
+				Station lastStation = context.getGameLogic().getMap().getStationByName(train.getHistory().get(train.getHistory().size()-1).getFirst());
+						
+				train.setRoute(route.subList(route.indexOf(lastStation) + 1,
+												route.indexOf(endStation) + 1));
+				context.getRouteController().reroute(train);
+			}
+		}
+	}
+	
+	Connection  connection = context.getGameLogic().getMap().getConnection(origin.getName(), destination.getName());
+	Image connectionActor = connection.getActor();
+	
+	//Remove actor from game view
+	Array<Actor> actors = context.getStage().getActors();
+	for(Actor actor : actors){
+		if(actor == connectionActor){
+			actor.remove();
+		}
+	}
+	
+	//Remove connection from game logic
+	context.getGameLogic().getMap().removeConnection(origin, destination);
+	
+	origin = null;
+	destination = null;
 }
 
 

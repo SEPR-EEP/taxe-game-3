@@ -173,6 +173,14 @@ public class Map {
         connections.add(newConnection);
         return newConnection;
     }
+    
+    /**This method removes an existing connection between two stations if it exists. 
+     * @param station1 The first station
+     * @param station2 The second station
+     */
+    public void removeConnection(Station station1, Station station2){
+    	connections.remove(getConnection(station1.getName(), station2.getName()));
+    }
 
     /**This method replicated addConnection but allows the use of station names instead of objects.
      * @param station1 The name of the first station.
