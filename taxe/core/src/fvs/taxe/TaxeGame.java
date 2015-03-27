@@ -12,10 +12,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 /**This is the main class of the game, created by the Desktop initiation class. It sets up the rest of the game.*/
 public class TaxeGame extends Game {
 	
-	private boolean mobile;
-	
 	/**These variables hold the width and height of the window we will be using in the game.*/
-	public static int WIDTH=1022,HEIGHT=678;
+	public static final int WIDTH=1022,HEIGHT=678;
 
 	/**The batch is used to draw the game. Each frame it is cleared and new items are drawn into it.*/
 	public SpriteBatch batch;
@@ -29,9 +27,8 @@ public class TaxeGame extends Game {
 	/**ShapeRenderer instance used to render shapes without immediately using textures.*/
 	public ShapeRenderer shapeRenderer;
 	
-	public TaxeGame(boolean mobile){
+	public TaxeGame(){
 		super();
-		this.mobile = mobile;
 	}
 
 	/**Instantiation method. Sets up the batch, fonts and shapeRenderer, and then sets the Screen to the mainMenu.*/
@@ -39,10 +36,6 @@ public class TaxeGame extends Game {
 	public void create() {
 		batch = new SpriteBatch();
 		shapeRenderer = new ShapeRenderer();
-		if(mobile){
-			WIDTH = Gdx.graphics.getDesktopDisplayMode().width;
-			HEIGHT =  Gdx.graphics.getDesktopDisplayMode().height;
-		}
 
 		//create font
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("arial.ttf"));

@@ -51,7 +51,6 @@ public class MainMenuScreen extends ScreenAdapter {
             if (playBounds.contains(touchPoint.x, touchPoint.y)) {
             	GameScreen gameScreen = new GameScreen(game);
                 game.setScreen(gameScreen);
-                Gdx.app.getGraphics().setDisplayMode(Gdx.graphics.getDesktopDisplayMode().width, Gdx.graphics.getDesktopDisplayMode().height, true);
                 return;
             }
             if (exitBounds.contains(touchPoint.x, touchPoint.y)) {
