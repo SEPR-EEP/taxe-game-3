@@ -29,6 +29,7 @@ public class MainMenuScreen extends ScreenAdapter {
     /**Used to store the map texture which is placed in the background.*/
     private CustomTexture mapTexture;
     
+    /**Stage with viewport used to resize the game according to different device screens*/
     private Stage stage;
 
     /**Instantiation method. sets up bounds and camera.
