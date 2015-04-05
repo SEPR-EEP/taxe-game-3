@@ -43,4 +43,34 @@ public class Connection {
 	public ConnectionActor getActor(){
 		return this.actor;
 	}
+
+
+	/**Determines whether two lines intersect given their coordinates.
+	 * @param otherConnection Other connection to test intersection
+	 * @return - true if the lines intersect false otherwise
+	 */
+	public boolean intersect(Connection otherConnection){
+
+		//Get coordinates of this connection
+		IPositionable a = this.getStation1().getLocation();
+		IPositionable b = this.getStation2().getLocation();
+
+		//Get coordinates of the other connection
+		IPositionable c = otherConnection.getStation1().getLocation();
+		IPositionable d = otherConnection.getStation2().getLocation();
+
+		return counterClockWise(a,c,d) != counterClockWise(b,c,d) && counterClockWise(a,b,c) != counterClockWise(a,b,d);
+	}
+
+	/**Determines whether or not three points are arranged counterclockwise on
+	 * a plane given their coordinates. This method is used by the intersect method.
+	 * @param a - coordinate of the first point
+	 * @param b - coordinate of the second point
+	 * @param c - coordinate of the third point
+	 * @return - true if the three point are arranged counterclockwise and false otherwise
+	 */
+	private boolean counterClockWise(IPositionable a, IPositionable b, IPositionable c){
+		return (c.getY() - a.getY())*(b.getX() - a.getX()) > (b.getY()-a.getY())*(c.getX() - a.getX());
+	}
+
 }
