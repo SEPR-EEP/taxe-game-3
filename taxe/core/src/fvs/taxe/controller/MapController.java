@@ -68,12 +68,21 @@ public class MapController {
 			origin = station;
 		}else{
 			destination = station;
-			if(context.getGameLogic().getMap().getConnection(origin.getName(), station.getName()) == null){
-				addConnection();
-			}else{
-				removeConnection();
+
+			Boolean success;
+
+			if (context.getGameLogic().getMap().getConnection(origin.getName(), station.getName()) == null) {
+				success = addConnection();
+			} else {
+				success = removeConnection();
 			}
-			context.getGameLogic().setState(GameState.NORMAL);
+
+			origin = null;
+			destination = null;
+
+			if (success) {
+				context.getGameLogic().setState(GameState.NORMAL);
+			}
 		}
 	}
 
@@ -82,7 +91,7 @@ public class MapController {
 	 * does not intersect an existing connection. If the new connection intersects
 	 * an existing one the function just returns.
 	 */
-	private void addConnection(){
+	private Boolean addConnection(){
 
 		Connection connection = new Connection(origin, destination);
 
@@ -92,10 +101,8 @@ public class MapController {
 			if(connection.intersect(existingConnection)
 					&& existingConnection.getStation1()!= destination
 					&& existingConnection.getStation2() != origin){
-				origin = null;
-				destination = null;
 				context.getTopBarController().displayFlashMessage("Invalid connection - cannot intersect another", Color.RED);
-				return;
+				return false;
 			}
 		}
 
@@ -121,15 +128,14 @@ public class MapController {
 			}
 		}
 
-		origin = null;
-		destination = null;
+		return true;
 	}
 
 	/**Removes an existing connection from the game map if there are no trains travelling along it.
 	 * Causes all trains already on rout through the removed connection to change their final station
 	 *  to the one before the removed connection.
 	 */
-	private void removeConnection(){
+	private Boolean removeConnection(){
 
 		for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()){
 			for(Resource resource : player.getActiveTrains()){
@@ -142,9 +148,7 @@ public class MapController {
 
 					context.getTopBarController().displayFlashMessage("You cannot remove a connection being used by a train", Color.RED);
 
-					origin = null;
-					destination = null;
-					return;
+					return false;
 
 				//If a connection from a trains route is removed the new destination of the train is set to the origin of the removed connection
 				}else if(train.getRoute().contains(origin) && train.getRoute().contains(destination) && train.isMoving()){
@@ -180,8 +184,7 @@ public class MapController {
 		//Remove connection from game logic
 		context.getGameLogic().getMap().removeConnection(origin, destination);
 
-		origin = null;
-		destination = null;
+		return true;
 	}
 
 }
