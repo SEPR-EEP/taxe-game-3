@@ -2,6 +2,7 @@ package fvs.taxe.controller;
 
 import fvs.taxe.StationClickListener;
 import fvs.taxe.actor.ConnectionActor;
+import gameLogic.GameState;
 import gameLogic.Player;
 import gameLogic.map.Connection;
 import gameLogic.map.IPositionable;
@@ -35,9 +36,6 @@ public class MapController {
 	 * an existing connection will be deleted */
 	private Station destination;
 
-	/**Indicates weather or not a connection is being edited */
-	private boolean isEditing;
-
 	/**The width of the connection to be added */
 	private final int CONNECTION_LINE_WIDTH = 5;
 
@@ -45,16 +43,15 @@ public class MapController {
 	/**Instantiation method.
 	 * @param context - the context of the game.
 	 */
-	public MapController(Context context) {
+	public MapController(final Context context) {
 		this.context = context;
-		this.isEditing = false;
 		this.origin = null;
 		this.destination = null;
 
 		StationController.subscribeStationClick(new StationClickListener() {
 			@Override
 			public void clicked(Station station) {
-				if (isEditing) {
+				if (context.getGameLogic().getState().equals(GameState.EDITING)) {
 					editConnection(station);
 				}
 			}
@@ -67,7 +64,7 @@ public class MapController {
 	 * @param station - the clicked station.
 	 */
 	public void editConnection(Station station){
-		if(origin == null){
+		if(origin == null || origin == station){
 			origin = station;
 		}else{
 			destination = station;
@@ -76,6 +73,7 @@ public class MapController {
 			}else{
 				removeConnection();
 			}
+			context.getGameLogic().setState(GameState.NORMAL);
 		}
 	}
 
@@ -96,6 +94,7 @@ public class MapController {
 					&& existingConnection.getStation2() != origin){
 				origin = null;
 				destination = null;
+				context.getTopBarController().displayFlashMessage("Invalid connection - cannot intersect another", Color.RED);
 				return;
 			}
 		}
@@ -137,9 +136,11 @@ public class MapController {
 				Train train = ((Train) resource);
 
 				//If there is a train on the connection return without removing it
-				if( ( train.getMostRecentlyVisitedStation().equals(origin) && train.getNextStationOfRoute().equals(destination))
-					|| (train.getMostRecentlyVisitedStation().equals(destination) && train.getNextStationOfRoute().equals(origin))
+				if( ( train.getMostRecentlyVisitedStation().equals(origin.getName()) && train.getNextStationOfRoute().equals(destination.getName()))
+					|| (train.getMostRecentlyVisitedStation().equals(destination.getName()) && train.getNextStationOfRoute().equals(origin.getName()))
 					&& train.isMoving()){
+
+					context.getTopBarController().displayFlashMessage("You cannot remove a connection being used by a train", Color.RED);
 
 					origin = null;
 					destination = null;
@@ -182,4 +183,5 @@ public class MapController {
 		origin = null;
 		destination = null;
 	}
+
 }

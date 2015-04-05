@@ -115,8 +115,8 @@ public class Train extends Resource {
      * @param route Route that the train will take (as a list of stations)
      */
     public void setRoute(List<Station> route) {
-        if (route != null && route.size() > 0){
-            nextStationOfRoute = route.get(0);
+        if (route != null && route.size() > 1){
+            nextStationOfRoute = route.get(1);
         	finalDestination = route.get(route.size() - 1);
         }
         this.route = route;

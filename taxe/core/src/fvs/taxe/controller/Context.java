@@ -26,6 +26,9 @@ public class Context {
     /**A TopBarController for the context that can be get or set.*/
     private TopBarController topBarController;
 
+
+    private MapController mapController;
+
     /**Instantiation method sets up private variables.
      * @param stage The stage to be used in the context
      * @param skin The skin to be used in the context
@@ -82,4 +85,7 @@ public class Context {
         this.topBarController = topBarController;
     }
 
+    public void setMapController(MapController mapController) { this.mapController = mapController; }
+
+    public MapController getMapController() { return mapController; }
 }

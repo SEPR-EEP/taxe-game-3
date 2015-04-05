@@ -28,6 +28,8 @@ public class TopBarController {
 	
 	/**The end Turn Button used for the player to End the Turn.*/
 	private TextButton endTurnButton;
+
+	private TextButton modifyConnectionButton;
 	
 	/**Label for displaying a message to the player.*/
 	private Label flashMessage;
@@ -97,7 +99,7 @@ public class TopBarController {
 	public void drawObstacleLabel() {
 		obstacleLabel = new Label("", context.getSkin());
 		obstacleLabel.setColor(Color.BLACK);
-		obstacleLabel.setPosition(10,TaxeGame.HEIGHT - 34);
+		obstacleLabel.setPosition(10, TaxeGame.HEIGHT - 34);
 		context.getStage().addActor(obstacleLabel);
 	}
 
@@ -135,7 +137,7 @@ public class TopBarController {
 		flashMessage.addAction(sequence(delay(time), fadeOut(0.25f), run(new Runnable() {
 			public void run() {
 				topBarBackground.setControlsColor(Color.LIGHT_GRAY);
-				if (obstacleLabel.getActions().size == 0){
+				if (obstacleLabel.getActions().size == 0) {
 					topBarBackground.setObstacleColor(Color.LIGHT_GRAY);
 				}
 			}
@@ -154,7 +156,7 @@ public class TopBarController {
 		obstacleLabel.setColor(Color.BLACK);
 		obstacleLabel.pack();
 		topBarBackground.setObstacleColor(color);
-		topBarBackground.setObstacleWidth(obstacleLabel.getWidth()+20);
+		topBarBackground.setObstacleWidth(obstacleLabel.getWidth() + 20);
 		obstacleLabel.addAction(sequence(delay(2f),fadeOut(0.25f), run(new Runnable() {
 			public void run() {
 				// run action to reset obstacle label after it has finished displaying information
@@ -178,7 +180,7 @@ public class TopBarController {
 		context.getGameLogic().subscribeStateChanged(new GameStateListener() {
 			@Override
 			public void changed(GameState state) {
-				if(state == GameState.NORMAL) {
+				if (state == GameState.NORMAL) {
 					endTurnButton.setVisible(true);
 				} else {
 					endTurnButton.setVisible(false);
@@ -187,5 +189,33 @@ public class TopBarController {
 		});
 
 		context.getStage().addActor(endTurnButton);
+	}
+
+	public void drawModifyConnectionButton(){
+		modifyConnectionButton = new TextButton("Modify Connection", context.getSkin());
+		modifyConnectionButton.setPosition(TaxeGame.WIDTH - 300.0f, TaxeGame.HEIGHT - 33.0f);
+
+		modifyConnectionButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				context.getGameLogic().setState(GameState.EDITING);
+				displayFlashMessage("Select two stations to either connect or disconnect", Color.RED);
+			}
+		});
+
+		context.getGameLogic().subscribeStateChanged(new GameStateListener() {
+			@Override
+			public void changed(GameState state) {
+				if (state == GameState.NORMAL) {
+					modifyConnectionButton.setVisible(true);
+				} else {
+					modifyConnectionButton.setVisible(false);
+				}
+			}
+		});
+
+		context.getStage().addActor(modifyConnectionButton);
+
+
 	}
 }
