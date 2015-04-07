@@ -22,10 +22,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /** This class displays the Game.java game state graphically to the player.*/
 public class GameScreen extends ScreenAdapter {
@@ -37,7 +37,7 @@ public class GameScreen extends ScreenAdapter {
     private Stage stage;
     
     /**Stores the texture used as the background of the game. This is set internally in the Class instantiation method using the gamemap.png Asset.*/
-    private Texture mapTexture;
+    private CustomTexture mapTexture;
     
     /**Stores the instance of Game.java used to hold the game variable's GameLogic. This variable exists as a reference point to the instance set in
      * the Game.java class, which can be accessed statically.
@@ -94,14 +94,15 @@ public class GameScreen extends ScreenAdapter {
 	*/
 	public GameScreen(TaxeGame game) {
 		this.game = game;
-		stage = new Stage();
+		//add stretch viewport in order to support resizeability
+		stage = new Stage(new StretchViewport(TaxeGame.WIDTH, TaxeGame.HEIGHT));
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
 		gameLogic = Game.getInstance();
 		context = new Context(stage, skin, game, gameLogic);
 		Gdx.input.setInputProcessor(stage);
 
-		mapTexture = new Texture(Gdx.files.internal("gamemap.png"));
+		mapTexture = new CustomTexture(Gdx.files.internal("gamemap.png"));
 		map = gameLogic.getMap();
 
 		tooltip = new Tooltip(skin);
@@ -182,6 +183,7 @@ public class GameScreen extends ScreenAdapter {
 			stationController.displayNumberOfTrainsAtStations();
 		}
 		
+		game.batch.setProjectionMatrix(stage.getCamera().combined);
 		resourceController.drawHeaderText();
 		goalController.drawHeaderText();
 		scoreController.drawScoreDetails();
@@ -207,5 +209,12 @@ public class GameScreen extends ScreenAdapter {
 	public void dispose() {
 		mapTexture.dispose();
 		stage.dispose();
+	}
+	
+	@Override
+	public void resize(int width, int height) {
+	    // use true here to center the camera
+	    // that's what you probably want in case of a UI
+	    stage.getViewport().update(width, height, true);
 	}
 }

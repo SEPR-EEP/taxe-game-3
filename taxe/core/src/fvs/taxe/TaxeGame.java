@@ -2,6 +2,7 @@ package fvs.taxe;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -25,6 +26,10 @@ public class TaxeGame extends Game {
 	
 	/**ShapeRenderer instance used to render shapes without immediately using textures.*/
 	public ShapeRenderer shapeRenderer;
+	
+	public TaxeGame(){
+		super();
+	}
 
 	/**Instantiation method. Sets up the batch, fonts and shapeRenderer, and then sets the Screen to the mainMenu.*/
 	@Override
@@ -38,8 +43,10 @@ public class TaxeGame extends Game {
 		// font size 50 pixels
 		parameter.size = 50;
 		font = generator.generateFont(parameter);
+		font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		parameter.size = 20;
 		fontSmall = generator.generateFont(parameter);
+		fontSmall.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		generator.dispose(); // don't forget to dispose to avoid memory leaks!
 
 		setScreen(new MainMenuScreen(this));
