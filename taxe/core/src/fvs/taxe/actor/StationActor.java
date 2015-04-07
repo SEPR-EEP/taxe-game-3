@@ -36,6 +36,16 @@ public class StationActor extends Image {
 		setSize(width, height);
 		setPosition(location.getX() - width / 2, location.getY() - height / 2);
 	}
+	
+	/**Instantiation method
+	 * @param location the location of the station actor
+	 */
+	public StationActor(IPositionable location, CustomTexture texture) {
+		super(texture);
+
+		setSize(width, height);
+		setPosition(location.getX() - width / 2, location.getY() - height / 2);
+	}
 
 	/**This method is called when the StationActor is selected. The StationActor's size is increased for the SELECTION_DURATION*/
 	public void selected() {
