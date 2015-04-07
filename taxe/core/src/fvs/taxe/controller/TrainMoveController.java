@@ -67,19 +67,21 @@ public class TrainMoveController {
 	}
 
 	/**This method produces an action to run every time a train reaches a station on it's route.
-	 * @param station The station reached.
+	 * @param stationReached The station reached.
 	 * @return An action which adds the train movement to the move history and continues the journey of the train.
 	 */
-	private RunnableAction perStationAction(final Station station) {
+	private RunnableAction perStationAction(final Station stationReached, final Station nextStationOfRoute) {
 		return new RunnableAction() {
 			public void run() {
-				train.addHistory(station.getName(), context.getGameLogic().getPlayerManager().getTurnNumber());
-				System.out.println("Added to history: passed " + station.getName() + " on turn "
+				train.addHistory(stationReached.getName(), context.getGameLogic().getPlayerManager().getTurnNumber());
+				System.out.println("Added to history: passed " + stationReached.getName() + " on turn "
 						+ context.getGameLogic().getPlayerManager().getTurnNumber());
 				
-				junctionFailure(station);
-				collisions(station);
-				obstacleCollision(station);
+				junctionFailure(stationReached);
+				collisions(stationReached);
+				obstacleCollision(stationReached);
+
+				train.setNextStationOfRoute(nextStationOfRoute);
 			}
 
 		};
@@ -121,13 +123,22 @@ public class TrainMoveController {
 		IPositionable current = train.getPosition();
 		action.addAction(beforeAction());
 
+		int stationIndex = 0;
 		for (final Station station : train.getRoute()) {
 			IPositionable next = station.getLocation();
 			float duration = getDistance(current, next) / train.getSpeed();
 			action.addAction(moveTo(next.getX() - TrainActor.width / 2, next.getY() - TrainActor.height / 2, duration));
-			
-			action.addAction(perStationAction(station));
+
+			Station nextStationOfRoute;
+			if (stationIndex < train.getRoute().size() - 1){
+				nextStationOfRoute = train.getRoute().get(stationIndex+1);
+			} else {
+				nextStationOfRoute = null;
+			}
+			//Team EEP has changed code to also pass the next station of the route
+			action.addAction(perStationAction(station, nextStationOfRoute));
 			current = next;
+			stationIndex++;
 		}
 
 		action.addAction(afterAction());

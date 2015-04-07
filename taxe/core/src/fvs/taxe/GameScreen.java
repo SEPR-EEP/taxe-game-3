@@ -118,6 +118,7 @@ public class GameScreen extends ScreenAdapter {
 
 		context.setRouteController(routeController);
 		context.setTopBarController(topBarController);
+		context.setMapController(mapController);
 
 		rumble = obstacleController.getRumble();
 
@@ -199,6 +200,7 @@ public class GameScreen extends ScreenAdapter {
 		topBarController.drawBackground();
 		topBarController.drawLabels();
 		topBarController.drawEndTurnButton();
+		topBarController.drawModifyConnectionButton();
 	}
 
 	@Override
