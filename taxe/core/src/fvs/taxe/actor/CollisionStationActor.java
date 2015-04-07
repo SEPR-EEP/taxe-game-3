@@ -1,12 +1,13 @@
 package fvs.taxe.actor;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import fvs.taxe.CustomTexture;
 import gameLogic.map.IPositionable;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+
 /**This class is a type of image specifically for collisions for stations.*/
-public class CollisionStationActor extends Image {
+public class CollisionStationActor extends StationActor {
 	/**The width of a Station's collision area in pixels.*/
 	private final int width =16;
 	
@@ -18,7 +19,7 @@ public class CollisionStationActor extends Image {
      * @param location the location the station should be placed at.
      */
     public CollisionStationActor(IPositionable location) {
-        super(new Texture(Gdx.files.internal("junction_dot.png")));
+        super(location, new CustomTexture(Gdx.files.internal("junction_dot.png")));
 
         setSize(width, height);
         setPosition(location.getX() - width / 2, location.getY() - height / 2);
