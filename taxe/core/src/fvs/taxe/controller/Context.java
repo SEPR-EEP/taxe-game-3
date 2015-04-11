@@ -26,8 +26,11 @@ public class Context {
     /**A TopBarController for the context that can be get or set.*/
     private TopBarController topBarController;
 
-
+    /**A MapController for the context that can be get or set.*/
     private MapController mapController;
+
+    /**A GoalController for the context that can be get or set.*/
+    private GoalController goalController;
 
     /**Instantiation method sets up private variables.
      * @param stage The stage to be used in the context
@@ -84,6 +87,15 @@ public class Context {
     public void setTopBarController(TopBarController topBarController) {
         this.topBarController = topBarController;
     }
+
+    /**
+     * Sets the goalController
+     * @param goalController The new goalController to be used in the Context.
+     */
+    public void setGoalController(GoalController goalController){ this.goalController = goalController; }
+
+    /** @returns the Context's goalController */
+    public GoalController getGoalController() { return goalController; }
 
     /**
      * Sets the mapController

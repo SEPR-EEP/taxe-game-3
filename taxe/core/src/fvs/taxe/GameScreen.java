@@ -119,6 +119,7 @@ public class GameScreen extends ScreenAdapter {
 
 		context.setRouteController(routeController);
 		context.setTopBarController(topBarController);
+		context.setGoalController(goalController);
 		context.setMapController(mapController);
 
 		rumble = obstacleController.getRumble();
