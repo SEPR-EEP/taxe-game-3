@@ -34,6 +34,7 @@ public class TopBarController {
 	/**The end Turn Button used for the player to End the Turn.*/
 	private TextButton endTurnButton;
 
+	/** The modifyConnection button for entering edit connection state */
 	private TextButton modifyConnectionButton;
 	
 	/**Label for displaying a message to the player.*/
@@ -196,6 +197,9 @@ public class TopBarController {
 		context.getStage().addActor(endTurnButton);
 	}
 
+	/** This method adds a Modify Connection button the game the captures an on click event and
+	 * notifies the game to enter connection editing mode
+	 * @author Team EEP*/
 	public void drawModifyConnectionButton(){
 		modifyConnectionButton = new TextButton("Modify Connection", context.getSkin());
 		modifyConnectionButton.setPosition(TaxeGame.WIDTH - 300.0f, TaxeGame.HEIGHT - 33.0f);
@@ -209,6 +213,7 @@ public class TopBarController {
 				Player player = context.getGameLogic().getPlayerManager().getCurrentPlayer();
 				List<ConnectionModifier> connectionModifierList = player.getConnectionModifiers();
 
+				//Only respond to click if player has a connection modifier resource
 				if (!connectionModifierList.isEmpty()) {
 
 					//Remove a connection modifier resource from the players resource list
@@ -226,6 +231,7 @@ public class TopBarController {
 		context.getGameLogic().subscribeStateChanged(new GameStateListener() {
 			@Override
 			public void changed(GameState state) {
+				//Set visible if game in normal state and play has connection modifier resources to be spent
 				Player player = context.getGameLogic().getPlayerManager().getCurrentPlayer();
 				if (state == GameState.NORMAL && !player.getConnectionModifiers().isEmpty()) {
 					modifyConnectionButton.setVisible(true);

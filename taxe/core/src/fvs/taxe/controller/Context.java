@@ -85,7 +85,12 @@ public class Context {
         this.topBarController = topBarController;
     }
 
+    /**
+     * Sets the mapController
+     * @param mapController The new mapController to be used in the Context.
+     */
     public void setMapController(MapController mapController) { this.mapController = mapController; }
 
+    /** @returns the Context's mapController */
     public MapController getMapController() { return mapController; }
 }

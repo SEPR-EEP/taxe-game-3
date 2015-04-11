@@ -260,6 +260,10 @@ public class Player {
         return incompleteGoals;
     }
 
+    /**
+     * @returns List of player's resources of type ConnectionModifier
+     * @author Team EEP
+     */
     public List<ConnectionModifier> getConnectionModifiers(){
         List<ConnectionModifier> connectionModifiers = new ArrayList<ConnectionModifier>();
         for (Resource resource : resources){
