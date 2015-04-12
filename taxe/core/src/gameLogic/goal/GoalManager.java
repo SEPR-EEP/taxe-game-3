@@ -14,9 +14,10 @@ import java.util.Random;
 
 import Util.Node;
 import Util.Tuple;
+import java.io.Serializable;
 
 /**This class manages goals for the game.*/
-public class GoalManager {
+public class GoalManager implements Serializable {
 	/**The maximum number of goals a player can have.*/
 	public final static int CONFIG_MAX_PLAYER_GOALS = 3;
 	

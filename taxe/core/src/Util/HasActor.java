@@ -4,12 +4,13 @@ import fvs.taxe.actor.GenericActor;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.io.Serializable;
 
 
 /**
  * Created by alfioemanuele on 3/2/15.
  */
-public class HasActor<Type> {
+public class HasActor<Type> implements Serializable {
     String myUniqueID;
 
     private void generateRandomUniqueID() {

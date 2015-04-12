@@ -7,9 +7,10 @@ import gameLogic.resource.Train;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
 /**This class holds variables and methods for a single player.*/
-public class Player {
+public class Player implements Serializable {
 
     /**
      * The game's player manager. This allows the class to access other players.

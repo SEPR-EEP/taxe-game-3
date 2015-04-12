@@ -13,9 +13,10 @@ import java.util.List;
 import Util.Tuple;
 
 import com.badlogic.gdx.math.MathUtils;
+import java.io.Serializable;
 
 /**Main Game class of the Game. Handles all of the game logic.*/
-public class Game {
+public class Game implements Serializable {
 	/**The instance that the game is running in.*/
 	private static Game instance;
 	

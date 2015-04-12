@@ -2,9 +2,10 @@ package gameLogic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
 /**This class creates and manages players.*/
-public class PlayerManager {
+public class PlayerManager implements Serializable {
 	/**The active players in this instance of PlayerManager.*/
 	private ArrayList<Player> players = new ArrayList<Player>();
 	
