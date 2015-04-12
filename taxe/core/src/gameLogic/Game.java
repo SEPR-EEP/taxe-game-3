@@ -44,6 +44,109 @@ public class Game implements Serializable {
 	/**List of listeners that listen to changes in obstacles.*/
 	private List<ObstacleListener> obstacleListeners = new ArrayList<ObstacleListener>();
 
+	/**
+	 * The following class represents a single "snapshot", a state in time of the
+	 * current Game, and it contains the list of properties that are strictly necessary
+	 * for this purpose. All properties are meant to be publicly accessible. Note that
+	 * the overall scope is limited to the Game superclass as it is a private subclass.
+	 * A constructor is provided for simplicity, taking all of the properties.
+	 * The whole Snapshot class and all of the properties -including all descendants-
+	 * implement the Serializable interface. This allows for the Snapshot to be written
+	 * to disk, a database, a network socket, etc.
+	 */
+	private class Snapshot implements Serializable {
+		public Game instance;
+		public PlayerManager playerManager;
+		public GoalManager goalManager;
+		public ResourceManager resourceManager;
+		public ObstacleManager obstacleManager;
+		public Map map;
+		public GameState state;
+		public List<GameStateListener> gameStateListeners;
+		public List<ObstacleListener> obstacleListeners;
+		public Snapshot(Game a, PlayerManager b, GoalManager c, ResourceManager d, ObstacleManager e, Map f,
+						GameState g, List<GameStateListener> h, List<ObstacleListener> i) {
+			instance = a; playerManager = b; goalManager = c; resourceManager = d;
+			obstacleManager = e; map = f; state = g; gameStateListeners = h; obstacleListeners = i;
+		}
+	}
+	
+	/** The list of all Snapshots in memory. */
+	private List<Snapshot> snapshots = new ArrayList<Snapshot>();
+
+	/**
+	 * This method creates a Snapshot of the current state and pushes it to the
+	 * list of snapshot.
+	 */
+	public void createSnapshot() {
+		Snapshot s = new Snapshot(instance, playerManager, goalManager, resourceManager, obstacleManager, map,
+				state, gameStateListeners, obstacleListeners);
+		this.snapshots.add(s);
+		System.out.println("# Snapshot created - " + getSnapshotsNumber() + " snapshots in memory at this time.");
+	}
+
+	/**
+	 * Given a Snapshot, this method loads the Snapshot's content into the current game.
+	 * @param s The Snapshot.
+	 */
+	public void loadSnapshot(Snapshot s) {
+		instance = s.instance; playerManager = s.playerManager; goalManager = s.goalManager;
+		resourceManager = s.resourceManager; obstacleManager = s.obstacleManager; map = s.map;
+		state = s.state; gameStateListeners = s.gameStateListeners; obstacleListeners = s.obstacleListeners;
+		stateChanged(); // Forcefully triggers an update of the game interface.
+	}
+
+	/**
+	 * REPLAY METHODS
+	 * These can be used to control the Replay functionality of the Game.
+	 */
+
+	/**
+	 * Is the game in Replay Mode?
+	 * When true, no action should be possible but replay navigation.
+	 */
+	public boolean replayMode = false;
+
+	/**
+	 * The snapshot number currently being replayed. Only set if
+	 * Replay Mode is true. (e.g. "playing {replayingSnapshot} out of {getSnapshotsNumber()}").
+	 */
+	public int replayingSnapshot = -1;
+
+	/**
+	 * This methods returns the current snapshots number.
+	 */
+	public int getSnapshotsNumber() {
+		return this.snapshots.size();
+	}
+
+	/**
+	 * Navigates to a given point in time.
+	 * - If a point in the past is given, ensure Replay Mode is set.
+	 * - If the latest point in time is given, ensure Replay Mode is not set.
+	 * @param snapshotNumber A number between 0..{getSnapshotsNumber()}
+	 */
+	public void replaySnapshot(int snapshotNumber) {
+		Snapshot s;
+		try {
+			s = snapshots.get(snapshotNumber);
+		} catch (Exception e) {
+			// TODO Catch invalid index exception.
+			return;
+		}
+
+		loadSnapshot(s);
+		replayMode = ( snapshotNumber != getSnapshotsNumber() - 1 );
+		replayingSnapshot = replayMode ? snapshotNumber : -1;
+
+		System.out.println("@ Snapshot " + snapshotNumber + " out of " + getSnapshotsNumber() + " has been loaded.");
+		System.out.println("  Replay mode " + (replayMode? "is still active.": "has been now deactivated."));
+
+	}
+
+
+	
+
 	/**The number of players that can play at one time.*/
 	private final int CONFIG_PLAYERS = 2;
 	
@@ -124,6 +227,7 @@ public class Game implements Serializable {
 	public void setState(GameState state) {
 		this.state = state;
 		stateChanged();
+		this.createSnapshot();
 	}
 
 	/**Adds a listener for when the game state is changed.*/
