@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.io.Serializable;
 
 import Util.Node;
 
@@ -12,7 +13,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 
-public class Map {
+public class Map implements Serializable {
 	/**The stations that exist on the map.*/
     private List<Station> stations;
     

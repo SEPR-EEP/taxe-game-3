@@ -6,10 +6,9 @@ import gameLogic.obstacle.Obstacle;
 import gameLogic.obstacle.ObstacleListener;
 import gameLogic.obstacle.ObstacleManager;
 import gameLogic.resource.ResourceManager;
-
+import org.apache.commons.lang3.SerializationUtils;
 import java.util.ArrayList;
 import java.util.List;
-
 import Util.Tuple;
 
 import com.badlogic.gdx.math.MathUtils;
@@ -54,20 +53,27 @@ public class Game implements Serializable {
 	 * implement the Serializable interface. This allows for the Snapshot to be written
 	 * to disk, a database, a network socket, etc.
 	 */
-	private class Snapshot implements Serializable {
-		public Game instance;
-		public PlayerManager playerManager;
+	public static class Snapshot implements Serializable {
+		public ArrayList<Player> players = new ArrayList<Player>();
+		public int currentTurn;
+		public int turnNumber;
 		public GoalManager goalManager;
 		public ResourceManager resourceManager;
 		public ObstacleManager obstacleManager;
 		public Map map;
 		public GameState state;
-		public List<GameStateListener> gameStateListeners;
 		public List<ObstacleListener> obstacleListeners;
-		public Snapshot(Game a, PlayerManager b, GoalManager c, ResourceManager d, ObstacleManager e, Map f,
-						GameState g, List<GameStateListener> h, List<ObstacleListener> i) {
-			instance = a; playerManager = b; goalManager = c; resourceManager = d;
-			obstacleManager = e; map = f; state = g; gameStateListeners = h; obstacleListeners = i;
+		public Snapshot(
+				PlayerManager b, GoalManager c, ResourceManager d, ObstacleManager e, Map f,
+				GameState g
+		) {
+			players = b.getPlayers();
+			currentTurn = b.getCurrentTurn();
+			turnNumber = b.getTurnNumber();
+
+			goalManager = c; resourceManager = d;
+			obstacleManager = e; map = f; state = g;
+
 		}
 	}
 	
@@ -79,9 +85,14 @@ public class Game implements Serializable {
 	 * list of snapshot.
 	 */
 	public void createSnapshot() {
-		Snapshot s = new Snapshot(instance, playerManager, goalManager, resourceManager, obstacleManager, map,
-				state, gameStateListeners, obstacleListeners);
-		this.snapshots.add(s);
+		Snapshot s = new Snapshot(playerManager, goalManager, resourceManager, obstacleManager, map,
+				state);
+		try {
+			this.snapshots.add(SerializationUtils.clone(s));
+		} catch (org.apache.commons.lang3.SerializationException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 		System.out.println("# Snapshot created - " + getSnapshotsNumber() + " snapshots in memory at this time.");
 	}
 
@@ -90,9 +101,16 @@ public class Game implements Serializable {
 	 * @param s The Snapshot.
 	 */
 	public void loadSnapshot(Snapshot s) {
-		instance = s.instance; playerManager = s.playerManager; goalManager = s.goalManager;
+		//instance = s.instance;
+		Game.getInstance().getPlayerManager().setPlayers(s.players);
+		for (Player p: Game.getInstance().getPlayerManager().getPlayers()) {
+			p.setPlayerManager(Game.getInstance().getPlayerManager());
+		}
+		Game.getInstance().getPlayerManager().setCurrentTurn(s.currentTurn);
+		Game.getInstance().getPlayerManager().setTurnNumber(s.turnNumber);
+		goalManager = s.goalManager;
 		resourceManager = s.resourceManager; obstacleManager = s.obstacleManager; map = s.map;
-		state = s.state; gameStateListeners = s.gameStateListeners; obstacleListeners = s.obstacleListeners;
+		state = s.state;
 		stateChanged(); // Forcefully triggers an update of the game interface.
 	}
 

@@ -16,6 +16,7 @@ import gameLogic.TurnListener;
 import gameLogic.map.Map;
 import gameLogic.map.Station;
 import gameLogic.obstacle.Rumble;
+import java.io.Serializable;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -194,6 +195,7 @@ public class GameScreen extends ScreenAdapter {
 		topBarController.drawBackground();
 		topBarController.drawLabels();
 		topBarController.drawEndTurnButton();
+		topBarController.drawReplayButton();
 	}
 
 	@Override

@@ -5,11 +5,14 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import fvs.taxe.TaxeGame;
+import gameLogic.Game;
 import gameLogic.GameState;
 import gameLogic.GameStateListener;
 import gameLogic.obstacle.Obstacle;
 import gameLogic.obstacle.ObstacleListener;
 import gameLogic.obstacle.ObstacleType;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -25,10 +28,13 @@ public class TopBarController {
 
 	/**The Game Context.*/
 	private Context context;
-	
+
 	/**The end Turn Button used for the player to End the Turn.*/
 	private TextButton endTurnButton;
-	
+
+	/**The replay button.*/
+	private TextButton replayButton;
+
 	/**Label for displaying a message to the player.*/
 	private Label flashMessage;
 	
@@ -97,7 +103,7 @@ public class TopBarController {
 	public void drawObstacleLabel() {
 		obstacleLabel = new Label("", context.getSkin());
 		obstacleLabel.setColor(Color.BLACK);
-		obstacleLabel.setPosition(10,TaxeGame.HEIGHT - 34);
+		obstacleLabel.setPosition(10, TaxeGame.HEIGHT - 34);
 		context.getStage().addActor(obstacleLabel);
 	}
 
@@ -135,7 +141,7 @@ public class TopBarController {
 		flashMessage.addAction(sequence(delay(time), fadeOut(0.25f), run(new Runnable() {
 			public void run() {
 				topBarBackground.setControlsColor(Color.LIGHT_GRAY);
-				if (obstacleLabel.getActions().size == 0){
+				if (obstacleLabel.getActions().size == 0) {
 					topBarBackground.setObstacleColor(Color.LIGHT_GRAY);
 				}
 			}
@@ -154,7 +160,7 @@ public class TopBarController {
 		obstacleLabel.setColor(Color.BLACK);
 		obstacleLabel.pack();
 		topBarBackground.setObstacleColor(color);
-		topBarBackground.setObstacleWidth(obstacleLabel.getWidth()+20);
+		topBarBackground.setObstacleWidth(obstacleLabel.getWidth() + 20);
 		obstacleLabel.addAction(sequence(delay(2f),fadeOut(0.25f), run(new Runnable() {
 			public void run() {
 				// run action to reset obstacle label after it has finished displaying information
@@ -178,7 +184,7 @@ public class TopBarController {
 		context.getGameLogic().subscribeStateChanged(new GameStateListener() {
 			@Override
 			public void changed(GameState state) {
-				if(state == GameState.NORMAL) {
+				if (state == GameState.NORMAL) {
 					endTurnButton.setVisible(true);
 				} else {
 					endTurnButton.setVisible(false);
@@ -188,4 +194,40 @@ public class TopBarController {
 
 		context.getStage().addActor(endTurnButton);
 	}
+
+	/**This method adds an End Turn button to the game that captures an on click event and notifies the game when the turn is over.*/
+	public void drawReplayButton() {
+		replayButton = new TextButton("Loading", context.getSkin());
+		replayButton.setPosition(TaxeGame.WIDTH - 500.0f, TaxeGame.HEIGHT - 33.0f);
+		replayButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Game.getInstance().replaySnapshot(0);
+			}
+		});
+		context.getStage().addActor(replayButton);
+
+		Timer timer = new Timer("Replay Timer");
+
+		TimerTask replayTask = new ReplayTask();
+		timer.scheduleAtFixedRate(replayTask, 1000, 500);
+
+	}
+
+	class ReplayTask extends TimerTask {
+
+		@Override
+		public void run() {
+			if ( !Game.getInstance().replayMode ) {
+				replayButton.setText("Replay");
+				return;
+			}
+
+			int next = Game.getInstance().replayingSnapshot + 1;
+			Game.getInstance().replaySnapshot(next);
+			replayButton.setText("" + next + " of " + Game.getInstance().getSnapshotsNumber());
+		}
+	}
+
+
 }

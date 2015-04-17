@@ -181,7 +181,7 @@ public class StationController {
 		for(Resource resource : player.getResources()) {
 			if(resource instanceof Train) {
 				if(((Train) resource).getActor() != null) {
-					if(((Train) resource).getPosition().equals(station.getLocation())) {
+					if(((Train) resource).getPosition() != null && ((Train) resource).getPosition().equals(station.getLocation())) {
 						count++;
 					}
 				}

@@ -12,10 +12,11 @@ import java.io.Serializable;
 /**This class holds variables and methods for a single player.*/
 public class Player implements Serializable {
 
+
     /**
      * The game's player manager. This allows the class to access other players.
      */
-    private PlayerManager pm;
+    private transient PlayerManager pm;
 
     /**
      * The resources that this player owns.
@@ -231,6 +232,10 @@ public class Player implements Serializable {
      */
     public PlayerManager getPlayerManager() {
         return pm;
+    }
+
+    public void setPlayerManager(PlayerManager pm) {
+        this.pm = pm;
     }
 
     /**

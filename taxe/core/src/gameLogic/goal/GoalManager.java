@@ -25,7 +25,7 @@ public class GoalManager implements Serializable {
 	private ResourceManager resourceManager;
 	
 	/**The List of listeners that are notified when a goal is finished.*/
-	private List<GoalListener> listeners;
+	private static List<GoalListener> listeners;
 	
 	/**Instantiation method.
 	 * @param resourceManager The ResourceManager for the Game.
