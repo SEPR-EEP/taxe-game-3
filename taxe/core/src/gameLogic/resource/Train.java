@@ -118,6 +118,9 @@ public class Train extends Resource {
         if (route != null && route.size() > 1){
             nextStationOfRoute = route.get(1);
         	finalDestination = route.get(route.size() - 1);
+        }else if(route != null && route.size() == 1){
+            nextStationOfRoute = route.get(0);
+        	finalDestination = route.get(route.size() - 1);
         }
         this.route = route;
     }
