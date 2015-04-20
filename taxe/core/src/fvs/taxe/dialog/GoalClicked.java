@@ -37,18 +37,6 @@ public class GoalClicked extends ClickListener {
 		origin.getActor().selected();
 		dest.getActor().selected();
 
-
-		//Added by Team EEP for removing a goal...
-
-		if (Game.getInstance().getState() != GameState.NORMAL) return;
-
-		// current player can't be passed in as it changes so find out current player at this instant
-		Player currentPlayer = Game.getInstance().getPlayerManager().getCurrentPlayer();
-
-		GoalDialogButtonClicked listener = new GoalDialogButtonClicked(context, currentPlayer, goal);
-		DialogGoal dia = new DialogGoal(context, goal, context.getSkin());
-		dia.show(context.getStage());
-		dia.subscribeClick(listener);
 	}
 
 }
