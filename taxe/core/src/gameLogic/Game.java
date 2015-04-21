@@ -109,6 +109,9 @@ public class Game implements Serializable {
 	 * list of snapshot.
 	 */
 	public void createSnapshot() {
+		if ( this.replayMode ) {
+			return;
+		}
 		Snapshot s = new Snapshot(playerManager, goalManager, resourceManager, obstacleManager, map,
 				state, confirmingTrain, confirmingPositions);
 		try {

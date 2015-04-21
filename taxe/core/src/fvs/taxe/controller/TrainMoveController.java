@@ -2,6 +2,7 @@ package fvs.taxe.controller;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import fvs.taxe.actor.TrainActor;
+import gameLogic.Game;
 import gameLogic.Player;
 import gameLogic.TurnListener;
 import gameLogic.map.CollisionStation;
@@ -90,7 +91,7 @@ public class TrainMoveController {
 		// calculate if a junction failure has occured- if it has, stop the train at the station for that turn
 		if (station instanceof CollisionStation){
 			boolean junctionFailed = MathUtils.randomBoolean(JUNCTION_FAILURE_CHANCE);
-			if (junctionFailed && station != train.getRoute().get(0)) {
+			if (Game.getInstance().replayMode == false && junctionFailed && station != train.getRoute().get(0)) {
 				action.setInterrupt(true);
 				context.getTopBarController().displayObstacleMessage("Junction failed, " + train.getName() + " stopped!", Color.YELLOW);
 			}
@@ -124,8 +125,9 @@ public class TrainMoveController {
 		for (final Station station : train.getRoute()) {
 			IPositionable next = station.getLocation();
 			float duration = getDistance(current, next) / train.getSpeed();
+			System.out.println("I will move the train for " + duration + " whatever");
 			action.addAction(moveTo(next.getX() - TrainActor.width / 2, next.getY() - TrainActor.height / 2, duration));
-			
+			System.out.println("New coordinates: " + (next.getX() - TrainActor.width / 2) + ", " + ( next.getY() - TrainActor.height / 2) );
 			action.addAction(perStationAction(station));
 			current = next;
 		}
@@ -151,14 +153,16 @@ public class TrainMoveController {
 	 */
 	private void collisions(Station station) {
 		//test for train collisions at Junction point
-		if(!(station instanceof CollisionStation)) {
+		if(Game.getInstance().replayMode || !(station instanceof CollisionStation)) {
 			return;
 		}
 		List<Train> trainsToDestroy = collidedTrains();
 
 		if(trainsToDestroy.size() > 0) {
 			for(Train trainToDestroy : trainsToDestroy) {
-				trainToDestroy.getActor().remove();
+				if ( trainToDestroy.getActor() != null ) {
+					trainToDestroy.getActor().remove();
+				}
 				trainToDestroy.getPlayer().removeResource(trainToDestroy);
 			}
 
@@ -169,7 +173,7 @@ public class TrainMoveController {
 	/**This method checks if the train has collided with an obstacle when it reaches a station. If it has, the train is destroyed.*/
 	private void obstacleCollision(Station station) {
 		// works out if the station has an obstacle active there, whether to destroy the train
-		if (station.hasObstacle() && MathUtils.randomBoolean(station.getObstacle().getDestructionChance())){
+		if (Game.getInstance().replayMode == false && station.hasObstacle() && MathUtils.randomBoolean(station.getObstacle().getDestructionChance())){
 			train.getActor().remove();
 			train.getPlayer().removeResource(train);
 			context.getTopBarController().displayFlashMessage("Your train was hit by a natural disaster...", Color.BLACK, Color.RED, 4);

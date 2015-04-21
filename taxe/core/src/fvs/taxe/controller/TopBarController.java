@@ -224,7 +224,7 @@ public class TopBarController {
 		Timer timer = new Timer("Replay Timer");
 
 		TimerTask replayTask = new ReplayTask();
-		timer.scheduleAtFixedRate(replayTask, 1000, 500);
+		timer.scheduleAtFixedRate(replayTask, 200, 100);
 
 	}
 
@@ -234,6 +234,10 @@ public class TopBarController {
 		public void run() {
 			if ( !Game.getInstance().replayMode ) {
 				replayButton.setText("Replay");
+				return;
+			}
+
+			if ( Game.getInstance().getState() == GameState.ANIMATING ) {
 				return;
 			}
 
