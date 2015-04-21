@@ -2,6 +2,7 @@ package fvs.taxe.controller;
 
 import fvs.taxe.StationClickListener;
 import fvs.taxe.TaxeGame;
+import gameLogic.Game;
 import gameLogic.GameState;
 import gameLogic.map.CollisionStation;
 import gameLogic.map.Connection;
@@ -116,7 +117,11 @@ public class RouteController {
                     return;
                 }
 
-                confirmed();
+                Game.getInstance().setConfirmingTrain(train);
+                Game.getInstance().setConfirmingPositions(positions);
+                context.getGameLogic().setState(GameState.CONFIRMING);
+
+                // confirmed();
                 endRouting();
             }
         });
@@ -130,10 +135,6 @@ public class RouteController {
     /**This method is called when a Route has been finalised by the player. The route is created from the positions, and the Train is set along this route
      * using a TrainController.*/
     private void confirmed() {
-        train.setRoute(context.getGameLogic().getMap().createRoute(positions));
-
-        @SuppressWarnings("unused")
-		TrainMoveController move = new TrainMoveController(context, train);
     }
 
     /**This method is called when the routing is finalised by the player or cancelled. The existing route is dropped and the RouteController is set up for the next Routing.*/

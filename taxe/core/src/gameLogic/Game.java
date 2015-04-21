@@ -1,11 +1,14 @@
 package gameLogic;
 
+import fvs.taxe.controller.TrainMoveController;
 import gameLogic.goal.GoalManager;
+import gameLogic.map.IPositionable;
 import gameLogic.map.Map;
 import gameLogic.obstacle.Obstacle;
 import gameLogic.obstacle.ObstacleListener;
 import gameLogic.obstacle.ObstacleManager;
 import gameLogic.resource.ResourceManager;
+import gameLogic.resource.Train;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,24 @@ public class Game implements Serializable {
 	
 	/**List of listeners that listen to changes in obstacles.*/
 	private List<ObstacleListener> obstacleListeners = new ArrayList<ObstacleListener>();
+	private Train confirmingTrain;
+	private List<IPositionable> confirmingPositions;
+
+	public void setConfirmingTrain(Train confirmingTrain) {
+		this.confirmingTrain = confirmingTrain;
+	}
+
+	public Train getConfirmingTrain() {
+		return confirmingTrain;
+	}
+
+	public void setConfirmingPositions(List<IPositionable> confirmingPositions) {
+		this.confirmingPositions = confirmingPositions;
+	}
+
+	public List<IPositionable> getConfirmingPositions() {
+		return confirmingPositions;
+	}
 
 	/**
 	 * The following class represents a single "snapshot", a state in time of the
@@ -63,9 +84,11 @@ public class Game implements Serializable {
 		public Map map;
 		public GameState state;
 		public List<ObstacleListener> obstacleListeners;
+		private Train confirmingTrain;
+		private List<IPositionable> confirmingPositions;
 		public Snapshot(
 				PlayerManager b, GoalManager c, ResourceManager d, ObstacleManager e, Map f,
-				GameState g
+				GameState g, Train h, List<IPositionable> i
 		) {
 			players = b.getPlayers();
 			currentTurn = b.getCurrentTurn();
@@ -74,6 +97,7 @@ public class Game implements Serializable {
 			goalManager = c; resourceManager = d;
 			obstacleManager = e; map = f; state = g;
 
+			confirmingTrain = h; confirmingPositions = i;
 		}
 	}
 	
@@ -86,7 +110,7 @@ public class Game implements Serializable {
 	 */
 	public void createSnapshot() {
 		Snapshot s = new Snapshot(playerManager, goalManager, resourceManager, obstacleManager, map,
-				state);
+				state, confirmingTrain, confirmingPositions);
 		try {
 			this.snapshots.add(SerializationUtils.clone(s));
 		} catch (org.apache.commons.lang3.SerializationException e) {
@@ -108,6 +132,8 @@ public class Game implements Serializable {
 		}
 		Game.getInstance().getPlayerManager().setCurrentTurn(s.currentTurn);
 		Game.getInstance().getPlayerManager().setTurnNumber(s.turnNumber);
+		Game.getInstance().setConfirmingPositions(s.confirmingPositions);
+		Game.getInstance().setConfirmingTrain(s.confirmingTrain);
 		goalManager = s.goalManager;
 		resourceManager = s.resourceManager; obstacleManager = s.obstacleManager; map = s.map;
 		state = s.state;

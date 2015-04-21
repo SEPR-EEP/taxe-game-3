@@ -50,32 +50,32 @@ public class TopBarController {
 	public TopBarController(final Context context) {
 		this.context = context;
 
-		context.getGameLogic().subscribeObstacleChanged(new ObstacleListener(){
+		context.getGameLogic().subscribeObstacleChanged(new ObstacleListener() {
 
 			@Override
 			public void started(Obstacle obstacle) {
-				ObstacleType type = obstacle.getType();						     
+				ObstacleType type = obstacle.getType();
 				Color color = null;
-				switch(type){
-				case BLIZZARD:
-					color = Color.WHITE;
-					break;
-				case FLOOD:
-					color = Color.valueOf("1079c1");
-					break;
-				case VOLCANO:
-					color = Color.valueOf("ec182c");
-					break;
-				case EARTHQUAKE:
-					color = Color.valueOf("7a370a");
-					break;
-				}				
+				switch (type) {
+					case BLIZZARD:
+						color = Color.WHITE;
+						break;
+					case FLOOD:
+						color = Color.valueOf("1079c1");
+						break;
+					case VOLCANO:
+						color = Color.valueOf("ec182c");
+						break;
+					case EARTHQUAKE:
+						color = Color.valueOf("7a370a");
+						break;
+				}
 				displayObstacleMessage(obstacle.getType().toString() + " in " + obstacle.getStation().getName(), color);
 			}
 
 			@Override
 			public void ended(Obstacle obstacle) {
-			}		        	
+			}
 		});
 	}
 
@@ -161,7 +161,7 @@ public class TopBarController {
 		obstacleLabel.pack();
 		topBarBackground.setObstacleColor(color);
 		topBarBackground.setObstacleWidth(obstacleLabel.getWidth() + 20);
-		obstacleLabel.addAction(sequence(delay(2f),fadeOut(0.25f), run(new Runnable() {
+		obstacleLabel.addAction(sequence(delay(2f), fadeOut(0.25f), run(new Runnable() {
 			public void run() {
 				// run action to reset obstacle label after it has finished displaying information
 				obstacleLabel.setText("");
@@ -188,6 +188,20 @@ public class TopBarController {
 					endTurnButton.setVisible(true);
 				} else {
 					endTurnButton.setVisible(false);
+				}
+			}
+		});
+
+		context.getGameLogic().subscribeStateChanged(new GameStateListener() {
+
+			@Override
+			public void changed(GameState state) {
+				if (state == GameState.CONFIRMING) {
+					Game.getInstance().getConfirmingTrain().setRoute(context.getGameLogic().getMap().createRoute(Game.getInstance().getConfirmingPositions()));
+
+					@SuppressWarnings("unused")
+					TrainMoveController move = new TrainMoveController(context, Game.getInstance().getConfirmingTrain());
+
 				}
 			}
 		});
