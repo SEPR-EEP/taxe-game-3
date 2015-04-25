@@ -122,7 +122,16 @@ public class TrainMoveController {
 		IPositionable current = train.getPosition();
 		action.addAction(beforeAction());
 
+		boolean first = true;
+
 		for (final Station station : train.getRoute()) {
+
+			// We want to skip the first iteration (from nowhere to intial station!)
+			if ( first ) {
+				first = false;
+				continue;
+			}
+
 			IPositionable next = station.getLocation();
 			float duration = getDistance(current, next) / train.getSpeed();
 			System.out.println("I will move the train for " + duration + " whatever");

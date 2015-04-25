@@ -216,6 +216,7 @@ public class TopBarController {
 		replayButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+				Game.getInstance().createSnapshot();
 				Game.getInstance().replaySnapshot(0);
 			}
 		});
