@@ -33,7 +33,7 @@ public abstract class Resource<Type> extends HasActor<Type> implements Disposabl
 	 */
 	public boolean isOwnedBy(Player player) {
 		System.out.println("The resource is owned by " + this.player + ", you asked me " + player);
-		return player == this.player;
+		return player.equals(this.player);
 	}
 
 	/** Notifies the player that owns the resource that the resource has changed */
