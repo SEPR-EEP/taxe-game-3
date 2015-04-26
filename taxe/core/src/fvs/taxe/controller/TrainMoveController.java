@@ -120,6 +120,8 @@ public class TrainMoveController {
 	public void addMoveActions() {
 		action = new InterruptableSequenceAction();
 		IPositionable current = train.getPosition();
+		System.out.println("Initial position of the train atm is: " + current.getX() + ", " + current.getY());
+
 		action.addAction(beforeAction());
 
 		boolean first = true;
@@ -134,7 +136,7 @@ public class TrainMoveController {
 
 			IPositionable next = station.getLocation();
 			float duration = getDistance(current, next) / train.getSpeed();
-			System.out.println("I will move the train for " + duration + " whatever");
+			System.out.println("I will move the train for " + duration + " seconds");
 			action.addAction(moveTo(next.getX() - TrainActor.width / 2, next.getY() - TrainActor.height / 2, duration));
 			System.out.println("New coordinates: " + (next.getX() - TrainActor.width / 2) + ", " + ( next.getY() - TrainActor.height / 2) );
 			action.addAction(perStationAction(station));
