@@ -1,6 +1,7 @@
 package Util;
 
 import fvs.taxe.actor.GenericActor;
+import gameLogic.resource.Train;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -33,6 +34,9 @@ public class HasActor<Type> implements Serializable {
 
     public void setActor(Type a) {
         ensureRandomUniqueID();
+        if ( this instanceof Train) {
+            ActorsManager.addTrainActor((GenericActor) a);
+        }
         ActorsManager.put(myUniqueID, (GenericActor) a);
     }
 

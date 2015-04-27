@@ -4,6 +4,8 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+
+import Util.ActorsManager;
 import fvs.taxe.TaxeGame;
 import gameLogic.Game;
 import gameLogic.GameState;
@@ -216,6 +218,7 @@ public class TopBarController {
 		replayButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+				ActorsManager.interruptAllTrains();
 				Game.getInstance().createSnapshot();
 				Game.getInstance().replaySnapshot(0);
 			}
