@@ -119,10 +119,14 @@ public class TrainMoveController {
 	/**This method uses the current's train's routes to create a set of move actions for the train.*/
 	public void addMoveActions() {
 		action = new InterruptableSequenceAction();
+
+		Station firstStation = train.getRoute().get(0);
 		IPositionable current = train.getPosition();
+
 		System.out.println("Initial position of the train atm is: " + current.getX() + ", " + current.getY());
 
 		action.addAction(beforeAction());
+		action.addAction(moveTo(firstStation.getLocation().getX() - TrainActor.width / 2, firstStation.getLocation().getY() - TrainActor.height / 2, 0));
 
 		boolean first = true;
 
