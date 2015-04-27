@@ -123,6 +123,7 @@ public class GameScreen extends ScreenAdapter {
 		context.setTopBarController(topBarController);
 		context.setGoalController(goalController);
 		context.setMapController(mapController);
+		context.setStationController(stationController);
 
 		rumble = obstacleController.getRumble();
 

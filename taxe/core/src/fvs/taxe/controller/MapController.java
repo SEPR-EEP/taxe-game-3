@@ -210,9 +210,12 @@ public class MapController {
 
 		//Remove actor from game view
 		Array<Actor> actors = context.getStage().getActors();
+		connection.setActor(null);
+		System.out.println("I removed that actor from the connection.");
 		for(Actor actor : actors){
 			if(actor == connectionActor){
 				actor.remove();
+				System.out.println("I removed an actor from the stage, ah-ah!");
 			}
 		}
 

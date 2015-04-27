@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import fvs.taxe.TaxeGame;
 import gameLogic.Game;
+import gameLogic.map.Station;
 
 /**This class stores the Context of the game, such as the game itself, the stage, etc.*/
 public class Context {
@@ -31,6 +32,9 @@ public class Context {
 
     /**A GoalController for the context that can be get or set.*/
     private GoalController goalController;
+
+    /**The station controller*/
+    private StationController stationController;
 
     /**Instantiation method sets up private variables.
      * @param stage The stage to be used in the context
@@ -105,4 +109,13 @@ public class Context {
 
     /** @returns the Context's mapController */
     public MapController getMapController() { return mapController; }
+
+    public StationController getStationController() {
+        return stationController;
+    }
+
+    public void setStationController(StationController stationController) {
+        this.stationController = stationController;
+    }
+
 }

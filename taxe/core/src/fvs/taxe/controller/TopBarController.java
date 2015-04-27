@@ -243,6 +243,9 @@ public class TopBarController {
 				Game.getInstance().setGameSpeed(replaySpeedSlider.getValue());
 				Game.getInstance().createSnapshot();
 				Game.getInstance().replaySnapshot(0);
+
+				context.getStationController().drawConnections(Game.getInstance().getMap().getConnections(), Color.GRAY);
+				context.getStationController().drawStations();
 			}
 		});
 		context.getStage().addActor(replayButton);

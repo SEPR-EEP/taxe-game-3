@@ -86,11 +86,13 @@ public class Game implements Serializable {
 		public Map map;
 		public GameState state;
 		public List<ObstacleListener> obstacleListeners;
-		private Train confirmingTrain;
-		private List<IPositionable> confirmingPositions;
+		public Train confirmingTrain;
+		public List<IPositionable> confirmingPositions;
+		public Station origin;
+		public Station destination;
 		public Snapshot(
 				PlayerManager b, GoalManager c, ResourceManager d, ObstacleManager e, Map f,
-				GameState g, Train h, List<IPositionable> i
+				GameState g, Train h, List<IPositionable> i, Station j, Station k
 		) {
 			players = b.getPlayers();
 			currentTurn = b.getCurrentTurn();
@@ -100,6 +102,8 @@ public class Game implements Serializable {
 			obstacleManager = e; map = f; state = g;
 
 			confirmingTrain = h; confirmingPositions = i;
+
+			origin = j; destination = k;
 		}
 	}
 	
@@ -115,7 +119,7 @@ public class Game implements Serializable {
 			return;
 		}
 		Snapshot s = new Snapshot(playerManager, goalManager, resourceManager, obstacleManager, map,
-				state, confirmingTrain, confirmingPositions);
+				state, confirmingTrain, confirmingPositions, origin, destination);
 		try {
 			this.snapshots.add(SerializationUtils.serialize(s));
 		} catch (org.apache.commons.lang3.SerializationException e) {
@@ -139,6 +143,8 @@ public class Game implements Serializable {
 		Game.getInstance().getPlayerManager().setTurnNumber(s.turnNumber);
 		Game.getInstance().setConfirmingPositions(s.confirmingPositions);
 		Game.getInstance().setConfirmingTrain(s.confirmingTrain);
+		Game.getInstance().setOrigin(s.origin);
+		Game.getInstance().setDestination(s.destination);
 		goalManager = s.goalManager;
 		resourceManager = s.resourceManager; obstacleManager = s.obstacleManager; map = s.map;
 		state = s.state;
