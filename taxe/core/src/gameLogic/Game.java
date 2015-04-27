@@ -2,6 +2,7 @@ package gameLogic;
 
 import gameLogic.goal.GoalManager;
 import gameLogic.map.Map;
+import gameLogic.map.Station;
 import gameLogic.obstacle.Obstacle;
 import gameLogic.obstacle.ObstacleListener;
 import gameLogic.obstacle.ObstacleManager;
@@ -73,6 +74,24 @@ public class Game {
 			}
 		});
 	}
+
+    public Station getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(Station origin) {
+        this.origin = origin;
+    }
+
+    public Station getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Station destination) {
+        this.destination = destination;
+    }
+
+    Station origin, destination;
 
 	/**Returns the main game instance.*/
 	public static Game getInstance() {

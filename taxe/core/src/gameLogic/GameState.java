@@ -7,6 +7,7 @@ public enum GameState {
     ROUTING,
     ANIMATING,
     WAITING,
-    EDITING
+    EDITING,
+    CONFIRMEDIT
 
 }

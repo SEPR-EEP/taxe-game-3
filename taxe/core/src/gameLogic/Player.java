@@ -63,6 +63,10 @@ public class Player {
         resources = new ArrayList<Resource>();
         this.pm = pm;
         number = playerNumber;
+
+
+        ConnectionModifier connectionModifier = new ConnectionModifier("Connection Modifier", this);
+        addResource(connectionModifier);
     }
 
     /**

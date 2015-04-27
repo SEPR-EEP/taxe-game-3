@@ -2,7 +2,9 @@ package fvs.taxe.controller;
 
 import fvs.taxe.StationClickListener;
 import fvs.taxe.actor.ConnectionActor;
+import gameLogic.Game;
 import gameLogic.GameState;
+import gameLogic.GameStateListener;
 import gameLogic.Player;
 import gameLogic.map.Connection;
 import gameLogic.map.IPositionable;
@@ -56,6 +58,32 @@ public class MapController {
 				}
 			}
 		});
+
+        context.getGameLogic().subscribeStateChanged(new GameStateListener() {
+            @Override
+            public void changed(GameState state) {
+                if ( state != GameState.CONFIRMEDIT ) {
+                    return;
+                }
+
+                Boolean success;
+
+                if (context.getGameLogic().getMap().getConnection(origin.getName(), destination.getName()) == null) {
+                    success = addConnection();
+                } else {
+                    success = removeConnection();
+                }
+
+                Game.getInstance().setOrigin(null);
+                Game.getInstance().setDestination(null);
+
+                if (success) {
+                    context.getGameLogic().setState(GameState.NORMAL);
+                } else {
+                    context.getGameLogic().setState(GameState.EDITING);
+                }
+            }
+        });
 	}
 
 	/**Determines weather a connection should be added or removed and
@@ -69,20 +97,10 @@ public class MapController {
 		}else{
 			destination = station;
 
-			Boolean success;
+            Game.getInstance().setOrigin(origin);
+            Game.getInstance().setDestination(destination);
+            Game.getInstance().setState(GameState.CONFIRMEDIT);
 
-			if (context.getGameLogic().getMap().getConnection(origin.getName(), station.getName()) == null) {
-				success = addConnection();
-			} else {
-				success = removeConnection();
-			}
-
-			origin = null;
-			destination = null;
-
-			if (success) {
-				context.getGameLogic().setState(GameState.NORMAL);
-			}
 		}
 	}
 
@@ -92,6 +110,10 @@ public class MapController {
 	 * an existing one the function just returns.
 	 */
 	private Boolean addConnection(){
+        Station origin, destination;
+        origin = Game.getInstance().getOrigin();
+        destination = Game.getInstance().getDestination();
+
 
 		Connection connection = new Connection(origin, destination);
 
@@ -136,8 +158,12 @@ public class MapController {
 	 *  to the one before the removed connection.
 	 */
 	private Boolean removeConnection(){
+        Station origin, destination;
+        origin = Game.getInstance().getOrigin();
+        destination = Game.getInstance().getDestination();
 
-		for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()){
+
+        for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()){
 			for(Resource resource : player.getActiveTrains()){
 				Train train = ((Train) resource);
 
@@ -151,9 +177,13 @@ public class MapController {
 					return false;
 
 				//If a connection from a trains route is removed the new destination of the train is set to the origin of the removed connection
-				}else if(train.getRoute().contains(origin) && train.getRoute().contains(destination) && train.isMoving()){
+				}else if(train.getRoute().contains(origin) && train.getRoute().contains(destination) && train.isMoving() &&
+                        !train.getHistory().contains(train.getRoute().contains(origin))){
 					Station endStation;
 					List<Station> route = train.getRoute();
+
+                    System.out.println(train.getSpeed());
+
 
 					if(route.indexOf(origin) < route.indexOf(destination)){
 						endStation = origin;
@@ -163,9 +193,12 @@ public class MapController {
 
 					Station lastStation = context.getGameLogic().getMap().getStationByName(train.getHistory().get(train.getHistory().size()-1).getFirst());
 
-					train.setRoute(route.subList(route.indexOf(lastStation) + 1,
-													route.indexOf(endStation) + 1));
-					context.getRouteController().reroute(train);
+                    if(route.indexOf(lastStation) + 1 < route.indexOf(endStation)){
+                        train.setRoute(route.subList(route.indexOf(lastStation) + 1,
+                                route.indexOf(endStation) + 1));
+                        context.getRouteController().reroute(train);
+                    }
+                    System.out.println(train.getSpeed());
 				}
 			}
 		}
