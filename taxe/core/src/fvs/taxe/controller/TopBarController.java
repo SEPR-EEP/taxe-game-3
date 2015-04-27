@@ -201,7 +201,7 @@ public class TopBarController {
 	 * notifies the game to enter connection editing mode
 	 * @author Team EEP*/
 	public void drawModifyConnectionButton(){
-		modifyConnectionButton = new TextButton("Modify Connection", context.getSkin());
+		modifyConnectionButton = new TextButton("Modify Connection x"+(context.getGameLogic().getPlayerManager().getCurrentPlayer().getConnectionModifiers().size()+1), context.getSkin());
 		modifyConnectionButton.setPosition(TaxeGame.WIDTH - 300.0f, TaxeGame.HEIGHT - 33.0f);
 		modifyConnectionButton.setVisible(false);
 
