@@ -67,9 +67,13 @@ public class MapController {
                     return;
                 }
 
+				Station o, d;
+				o = Game.getInstance().getOrigin();
+				d = Game.getInstance().getDestination();
+
                 Boolean success;
 
-                if (context.getGameLogic().getMap().getConnection(origin.getName(), destination.getName()) == null) {
+                if (context.getGameLogic().getMap().getConnection(o.getName(), d.getName()) == null) {
                     success = addConnection();
                 } else {
                     success = removeConnection();

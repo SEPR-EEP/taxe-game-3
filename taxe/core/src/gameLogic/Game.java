@@ -316,8 +316,8 @@ public class Game implements Serializable {
 	/**Sets the GameState of the Game. Listeners are notified using stateChanged().*/
 	public void setState(GameState state) {
 		this.state = state;
-		stateChanged();
 		this.createSnapshot();
+		stateChanged();
 	}
 
 	/**Adds a listener for when the game state is changed.*/
