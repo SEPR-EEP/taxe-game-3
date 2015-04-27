@@ -225,11 +225,60 @@ public class TopBarController {
 		context.getStage().addActor(endTurnButton);
 	}
 
+	/**This method adds an End Turn button to the game that captures an on click event and notifies the game when the turn is over.*/
+	public void drawReplayButton() {
+
+
+		replaySpeedSlider = new Slider(1.0f, 5.0f, 1.0f, false, context.getSkin());
+		replaySpeedSlider.setPosition(TaxeGame.WIDTH - 500.0f, TaxeGame.HEIGHT - 33.0f);
+		context.getStage().addActor(replaySpeedSlider);
+
+		replayButton = new TextButton("Loading", context.getSkin());
+		replayButton.setPosition(TaxeGame.WIDTH - 450.0f, TaxeGame.HEIGHT - 33.0f);
+		replayButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				// System.out.println("Replay speed is: " + replaySpeedSlider.getValue() + "x!");
+				ActorsManager.interruptAllTrains();
+				Game.getInstance().setGameSpeed(replaySpeedSlider.getValue());
+				Game.getInstance().createSnapshot();
+				Game.getInstance().replaySnapshot(0);
+			}
+		});
+		context.getStage().addActor(replayButton);
+
+		Timer timer = new Timer("Replay Timer");
+
+		TimerTask replayTask = new ReplayTask();
+		timer.scheduleAtFixedRate(replayTask, 100, 75);
+
+	}
+
+	class ReplayTask extends TimerTask {
+
+		@Override
+		public void run() {
+			if ( !Game.getInstance().replayMode ) {
+				replayButton.setText("Replay " + replaySpeedSlider.getValue() + "x");
+				return;
+			}
+
+			if ( Game.getInstance().getState() == GameState.ANIMATING ) {
+				return;
+			}
+
+			int next = Game.getInstance().replayingSnapshot + 1;
+			Game.getInstance().replaySnapshot(next);
+			int percentage = (int) ( (float) next / (float) Game.getInstance().getSnapshotsNumber() * 100 );
+			replayButton.setText(percentage + "%");
+		}
+	}
+
 	/** This method adds a Modify Connection button the game the captures an on click event and
 	 * notifies the game to enter connection editing mode
 	 * @author Team EEP*/
-	public void drawModifyConnectionButton(){
-		modifyConnectionButton = new TextButton("Modify Connection x"+(context.getGameLogic().getPlayerManager().getCurrentPlayer().getConnectionModifiers().size()+1), context.getSkin());
+	public void drawModifyConnectionButton() {
+		modifyConnectionButton = new TextButton("Modify Connection x" + (context.getGameLogic().getPlayerManager().getCurrentPlayer().getConnectionModifiers().size() + 1), context.getSkin());
 		modifyConnectionButton.setPosition(TaxeGame.WIDTH - 300.0f, TaxeGame.HEIGHT - 33.0f);
 		modifyConnectionButton.setVisible(false);
 

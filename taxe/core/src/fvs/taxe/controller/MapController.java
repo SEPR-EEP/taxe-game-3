@@ -12,6 +12,7 @@ import gameLogic.map.Station;
 import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
@@ -74,6 +75,7 @@ public class MapController {
                     success = removeConnection();
                 }
 
+				origin = null; destination = null;
                 Game.getInstance().setOrigin(null);
                 Game.getInstance().setDestination(null);
 
@@ -194,8 +196,8 @@ public class MapController {
 					Station lastStation = context.getGameLogic().getMap().getStationByName(train.getHistory().get(train.getHistory().size()-1).getFirst());
 
                     if(route.indexOf(lastStation) + 1 < route.indexOf(endStation)){
-                        train.setRoute(route.subList(route.indexOf(lastStation) + 1,
-                                route.indexOf(endStation) + 1));
+                        train.setRoute(new ArrayList(route.subList(route.indexOf(lastStation) + 1,
+                                route.indexOf(endStation) + 1)));
                         context.getRouteController().reroute(train);
                     }
                     System.out.println(train.getSpeed());
