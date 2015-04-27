@@ -121,7 +121,7 @@ public class GameScreen extends ScreenAdapter {
 			@Override
 			public void changed() {
 				gameLogic.setState(GameState.ANIMATING);
-				topBarController.displayFlashMessage("Time is passing...", Color.GREEN, Color.BLACK, ANIMATION_TIME);
+				topBarController.displayFlashMessage("Time is passing...", Color.GREEN, Color.BLACK, ANIMATION_TIME / Game.getInstance().getGameSpeed());
 			}
 		});
 
@@ -164,7 +164,7 @@ public class GameScreen extends ScreenAdapter {
 
 		if(gameLogic.getState() == GameState.ANIMATING) {
 			timeAnimated += delta;
-			if (timeAnimated >= ANIMATION_TIME) {
+			if (timeAnimated >= ANIMATION_TIME / Game.getInstance().getGameSpeed()) {
 				gameLogic.setState(GameState.NORMAL);
 				timeAnimated = 0;
 			}

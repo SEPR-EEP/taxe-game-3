@@ -2,6 +2,7 @@ package gameLogic.resource;
 
 import Util.Tuple;
 import fvs.taxe.actor.TrainActor;
+import gameLogic.Game;
 import gameLogic.map.IPositionable;
 import gameLogic.map.Station;
 
@@ -133,7 +134,7 @@ public class Train extends Resource<TrainActor> {
      * @return The number of pixels that the train will move per turn
      */
     public int getSpeed() {
-        return speed;
+        return (int) (speed * Game.getInstance().getGameSpeed());
     }
 
     /** Get the history of the train

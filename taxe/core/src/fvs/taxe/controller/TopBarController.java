@@ -6,6 +6,9 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 import Util.ActorsManager;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import fvs.taxe.TaxeGame;
 import gameLogic.Game;
 import gameLogic.GameState;
@@ -35,6 +38,7 @@ public class TopBarController {
 	private TextButton endTurnButton;
 
 	/**The replay button.*/
+	private Slider replaySpeedSlider;
 	private TextButton replayButton;
 
 	/**Label for displaying a message to the player.*/
@@ -213,12 +217,21 @@ public class TopBarController {
 
 	/**This method adds an End Turn button to the game that captures an on click event and notifies the game when the turn is over.*/
 	public void drawReplayButton() {
+
+
+		replaySpeedSlider = new Slider(1.0f, 5.0f, 1.0f, false, context.getSkin());
+		replaySpeedSlider.setPosition(TaxeGame.WIDTH - 500.0f, TaxeGame.HEIGHT - 33.0f);
+		context.getStage().addActor(replaySpeedSlider);
+
 		replayButton = new TextButton("Loading", context.getSkin());
-		replayButton.setPosition(TaxeGame.WIDTH - 500.0f, TaxeGame.HEIGHT - 33.0f);
+		replayButton.setPosition(TaxeGame.WIDTH - 450.0f, TaxeGame.HEIGHT - 33.0f);
+		replayButton.setWidth();
 		replayButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+				// System.out.println("Replay speed is: " + replaySpeedSlider.getValue() + "x!");
 				ActorsManager.interruptAllTrains();
+				Game.getInstance().setGameSpeed(replaySpeedSlider.getValue());
 				Game.getInstance().createSnapshot();
 				Game.getInstance().replaySnapshot(0);
 			}
@@ -228,7 +241,7 @@ public class TopBarController {
 		Timer timer = new Timer("Replay Timer");
 
 		TimerTask replayTask = new ReplayTask();
-		timer.scheduleAtFixedRate(replayTask, 200, 100);
+		timer.scheduleAtFixedRate(replayTask, 100, 75);
 
 	}
 
@@ -237,7 +250,7 @@ public class TopBarController {
 		@Override
 		public void run() {
 			if ( !Game.getInstance().replayMode ) {
-				replayButton.setText("Replay");
+				replayButton.setText("Replay " + replaySpeedSlider.getValue() + "x");
 				return;
 			}
 
@@ -247,7 +260,8 @@ public class TopBarController {
 
 			int next = Game.getInstance().replayingSnapshot + 1;
 			Game.getInstance().replaySnapshot(next);
-			replayButton.setText("" + next + " of " + Game.getInstance().getSnapshotsNumber());
+			int percentage = (int) ( (float) next / (float) Game.getInstance().getSnapshotsNumber() * 100 );
+			replayButton.setText(percentage + "%");
 		}
 	}
 

@@ -161,6 +161,19 @@ public class Game implements Serializable {
 	public int replayingSnapshot = -1;
 
 	/**
+	 * Used for the replay. The overall playing speed.
+	 */
+	private float gameSpeed = 1.0f;
+
+	public void setGameSpeed(float speedMultiplier) {
+		this.gameSpeed = speedMultiplier;
+	}
+
+	public float getGameSpeed() {
+		return this.gameSpeed;
+	}
+
+	/**
 	 * This methods returns the current snapshots number.
 	 */
 	public int getSnapshotsNumber() {
@@ -188,6 +201,10 @@ public class Game implements Serializable {
 
 		System.out.println("@ Snapshot " + snapshotNumber + " out of " + getSnapshotsNumber() + " has been loaded.");
 		System.out.println("  Replay mode " + (replayMode? "is still active.": "has been now deactivated."));
+
+		if (!replayMode) {
+			getInstance().setGameSpeed(1.0f);
+		}
 
 	}
 
