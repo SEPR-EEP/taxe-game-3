@@ -75,7 +75,13 @@ public class StationController {
 	 * @param station The Station to used to create the StationActor.
 	 */
 	private void renderStation(final Station station) {
-		final StationActor stationActor = new StationActor(station.getLocation());
+		final StationActor stationActor;
+
+		if(station instanceof CollisionStation){
+			stationActor = new CollisionStationActor(station.getLocation());
+		}else{
+			stationActor = new StationActor(station.getLocation());
+		}
 
 		stationActor.addListener(new ClickListener() {
 			@Override
@@ -104,42 +110,12 @@ public class StationController {
 		context.getStage().addActor(stationActor);
 	}
 
-	/**This method creates a StationActor from the CollisionStation and adds Clicked, Enter and Exit methods to it.
-	 * @param collisionStation The CollisionStation to used to create the StationActor.
-	 */
-	private void renderCollisionStation(final CollisionStation collisionStation) {
-		final CollisionStationActor collisionStationActor = new CollisionStationActor(collisionStation.getLocation());
-
-		collisionStationActor.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                stationClicked(collisionStation);
-            }
-
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                tooltip.setPosition(collisionStationActor.getX() + 10, collisionStationActor.getY() + 10);
-                tooltip.show("Junction: " + collisionStation.getName());
-            }
-
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                tooltip.hide();
-            }
-        });
-		context.getStage().addActor(collisionStationActor);
-	}
-
 	/**This method draws all of the stations, as Stations or CollisionStations.*/
 	public void drawStations() {
 		List<Station> stations = context.getGameLogic().getMap().getStations();
 
 		for (Station station : stations) {
-			if(station instanceof CollisionStation) {
-				renderCollisionStation((CollisionStation) station);
-			} else {
 				renderStation(station);
-			}
 		}
 	}
 

@@ -1,5 +1,6 @@
 package fvs.taxe.actor;
 
+import fvs.taxe.CustomTexture;
 import gameLogic.map.IPositionable;
 import gameLogic.obstacle.Obstacle;
 
@@ -31,16 +32,16 @@ public class ObstacleActor extends Image implements GenericActor {
 	 * @param obstacle the obstacle to base the return texture of.
 	 * @return A texture for the parameter obstacle's type.
 	 */
-	private static Texture getTexture(Obstacle obstacle) {
+	private static CustomTexture getTexture(Obstacle obstacle) {
 		switch(obstacle.getType()){
 		case VOLCANO:
-			return new Texture(Gdx.files.internal("obstacles/volcano.png"));
+			return new CustomTexture(Gdx.files.internal("obstacles/volcano.png"));
 		case BLIZZARD:
-			return new Texture(Gdx.files.internal("obstacles/blizzard.png"));
+			return new CustomTexture(Gdx.files.internal("obstacles/blizzard.png"));
 		case FLOOD:
-			return new Texture(Gdx.files.internal("obstacles/flood.png"));
+			return new CustomTexture(Gdx.files.internal("obstacles/flood.png"));
 		case EARTHQUAKE:
-			return new Texture(Gdx.files.internal("obstacles/earthquake.png"));
+			return new CustomTexture(Gdx.files.internal("obstacles/earthquake.png"));
 		default:
 			return null;
 		}

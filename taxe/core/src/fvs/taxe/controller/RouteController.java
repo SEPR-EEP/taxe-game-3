@@ -137,6 +137,17 @@ public class RouteController {
     private void confirmed() {
     }
 
+    /**This method changes creates a new route controller for a train. It should
+     * be used when a train changes it's route while it's moving
+     * @param train The train which changed it's route
+     */
+    public void reroute(Train train){
+    	this.train = train;
+    	
+        @SuppressWarnings("unused")
+		TrainMoveController move = new TrainMoveController(context, train);
+    }
+
     /**This method is called when the routing is finalised by the player or cancelled. The existing route is dropped and the RouteController is set up for the next Routing.*/
     private void endRouting() {
         context.getGameLogic().setState(GameState.NORMAL);

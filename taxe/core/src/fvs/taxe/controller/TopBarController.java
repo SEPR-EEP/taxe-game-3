@@ -13,6 +13,7 @@ import fvs.taxe.TaxeGame;
 import gameLogic.Game;
 import gameLogic.GameState;
 import gameLogic.GameStateListener;
+import gameLogic.Player;
 import gameLogic.obstacle.Obstacle;
 import gameLogic.obstacle.ObstacleListener;
 import gameLogic.obstacle.ObstacleType;
@@ -24,6 +25,10 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import gameLogic.resource.ConnectionModifier;
+import gameLogic.resource.Resource;
+
+import java.util.List;
 
 /**Controller for the Top Bar of the GUI, changes the Top Bar.*/
 public class TopBarController {
@@ -36,6 +41,9 @@ public class TopBarController {
 
 	/**The end Turn Button used for the player to End the Turn.*/
 	private TextButton endTurnButton;
+
+	/** The modifyConnection button for entering edit connection state */
+	private TextButton modifyConnectionButton;
 
 	/**The replay button.*/
 	private Slider replaySpeedSlider;
@@ -198,6 +206,8 @@ public class TopBarController {
 			}
 		});
 
+		context.getStage().addActor(endTurnButton);
+
 		context.getGameLogic().subscribeStateChanged(new GameStateListener() {
 
 			@Override
@@ -215,54 +225,54 @@ public class TopBarController {
 		context.getStage().addActor(endTurnButton);
 	}
 
-	/**This method adds an End Turn button to the game that captures an on click event and notifies the game when the turn is over.*/
-	public void drawReplayButton() {
+	/** This method adds a Modify Connection button the game the captures an on click event and
+	 * notifies the game to enter connection editing mode
+	 * @author Team EEP*/
+	public void drawModifyConnectionButton(){
+		modifyConnectionButton = new TextButton("Modify Connection x"+(context.getGameLogic().getPlayerManager().getCurrentPlayer().getConnectionModifiers().size()+1), context.getSkin());
+		modifyConnectionButton.setPosition(TaxeGame.WIDTH - 300.0f, TaxeGame.HEIGHT - 33.0f);
+		modifyConnectionButton.setVisible(false);
 
 
-		replaySpeedSlider = new Slider(1.0f, 5.0f, 1.0f, false, context.getSkin());
-		replaySpeedSlider.setPosition(TaxeGame.WIDTH - 500.0f, TaxeGame.HEIGHT - 33.0f);
-		context.getStage().addActor(replaySpeedSlider);
-
-		replayButton = new TextButton("Loading", context.getSkin());
-		replayButton.setPosition(TaxeGame.WIDTH - 450.0f, TaxeGame.HEIGHT - 33.0f);
-		replayButton.setWidth();
-		replayButton.addListener(new ClickListener() {
+		modifyConnectionButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				// System.out.println("Replay speed is: " + replaySpeedSlider.getValue() + "x!");
-				ActorsManager.interruptAllTrains();
-				Game.getInstance().setGameSpeed(replaySpeedSlider.getValue());
-				Game.getInstance().createSnapshot();
-				Game.getInstance().replaySnapshot(0);
+
+				Player player = context.getGameLogic().getPlayerManager().getCurrentPlayer();
+				List<ConnectionModifier> connectionModifierList = player.getConnectionModifiers();
+
+				//Only respond to click if player has a connection modifier resource
+				if (!connectionModifierList.isEmpty()) {
+
+					//Remove a connection modifier resource from the players resource list
+					player.getResources().remove(player.getConnectionModifiers().get(0));
+
+					//Set game to editing state
+					context.getGameLogic().setState(GameState.EDITING);
+
+					displayFlashMessage("Select two stations to either connect or disconnect", Color.RED);
+				}
+
 			}
 		});
-		context.getStage().addActor(replayButton);
 
-		Timer timer = new Timer("Replay Timer");
-
-		TimerTask replayTask = new ReplayTask();
-		timer.scheduleAtFixedRate(replayTask, 100, 75);
-
-	}
-
-	class ReplayTask extends TimerTask {
-
-		@Override
-		public void run() {
-			if ( !Game.getInstance().replayMode ) {
-				replayButton.setText("Replay " + replaySpeedSlider.getValue() + "x");
-				return;
+		context.getGameLogic().subscribeStateChanged(new GameStateListener() {
+			@Override
+			public void changed(GameState state) {
+				//Set visible if game in normal state and play has connection modifier resources to be spent
+				Player player = context.getGameLogic().getPlayerManager().getCurrentPlayer();
+				if (state == GameState.NORMAL && !player.getConnectionModifiers().isEmpty()) {
+					modifyConnectionButton.setVisible(true);
+				} else {
+					modifyConnectionButton.setVisible(false);
+				}
 			}
 
-			if ( Game.getInstance().getState() == GameState.ANIMATING ) {
-				return;
-			}
+		});
 
-			int next = Game.getInstance().replayingSnapshot + 1;
-			Game.getInstance().replaySnapshot(next);
-			int percentage = (int) ( (float) next / (float) Game.getInstance().getSnapshotsNumber() * 100 );
-			replayButton.setText(percentage + "%");
-		}
+		context.getStage().addActor(modifyConnectionButton);
+
+
 	}
 
 

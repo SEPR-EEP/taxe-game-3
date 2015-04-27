@@ -34,6 +34,9 @@ public class Train extends Resource<TrainActor> {
      * and the turn number they arrived at that station */
     private List<Tuple<String, Integer>> history;
 
+    /** The station that the train is currently moving towards */
+    private Station nextStationOfRoute;
+
     /** Constructor for train initialises the names, images, speed, history and route
      * @param name The string that represents this train
      * @param leftImage The file name in assets/trains that corresponds to the left image
@@ -96,7 +99,11 @@ public class Train extends Resource<TrainActor> {
      * @param route Route that the train will take (as a list of stations)
      */
     public void setRoute(List<Station> route) {
-        if (route != null && route.size() > 0){
+        if (route != null && route.size() > 1){
+            nextStationOfRoute = route.get(1);
+        	finalDestination = route.get(route.size() - 1);
+        }else if(route != null && route.size() == 1){
+            nextStationOfRoute = route.get(0);
         	finalDestination = route.get(route.size() - 1);
         }
         this.route = route;
@@ -157,5 +164,33 @@ public class Train extends Resource<TrainActor> {
         if (getActor() != null) {
             setActor(null);
         }
+    }
+
+    /**
+     * Get the name of the station that the train most recently passed
+     * @return Name of station
+     * @author Team EEP
+     */
+    public String getMostRecentlyVisitedStation(){ return this.getHistory().get(this.getHistory().size()-1).getFirst(); }
+
+    /**
+     * Used by the TrainMoveController to specify the next station that the train needs to travel to as part of its route
+     * @param nextStation The next station the train is moving towards
+     * @author Team EEP
+     */
+    public void setNextStationOfRoute(Station nextStation) { this.nextStationOfRoute = nextStation; }
+
+
+    /**
+     * Get the name of the next station that the train needs to travel to as part of its route
+     * @return Name of the station, if the train has reached its final destination an empty string is returned
+     * @author Team EEP
+     */
+    public String getNextStationOfRoute(){
+
+        if (nextStationOfRoute == null) {
+            return "";
+        }
+        return this.nextStationOfRoute.getName();
     }
 }

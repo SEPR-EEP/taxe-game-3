@@ -4,6 +4,7 @@ import fvs.taxe.controller.TrainMoveController;
 import gameLogic.goal.GoalManager;
 import gameLogic.map.IPositionable;
 import gameLogic.map.Map;
+import gameLogic.map.Station;
 import gameLogic.obstacle.Obstacle;
 import gameLogic.obstacle.ObstacleListener;
 import gameLogic.obstacle.ObstacleManager;
@@ -12,6 +13,7 @@ import gameLogic.resource.Train;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.ArrayList;
 import java.util.List;
+
 import Util.Tuple;
 
 import com.badlogic.gdx.math.MathUtils;
@@ -241,6 +243,24 @@ public class Game implements Serializable {
 			}
 		});
 	}
+
+    public Station getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(Station origin) {
+        this.origin = origin;
+    }
+
+    public Station getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Station destination) {
+        this.destination = destination;
+    }
+
+    Station origin, destination;
 
 	/**Returns the main game instance.*/
 	public static Game getInstance() {

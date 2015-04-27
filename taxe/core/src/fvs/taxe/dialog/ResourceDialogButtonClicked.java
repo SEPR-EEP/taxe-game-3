@@ -17,7 +17,7 @@ import gameLogic.map.Station;
 import gameLogic.resource.Train;
 
 /**This class is a specific type fo ResourceDialogueClickListener for dialogue Buttons.*/
-public class DialogButtonClicked implements ResourceDialogClickListener {
+public class ResourceDialogButtonClicked implements ResourceDialogClickListener {
 	
 	/**The context of the game.*/
     private Context context;
@@ -33,7 +33,7 @@ public class DialogButtonClicked implements ResourceDialogClickListener {
      * @param player The current player for the dialogue.
      * @param train The train for the dialogue.
      */
-    public DialogButtonClicked(Context context, Player player, Train train) {
+    public ResourceDialogButtonClicked(Context context, Player player, Train train) {
         this.currentPlayer = player;
         this.train = train;
         this.context = context;

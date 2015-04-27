@@ -1,6 +1,7 @@
 package fvs.taxe.actor;
 
 
+import fvs.taxe.CustomTexture;
 import gameLogic.map.IPositionable;
 
 import com.badlogic.gdx.Gdx;
@@ -31,7 +32,17 @@ public class StationActor extends Image implements GenericActor {
 	 * @param location the location of the station actor
 	 */
 	public StationActor(IPositionable location) {
-		super(new Texture(Gdx.files.internal("station_dot.png")));
+		super(new CustomTexture(Gdx.files.internal("station_dot.png")));
+
+		setSize(width, height);
+		setPosition(location.getX() - width / 2, location.getY() - height / 2);
+	}
+	
+	/**Instantiation method
+	 * @param location the location of the station actor
+	 */
+	public StationActor(IPositionable location, CustomTexture texture) {
+		super(texture);
 
 		setSize(width, height);
 		setPosition(location.getX() - width / 2, location.getY() - height / 2);
