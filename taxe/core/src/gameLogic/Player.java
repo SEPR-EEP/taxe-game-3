@@ -116,7 +116,7 @@ public class Player implements Serializable {
      */
     public void removeResource(Resource resource) {
         resources.remove(resource);
-        resource.dispose();
+        // resource.dispose();
         changed();
     }
 
