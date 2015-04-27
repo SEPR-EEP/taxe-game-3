@@ -41,6 +41,8 @@ public class ActorsManager {
     public static void interruptAllTrains() {
         for ( GenericActor i: trainActors ) {
             TrainActor x = (TrainActor) i;
+            x.setPosition(-1, -1);
+            x.setVisible(false);
             x.clearActions();
         }
     }
