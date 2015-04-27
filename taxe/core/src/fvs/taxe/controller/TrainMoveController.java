@@ -123,6 +123,7 @@ public class TrainMoveController {
 		Station firstStation = train.getRoute().get(0);
 		IPositionable current = train.getPosition();
 
+
 		System.out.println("Initial position of the train atm is: " + current.getX() + ", " + current.getY());
 
 		action.addAction(beforeAction());

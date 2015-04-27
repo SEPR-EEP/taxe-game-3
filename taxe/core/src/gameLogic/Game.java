@@ -102,7 +102,7 @@ public class Game implements Serializable {
 	}
 	
 	/** The list of all Snapshots in memory. */
-	private List<Snapshot> snapshots = new ArrayList<Snapshot>();
+	private List<byte[]> snapshots = new ArrayList<byte[]>();
 
 	/**
 	 * This method creates a Snapshot of the current state and pushes it to the
@@ -115,7 +115,7 @@ public class Game implements Serializable {
 		Snapshot s = new Snapshot(playerManager, goalManager, resourceManager, obstacleManager, map,
 				state, confirmingTrain, confirmingPositions);
 		try {
-			this.snapshots.add(SerializationUtils.clone(s));
+			this.snapshots.add(SerializationUtils.serialize(s));
 		} catch (org.apache.commons.lang3.SerializationException e) {
 			e.printStackTrace();
 			System.exit(0);
@@ -176,7 +176,7 @@ public class Game implements Serializable {
 	public void replaySnapshot(int snapshotNumber) {
 		Snapshot s;
 		try {
-			s = snapshots.get(snapshotNumber);
+			s = SerializationUtils.deserialize(snapshots.get(snapshotNumber));
 		} catch (Exception e) {
 			// TODO Catch invalid index exception.
 			return;
