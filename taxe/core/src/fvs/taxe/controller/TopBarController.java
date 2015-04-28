@@ -237,23 +237,23 @@ public class TopBarController {
 		replaySpeedSlider.setPosition(TaxeGame.WIDTH - 500.0f, TaxeGame.HEIGHT - 33.0f);
 		context.getStage().addActor(replaySpeedSlider);
 		
-		replaySpeedSlider.addListener(new ClickListener(){
+		replaySpeedSlider.addListener(new ClickListener() {
 
 			@Override
 			public void touchUp(InputEvent event, float x, float y,
-					int pointer, int button) {
+								int pointer, int button) {
 				super.touchUp(event, x, y, pointer, button);
 				replaySpeedSlider.setVisible(false);
 			}
-			
-			
+
+
 //			@Override
 //			public void exit(InputEvent event, float x, float y, int pointer,
 //					Actor toActor) {
 //				replaySpeedSlider.setVisible(false);
 //			}		
-			
-			
+
+
 		});
 
 		replayButton = new TextButton("    Loading    ", context.getSkin());
@@ -270,13 +270,25 @@ public class TopBarController {
 				context.getStationController().drawConnections(Game.getInstance().getMap().getConnections(), Color.GRAY);
 				context.getStationController().drawStations();
 			}
-			
+
 			@Override
 			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 				replaySpeedSlider.setVisible(true);
 			}
 		});
-		
+
+		context.getGameLogic().subscribeStateChanged(new GameStateListener() {
+			@Override
+			public void changed(GameState state) {
+				if (state == GameState.NORMAL) {
+					replayButton.setVisible(true);
+				} else {
+					replayButton.setVisible(false);
+					replaySpeedSlider.setVisible(false);
+				}
+			}
+		});
+
 		context.getStage().addActor(replayButton);
 
 		replaySpeedSlider.setVisible(false);
