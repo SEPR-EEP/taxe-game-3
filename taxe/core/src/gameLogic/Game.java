@@ -333,7 +333,9 @@ public class Game implements Serializable {
 	/**Sets the GameState of the Game. Listeners are notified using stateChanged().*/
 	public void setState(GameState state) {
 		this.state = state;
-		this.createSnapshot();
+		if ( state != GameState.PLACING && state != GameState.ROUTING && state != GameState.WAITING ) {
+			this.createSnapshot();
+		}
 		stateChanged();
 	}
 
