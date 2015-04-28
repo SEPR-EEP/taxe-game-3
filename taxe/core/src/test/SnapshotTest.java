@@ -56,4 +56,21 @@ public class SnapshotTest extends LibGdxTest {
 
     }
 
+    @Test
+    public void testSetReplaySpeed() throws Exception {
+
+        assertEquals("Game speed should start at 1.0f", 1.0f, game.getGameSpeed(), 0);
+
+        //Set the speed to five times faster
+        game.setGameSpeed(5);
+
+        assertEquals("Game speed should now be five times faster", 5.0f, game.getGameSpeed(), 0);
+
+        //Set the speed to a quarter of original
+        game.setGameSpeed(0.25f);
+
+        assertEquals("Game speed should now be a quarter", 0.25f, game.getGameSpeed(), 0);
+
+    }
+
 }
