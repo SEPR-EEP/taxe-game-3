@@ -123,14 +123,22 @@ public class TrainMoveController {
 		action = new InterruptableSequenceAction();
 
 		Station firstStation = train.getRoute().get(0);
-		IPositionable current = train.getPosition();
+		Station secondStation = train.getRoute().get(1);
+		IPositionable current = new Position((int)(train.getActor().getX()+train.getActor().width/2), 
+				(int)(train.getActor().getY()+train.getActor().height/2));
+		
+//		System.out.println("Y = " + train.getActor().getY());
+//		System.out.println("Height = " + train.getActor().height/2);
 
 
 		System.out.println("Initial position of the train atm is: " + current.getX() + ", " + current.getY());
 
 		action.addAction(beforeAction());
-		action.addAction(moveTo(firstStation.getLocation().getX() - TrainActor.width / 2, firstStation.getLocation().getY() - TrainActor.height / 2, 0));
-
+		
+		if (firstStation != secondStation) {
+			action.addAction(moveTo(firstStation.getLocation().getX() - TrainActor.width / 2, firstStation.getLocation().getY() - TrainActor.height / 2, 0));
+		}
+		
 		boolean first = true;
 		int stationIndex = 0;
 
@@ -141,12 +149,18 @@ public class TrainMoveController {
 				first = false;
 				continue;
 			}
-
+			
 			IPositionable next = station.getLocation();
+			
+			System.out.println("Train Speed = " + train.getSpeed());
+			System.out.println("Train Position = " + current.getX() + " " + current.getY());
+			System.out.println("Next Position = " + next.getX() + " " + next.getY());System.out.println("Train Speed = " + train.getSpeed());
+			System.out.println("Distance = " + getDistance(current, next));
+			
 			float duration = getDistance(current, next) / train.getSpeed();
-			System.out.println("I will move the train for " + duration + " seconds");
+			System.out.println("I will move the train for " + duration + " seconds \n");
 			action.addAction(moveTo(next.getX() - TrainActor.width / 2, next.getY() - TrainActor.height / 2, duration));
-
+			
 			Station nextStationOfRoute;
 			if (stationIndex < train.getRoute().size() - 1){
 				nextStationOfRoute = train.getRoute().get(stationIndex+1);

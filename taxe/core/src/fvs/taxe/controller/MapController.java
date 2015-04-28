@@ -196,8 +196,11 @@ public class MapController {
 					Station lastStation = context.getGameLogic().getMap().getStationByName(train.getHistory().get(train.getHistory().size()-1).getFirst());
 
                     if(route.indexOf(lastStation) + 1 < route.indexOf(endStation)){
-                        train.setRoute(new ArrayList(route.subList(route.indexOf(lastStation) + 1,
-                                route.indexOf(endStation) + 1)));
+                    	ArrayList<Station> arrList = new ArrayList<Station>();
+                    	arrList.add(route.get(route.indexOf(lastStation)+1));
+                        arrList.addAll((new ArrayList(route.subList(route.indexOf(lastStation)+1,
+                                route.indexOf(endStation)+1))));
+                        train.setRoute(arrList);
                         context.getRouteController().reroute(train);
                     }
                     System.out.println(train.getSpeed());
