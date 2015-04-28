@@ -1,5 +1,6 @@
 package gameLogic;
 
+import Util.ActorsManager;
 import fvs.taxe.controller.TrainMoveController;
 import gameLogic.goal.GoalManager;
 import gameLogic.map.IPositionable;
@@ -211,7 +212,9 @@ public class Game implements Serializable {
 		System.out.println("  Replay mode " + (replayMode? "is still active.": "has been now deactivated."));
 
 		if (!replayMode) {
+			// End of replay actions
 			getInstance().setGameSpeed(1.0f);
+			ActorsManager.showAllObstacles();
 		}
 
 	}
@@ -391,4 +394,15 @@ public class Game implements Serializable {
 		}
 		
 	}
+
+	private void deactivateAllObstacles() {
+		ArrayList<Tuple<Obstacle, Float>> obstacles = obstacleManager.getObstacles();
+		for (int i = 0; i< obstacles.size(); i++) {
+			Obstacle obstacle = obstacles.get(i).getFirst();
+			if (obstacle.isActive()) {
+				obstacle.end();
+			}
+		}
+	}
+
 }

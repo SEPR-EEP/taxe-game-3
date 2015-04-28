@@ -1,6 +1,8 @@
 package Util;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import fvs.taxe.actor.GenericActor;
+import fvs.taxe.actor.ObstacleActor;
 import fvs.taxe.actor.TrainActor;
 import sun.net.www.content.text.Generic;
 
@@ -20,6 +22,7 @@ public class ActorsManager {
 
     private static HashMap<String, GenericActor> actors = new HashMap<String, GenericActor>();
     private static List<GenericActor> trainActors = new ArrayList<GenericActor>();
+    private static List<ObstacleActor> hiddenActors = new ArrayList<ObstacleActor>();
 
     public static GenericActor get(String s) {
         return ActorsManager.actors.get(s);
@@ -44,6 +47,24 @@ public class ActorsManager {
             x.setPosition(-1, -1);
             x.setVisible(false);
             x.clearActions();
+        }
+    }
+
+    public static void hideAllObstacles() {
+        hiddenActors.clear();
+        for ( GenericActor a: actors.values() ) {
+            if (a instanceof ObstacleActor) {
+                if (((ObstacleActor) a).isVisible()) {
+                    hiddenActors.add((ObstacleActor) a);
+                    ((ObstacleActor) a).setVisible(false);
+                }
+            }
+        }
+    }
+
+    public static void showAllObstacles() {
+        for ( ObstacleActor a: hiddenActors ) {
+            a.setVisible(true);
         }
     }
 

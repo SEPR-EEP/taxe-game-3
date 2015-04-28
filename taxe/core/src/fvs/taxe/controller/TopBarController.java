@@ -277,6 +277,8 @@ public class TopBarController {
 
 				// System.out.println("Replay speed is: " + replaySpeedSlider.getValue() + "x!");
 				ActorsManager.interruptAllTrains();
+				ActorsManager.hideAllObstacles();
+
 				Game.getInstance().setGameSpeed(replaySpeedSlider.getValue());
 				Game.getInstance().createSnapshot();
 				Game.getInstance().replaySnapshot(0);
