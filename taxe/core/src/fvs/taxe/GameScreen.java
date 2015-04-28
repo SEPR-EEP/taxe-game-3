@@ -224,6 +224,8 @@ public class GameScreen extends ScreenAdapter {
 		int percentage = (int) ( (float) next / (float) Game.getInstance().getSnapshotsNumber() * 100 );
 		topBarController.replayButton.setText(percentage + "%");
 
+		gameLogic.getPlayerManager().playerChanged();
+
 	}
 	@Override
 	public void show() {
