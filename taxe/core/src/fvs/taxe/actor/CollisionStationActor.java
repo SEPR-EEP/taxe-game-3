@@ -7,7 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 /**This class is a type of image specifically for collisions for stations.*/
-public class CollisionStationActor extends Image {
+public class CollisionStationActor extends Image implements GenericActor {
 	/**The width of a Station's collision area in pixels.*/
 	private final int width =16;
 	

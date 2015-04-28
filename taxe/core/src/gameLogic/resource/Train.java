@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** The class that represents a train- defined by its name and speed */
-public class Train extends Resource {
+public class Train extends Resource<TrainActor> {
 	/** The string location of the png file that represents this train when moving to the left */
     private String leftImage;
     
@@ -18,10 +18,7 @@ public class Train extends Resource {
     
     /** The position that the Train is located at */
     private IPositionable position;
-    
-    /** The TrainActor that is associated with the Train object */
-    private TrainActor actor;
-    
+
     /** The number of pixels the train will move per turn */
     private int speed;
     
@@ -94,20 +91,6 @@ public class Train extends Resource {
         return position;
     }
 
-    /** Set the Train to correspond to the given TrainActor 
-     * @param actor The actor that represents this train
-     */
-    public void setActor(TrainActor actor) {
-        this.actor = actor;
-    }
-
-    /** Get the actor that represents this train
-     * @return The actor that represents the train, or null if none set
-     */
-    public TrainActor getActor() {
-        return actor;
-    }
-
     /** Set the route (represented at list of stations) of the train to be the given route and set the finalDestination to be last station in route
      * @param route Route that the train will take (as a list of stations)
      */
@@ -170,8 +153,8 @@ public class Train extends Resource {
 
     @Override
     public void dispose() {
-        if (actor != null) {
-            actor.remove();
+        if (getActor() != null) {
+            setActor(null);
         }
     }
 }
