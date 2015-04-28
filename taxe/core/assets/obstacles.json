@@ -33,12 +33,12 @@
 	{
 	"type": "Volcano",
 	"station": "Rome",
-	"prob": 0.2
+	"prob": 1
 	},
 	{
 	"type": "Volcano",
 	"station": "London",
-	"prob": 0.00000001
+	"prob": 1
 	},
 	{
 	"type": "Earthquake",

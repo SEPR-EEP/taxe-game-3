@@ -9,5 +9,6 @@ public enum GameState {
     WAITING,
 	EDITING,
     CONFIRMEDIT,
-	CONFIRMING
+	CONFIRMING,
+    DESTROYING
 }

@@ -49,6 +49,16 @@ public class Game implements Serializable {
 	/**List of listeners that listen to changes in obstacles.*/
 	private List<ObstacleListener> obstacleListeners = new ArrayList<ObstacleListener>();
 	private Train confirmingTrain;
+
+	public Train getTrainToDestroy() {
+		return trainToDestroy;
+	}
+
+	public void setTrainToDestroy(Train trainToDestroy) {
+		this.trainToDestroy = trainToDestroy;
+	}
+
+	private Train trainToDestroy;
 	private List<IPositionable> confirmingPositions;
 
 	public void setConfirmingTrain(Train confirmingTrain) {
@@ -91,9 +101,10 @@ public class Game implements Serializable {
 		public List<IPositionable> confirmingPositions;
 		public Station origin;
 		public Station destination;
+		public Train trainToDestroy;
 		public Snapshot(
 				PlayerManager b, GoalManager c, ResourceManager d, ObstacleManager e, Map f,
-				GameState g, Train h, List<IPositionable> i, Station j, Station k
+				GameState g, Train h, List<IPositionable> i, Station j, Station k, Train l
 		) {
 			players = b.getPlayers();
 			currentTurn = b.getCurrentTurn();
@@ -105,6 +116,8 @@ public class Game implements Serializable {
 			confirmingTrain = h; confirmingPositions = i;
 
 			origin = j; destination = k;
+
+			trainToDestroy = l;
 		}
 	}
 	
@@ -120,7 +133,7 @@ public class Game implements Serializable {
 			return;
 		}
 		Snapshot s = new Snapshot(playerManager, goalManager, resourceManager, obstacleManager, map,
-				state, confirmingTrain, confirmingPositions, origin, destination);
+				state, confirmingTrain, confirmingPositions, origin, destination, trainToDestroy);
 		try {
 			this.snapshots.add(SerializationUtils.serialize(s));
 		} catch (org.apache.commons.lang3.SerializationException e) {
@@ -146,6 +159,7 @@ public class Game implements Serializable {
 		Game.getInstance().setConfirmingTrain(s.confirmingTrain);
 		Game.getInstance().setOrigin(s.origin);
 		Game.getInstance().setDestination(s.destination);
+		Game.getInstance().setTrainToDestroy(s.trainToDestroy);
 		goalManager = s.goalManager;
 		resourceManager = s.resourceManager; obstacleManager = s.obstacleManager; map = s.map;
 		state = s.state;
