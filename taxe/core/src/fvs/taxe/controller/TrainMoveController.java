@@ -125,9 +125,14 @@ public class TrainMoveController {
 
 		Station firstStation = train.getRoute().get(0);
 		Station secondStation = train.getRoute().get(1);
-		IPositionable current = new Position((int)(train.getActor().getX()+train.getActor().width/2), 
-				(int)(train.getActor().getY()+train.getActor().height/2));
-		
+		boolean rerouting = firstStation == secondStation;
+		IPositionable current;
+		if ( rerouting ) {
+			current = new Position((int)(train.getActor().getX()+train.getActor().width/2),         
+		         				(int)(train.getActor().getY()+train.getActor().height/2));                                    
+		} else {
+			current = train.getPosition();
+		}
 //		System.out.println("Y = " + train.getActor().getY());
 //		System.out.println("Height = " + train.getActor().height/2);
 
@@ -136,7 +141,7 @@ public class TrainMoveController {
 
 		action.addAction(beforeAction());
 		
-		if (firstStation != secondStation) {
+		if (!rerouting) {
 			action.addAction(moveTo(firstStation.getLocation().getX() - TrainActor.width / 2, firstStation.getLocation().getY() - TrainActor.height / 2, 0));
 		}
 		
