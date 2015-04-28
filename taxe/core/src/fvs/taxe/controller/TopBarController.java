@@ -44,10 +44,10 @@ public class TopBarController {
 	private Context context;
 
 	/**The end Turn Button used for the player to End the Turn.*/
-	private TextButton endTurnButton;
+	public TextButton endTurnButton;
 
 	/** The modifyConnection button for entering edit connection state */
-	private TextButton modifyConnectionButton;
+	public TextButton modifyConnectionButton;
 
 	/**The replay button.*/
 	public Slider replaySpeedSlider;
@@ -195,14 +195,16 @@ public class TopBarController {
 		endTurnButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				context.getGameLogic().getPlayerManager().turnOver();
+				if ( !Game.getInstance().replayMode ) {
+					context.getGameLogic().getPlayerManager().turnOver();
+				}
 			}
 		});
 
 		context.getGameLogic().subscribeStateChanged(new GameStateListener() {
 			@Override
 			public void changed(GameState state) {
-				if (state == GameState.NORMAL) {
+				if (state == GameState.NORMAL ) {
 					endTurnButton.setVisible(true);
 				} else {
 					endTurnButton.setVisible(false);
@@ -256,14 +258,6 @@ public class TopBarController {
 
 		});
 
-		replaySpeedSlider.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				if ( Game.getInstance().replayMode ) {
-					Game.getInstance().setGameSpeed(replaySpeedSlider.getValue());
-				}
-			}
-		});
 
 		replayButton = new TextButton("    Loading    ", context.getSkin());
 		replayButton.setPosition(TaxeGame.WIDTH - 350.0f, TaxeGame.HEIGHT - 33.0f);
@@ -271,7 +265,7 @@ public class TopBarController {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 
-				if ( Game.getInstance().replayMode ) {
+				if (Game.getInstance().replayMode) {
 					return;
 				}
 
@@ -289,7 +283,9 @@ public class TopBarController {
 
 			@Override
 			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-				replaySpeedSlider.setVisible(true);
+				if ( !Game.getInstance().replayMode ) {
+					replaySpeedSlider.setVisible(true);
+				}
 			}
 		});
 
@@ -350,7 +346,8 @@ public class TopBarController {
 			public void changed(GameState state) {
 				//Set visible if game in normal state and play has connection modifier resources to be spent
 				Player player = context.getGameLogic().getPlayerManager().getCurrentPlayer();
-				if (state == GameState.NORMAL && !player.getConnectionModifiers().isEmpty()) {
+				if (state == GameState.NORMAL
+						&& !player.getConnectionModifiers().isEmpty()) {
 					modifyConnectionButton.setVisible(true);
 				} else {
 					modifyConnectionButton.setVisible(false);

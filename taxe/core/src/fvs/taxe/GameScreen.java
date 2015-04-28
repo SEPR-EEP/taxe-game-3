@@ -226,6 +226,12 @@ public class GameScreen extends ScreenAdapter {
 
 		gameLogic.getPlayerManager().playerChanged();
 
+		if ( next + 1 < Game.getInstance().getSnapshotsNumber() ) {
+			// Every time, except when the replay finishes.
+			topBarController.modifyConnectionButton.setVisible(false);
+			topBarController.endTurnButton.setVisible(false);
+		}
+
 	}
 	@Override
 	public void show() {

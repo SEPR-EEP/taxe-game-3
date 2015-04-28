@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import fvs.taxe.TaxeGame;
 import fvs.taxe.dialog.GoalClicked;
 import fvs.taxe.dialog.GoalDeleteClicked;
+import gameLogic.Game;
 import gameLogic.Player;
 import gameLogic.PlayerChangedListener;
 import gameLogic.PlayerManager;
@@ -71,7 +72,9 @@ public class GoalController {
 			deleteButton.setColor(Color.RED);
 			deleteButton.setPosition(x + button.getWidth() + 5, y);
 			deleteButton.addListener(new GoalDeleteClicked(context, goal));
-			goalButtons.addActor(deleteButton);
+			if ( !Game.getInstance().replayMode ) {
+				goalButtons.addActor(deleteButton);
+			}
 
 		}
 
