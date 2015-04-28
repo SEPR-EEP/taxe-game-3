@@ -279,6 +279,7 @@ public class TopBarController {
 
 				context.getStationController().drawConnections(Game.getInstance().getMap().getConnections(), Color.GRAY);
 				context.getStationController().drawStations();
+				context.getStationController().redrawTrains();
 			}
 
 			@Override

@@ -32,7 +32,7 @@ public class StationController {
 	public final static int CONNECTION_LINE_WIDTH = 5;
 
 	/**The context of the game.*/
-	private Context context;
+	private static Context context;
 	
 	/**The ToolTip to be used to display Station information.*/
 	private Tooltip tooltip;
@@ -144,6 +144,15 @@ public class StationController {
 				ConnectionActor connectionActor = new ConnectionActor(Color.GRAY, start, end, CONNECTION_LINE_WIDTH);
 				connection.setActor(connectionActor);
 				context.getStage().addActor(connectionActor);
+			}
+		}
+	}
+	
+	public static void redrawTrains(){
+		//Add all train actors to the stage again so they are on top
+		for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()){
+			for(Resource<?> train : player.getActiveTrains()){
+				context.getStage().addActor(((Train)train).getActor());
 			}
 		}
 	}

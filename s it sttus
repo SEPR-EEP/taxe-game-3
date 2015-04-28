@@ -1,0 +1,116 @@
+[1mdiff --git a/taxe/core/src/fvs/taxe/controller/TopBarController.java b/taxe/core/src/fvs/taxe/controller/TopBarController.java[m
+[1mindex 32fb9a4..626b4fd 100755[m
+[1m--- a/taxe/core/src/fvs/taxe/controller/TopBarController.java[m
+[1m+++ b/taxe/core/src/fvs/taxe/controller/TopBarController.java[m
+[36m@@ -4,11 +4,13 @@[m [mimport static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;[m
+ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;[m
+ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;[m
+ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;[m
+[31m-[m
+ import Util.ActorsManager;[m
+[32m+[m
+ import com.badlogic.gdx.scenes.scene2d.Actor;[m
+[32m+[m[32mimport com.badlogic.gdx.scenes.scene2d.InputListener;[m
+ import com.badlogic.gdx.scenes.scene2d.ui.Slider;[m
+ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;[m
+[32m+[m
+ import fvs.taxe.TaxeGame;[m
+ import gameLogic.Game;[m
+ import gameLogic.GameState;[m
+[36m@@ -17,6 +19,7 @@[m [mimport gameLogic.Player;[m
+ import gameLogic.obstacle.Obstacle;[m
+ import gameLogic.obstacle.ObstacleListener;[m
+ import gameLogic.obstacle.ObstacleType;[m
+[32m+[m
+ import java.util.Timer;[m
+ import java.util.TimerTask;[m
+ [m
+[36m@@ -25,6 +28,7 @@[m [mimport com.badlogic.gdx.scenes.scene2d.InputEvent;[m
+ import com.badlogic.gdx.scenes.scene2d.ui.Label;[m
+ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;[m
+ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;[m
+[32m+[m
+ import gameLogic.resource.ConnectionModifier;[m
+ import gameLogic.resource.Resource;[m
+ [m
+[36m@@ -187,7 +191,7 @@[m [mpublic class TopBarController {[m
+ 	/**This method adds an End Turn button to the game that captures an on click event and notifies the game when the turn is over.*/[m
+ 	public void drawEndTurnButton() {[m
+ 		endTurnButton = new TextButton("End Turn", context.getSkin());[m
+[31m-		endTurnButton.setPosition(TaxeGame.WIDTH - 100.0f, TaxeGame.HEIGHT - 33.0f);[m
+[32m+[m		[32mendTurnButton.setPosition(TaxeGame.WIDTH - 80.0f, TaxeGame.HEIGHT - 33.0f);[m
+ 		endTurnButton.addListener(new ClickListener() {[m
+ 			@Override[m
+ 			public void clicked(InputEvent event, float x, float y) {[m
+[36m@@ -232,9 +236,28 @@[m [mpublic class TopBarController {[m
+ 		replaySpeedSlider = new Slider(1.0f, 5.0f, 1.0f, false, context.getSkin());[m
+ 		replaySpeedSlider.setPosition(TaxeGame.WIDTH - 500.0f, TaxeGame.HEIGHT - 33.0f);[m
+ 		context.getStage().addActor(replaySpeedSlider);[m
+[32m+[m[41m		[m
+[32m+[m		[32mreplaySpeedSlider.addListener(new ClickListener(){[m
+[32m+[m
+[32m+[m			[32m@Override[m
+[32m+[m			[32mpublic void touchUp(InputEvent event, float x, float y,[m
+[32m+[m					[32mint pointer, int button) {[m
+[32m+[m				[32msuper.touchUp(event, x, y, pointer, button);[m
+[32m+[m				[32mreplaySpeedSlider.setVisible(false);[m
+[32m+[m			[32m}[m
+[32m+[m[41m			[m
+[32m+[m[41m			[m
+[32m+[m[32m//			@Override[m
+[32m+[m[32m//			public void exit(InputEvent event, float x, float y, int pointer,[m
+[32m+[m[32m//					Actor toActor) {[m
+[32m+[m[32m//				replaySpeedSlider.setVisible(false);[m
+[32m+[m[32m//			}[m[41m		[m
+[32m+[m[41m			[m
+[32m+[m[41m			[m
+[32m+[m		[32m});[m
+ [m
+[31m-		replayButton = new TextButton("Loading", context.getSkin());[m
+[31m-		replayButton.setPosition(TaxeGame.WIDTH - 450.0f, TaxeGame.HEIGHT - 33.0f);[m
+[32m+[m		[32mreplayButton = new TextButton("    Loading    ", context.getSkin());[m
+[32m+[m		[32mreplayButton.setPosition(TaxeGame.WIDTH - 350.0f, TaxeGame.HEIGHT - 33.0f);[m
+ 		replayButton.addListener(new ClickListener() {[m
+ 			@Override[m
+ 			public void clicked(InputEvent event, float x, float y) {[m
+[36m@@ -247,14 +270,20 @@[m [mpublic class TopBarController {[m
+ 				context.getStationController().drawConnections(Game.getInstance().getMap().getConnections(), Color.GRAY);[m
+ 				context.getStationController().drawStations();[m
+ 			}[m
+[32m+[m[41m			[m
+[32m+[m			[32m@Override[m
+[32m+[m			[32mpublic void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {[m
+[32m+[m				[32mreplaySpeedSlider.setVisible(true);[m
+[32m+[m			[32m}[m
+ 		});[m
+[32m+[m[41m		[m
+ 		context.getStage().addActor(replayButton);[m
+ [m
+ 		Timer timer = new Timer("Replay Timer");[m
+ [m
+ 		TimerTask replayTask = new ReplayTask();[m
+ 		timer.scheduleAtFixedRate(replayTask, 100, 75);[m
+[31m-[m
+[32m+[m		[32mreplaySpeedSlider.setVisible(false);[m
+ 	}[m
+ [m
+ 	class ReplayTask extends TimerTask {[m
+[36m@@ -274,6 +303,7 @@[m [mpublic class TopBarController {[m
+ 			Game.getInstance().replaySnapshot(next);[m
+ 			int percentage = (int) ( (float) next / (float) Game.getInstance().getSnapshotsNumber() * 100 );[m
+ 			replayButton.setText(percentage + "%");[m
+[32m+[m[41m			[m
+ 		}[m
+ 	}[m
+ [m
+[36m@@ -281,8 +311,8 @@[m [mpublic class TopBarController {[m
+ 	 * notifies the game to enter connection editing mode[m
+ 	 * @author Team EEP*/[m
+ 	public void drawModifyConnectionButton() {[m
+[31m-		modifyConnectionButton = new TextButton("Modify Connection x" + (context.getGameLogic().getPlayerManager().getCurrentPlayer().getConnectionModifiers().size() + 1), context.getSkin());[m
+[31m-		modifyConnectionButton.setPosition(TaxeGame.WIDTH - 300.0f, TaxeGame.HEIGHT - 33.0f);[m
+[32m+[m		[32mmodifyConnectionButton = new TextButton("Mod Connection x" + (context.getGameLogic().getPlayerManager().getCurrentPlayer().getConnectionModifiers().size() + 1), context.getSkin());[m
+[32m+[m		[32mmodifyConnectionButton.setPosition(TaxeGame.WIDTH - 240.0f, TaxeGame.HEIGHT - 33.0f);[m
+ 		modifyConnectionButton.setVisible(false);[m
+ [m
+ [m
