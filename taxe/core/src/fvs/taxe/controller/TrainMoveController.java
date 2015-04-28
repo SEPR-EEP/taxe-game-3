@@ -3,6 +3,7 @@ package fvs.taxe.controller;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import fvs.taxe.actor.TrainActor;
 import gameLogic.Game;
+import gameLogic.GameState;
 import gameLogic.Player;
 import gameLogic.TurnListener;
 import gameLogic.map.CollisionStation;
@@ -215,9 +216,9 @@ public class TrainMoveController {
 	private void obstacleCollision(Station station) {
 		// works out if the station has an obstacle active there, whether to destroy the train
 		if (Game.getInstance().replayMode == false && station.hasObstacle() && MathUtils.randomBoolean(station.getObstacle().getDestructionChance())){
-			train.getActor().remove();
-			train.getPlayer().removeResource(train);
-			context.getTopBarController().displayFlashMessage("Your train was hit by a natural disaster...", Color.BLACK, Color.RED, 4);
+
+			Game.getInstance().setTrainToDestroy(train);
+			Game.getInstance().setState(GameState.DESTROYING);
 		}
 	}
 

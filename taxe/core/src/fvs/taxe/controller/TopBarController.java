@@ -50,8 +50,8 @@ public class TopBarController {
 	private TextButton modifyConnectionButton;
 
 	/**The replay button.*/
-	private Slider replaySpeedSlider;
-	private TextButton replayButton;
+	public Slider replaySpeedSlider;
+	public TextButton replayButton;
 
 	/**Label for displaying a message to the player.*/
 	private Label flashMessage;
@@ -237,23 +237,32 @@ public class TopBarController {
 		replaySpeedSlider.setPosition(TaxeGame.WIDTH - 500.0f, TaxeGame.HEIGHT - 33.0f);
 		context.getStage().addActor(replaySpeedSlider);
 		
-		replaySpeedSlider.addListener(new ClickListener(){
+		replaySpeedSlider.addListener(new ClickListener() {
 
 			@Override
 			public void touchUp(InputEvent event, float x, float y,
-					int pointer, int button) {
+								int pointer, int button) {
 				super.touchUp(event, x, y, pointer, button);
 				replaySpeedSlider.setVisible(false);
 			}
-			
-			
+
+
 //			@Override
 //			public void exit(InputEvent event, float x, float y, int pointer,
 //					Actor toActor) {
 //				replaySpeedSlider.setVisible(false);
 //			}		
-			
-			
+
+
+		});
+
+		replaySpeedSlider.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				if ( Game.getInstance().replayMode ) {
+					Game.getInstance().setGameSpeed(replaySpeedSlider.getValue());
+				}
+			}
 		});
 
 		replayButton = new TextButton("    Loading    ", context.getSkin());
@@ -261,8 +270,15 @@ public class TopBarController {
 		replayButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+
+				if ( Game.getInstance().replayMode ) {
+					return;
+				}
+
 				// System.out.println("Replay speed is: " + replaySpeedSlider.getValue() + "x!");
 				ActorsManager.interruptAllTrains();
+				ActorsManager.hideAllObstacles();
+
 				Game.getInstance().setGameSpeed(replaySpeedSlider.getValue());
 				Game.getInstance().createSnapshot();
 				Game.getInstance().replaySnapshot(0);
@@ -270,42 +286,33 @@ public class TopBarController {
 				context.getStationController().drawConnections(Game.getInstance().getMap().getConnections(), Color.GRAY);
 				context.getStationController().drawStations();
 			}
-			
+
 			@Override
 			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 				replaySpeedSlider.setVisible(true);
 			}
 		});
-		
+
+		context.getGameLogic().subscribeStateChanged(new GameStateListener() {
+			@Override
+			public void changed(GameState state) {
+				if (state == GameState.NORMAL) {
+					replayButton.setVisible(true);
+				} else {
+					if ( !Game.getInstance().replayMode ) {
+						replayButton.setVisible(false);
+					}
+					replaySpeedSlider.setVisible(false);
+				}
+			}
+		});
+
 		context.getStage().addActor(replayButton);
 
-		Timer timer = new Timer("Replay Timer");
-
-		TimerTask replayTask = new ReplayTask();
-		timer.scheduleAtFixedRate(replayTask, 100, 75);
 		replaySpeedSlider.setVisible(false);
 	}
 
-	class ReplayTask extends TimerTask {
 
-		@Override
-		public void run() {
-			if ( !Game.getInstance().replayMode ) {
-				replayButton.setText("Replay " + replaySpeedSlider.getValue() + "x");
-				return;
-			}
-
-			if ( Game.getInstance().getState() == GameState.ANIMATING ) {
-				return;
-			}
-
-			int next = Game.getInstance().replayingSnapshot + 1;
-			Game.getInstance().replaySnapshot(next);
-			int percentage = (int) ( (float) next / (float) Game.getInstance().getSnapshotsNumber() * 100 );
-			replayButton.setText(percentage + "%");
-			
-		}
-	}
 
 	/** This method adds a Modify Connection button the game the captures an on click event and
 	 * notifies the game to enter connection editing mode

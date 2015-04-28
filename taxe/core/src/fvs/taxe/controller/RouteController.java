@@ -167,6 +167,7 @@ public class RouteController {
     public void drawRoute(Color color) {
         for (Connection connection : connections) {
         	connection.getActor().setConnectionColor(color);
+            connection.getActor().setZIndex(10);
         }
     }
 }

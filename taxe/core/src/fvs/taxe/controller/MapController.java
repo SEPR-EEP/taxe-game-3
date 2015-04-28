@@ -67,9 +67,13 @@ public class MapController {
                     return;
                 }
 
+				Station o, d;
+				o = Game.getInstance().getOrigin();
+				d = Game.getInstance().getDestination();
+
                 Boolean success;
 
-                if (context.getGameLogic().getMap().getConnection(origin.getName(), destination.getName()) == null) {
+                if (context.getGameLogic().getMap().getConnection(o.getName(), d.getName()) == null) {
                     success = addConnection();
                 } else {
                     success = removeConnection();
@@ -130,6 +134,8 @@ public class MapController {
 			}
 		}
 
+		System.out.println("Adding a connection between " + connection.getStation1().getName() + " and " + connection.getStation2().getName());
+
 		//Create Actor for the new connection
 		final IPositionable start = connection.getStation1().getLocation();
 		final IPositionable end = connection.getStation2().getLocation();
@@ -139,6 +145,7 @@ public class MapController {
 		//Add connection to Map and Actor to Stage
 		context.getGameLogic().getMap().addConnection(connection.getStation1(), connection.getStation2());
 		context.getGameLogic().getMap().getConnection(connection.getStation1().getName(), connection.getStation2().getName()).setActor(connectionActor);
+		connectionActor.setZIndex(5);
 		context.getStage().addActor(connectionActor);
 
 		//Add actors for the stations again so they are on top
@@ -209,18 +216,15 @@ public class MapController {
 		}
 
 		Connection  connection = context.getGameLogic().getMap().getConnection(origin.getName(), destination.getName());
-		Image connectionActor = connection.getActor();
+		ConnectionActor connectionActor = connection.getActor();
 
 		//Remove actor from game view
 		Array<Actor> actors = context.getStage().getActors();
-		connection.setActor(null);
 		System.out.println("I removed that actor from the connection.");
-		for(Actor actor : actors){
-			if(actor == connectionActor){
-				actor.remove();
-				System.out.println("I removed an actor from the stage, ah-ah!");
-			}
+		if ( connection.getActor() != null ) {
+			connection.getActor().remove();
 		}
+		connection.setActor(null);
 
 		//Remove connection from game logic
 		context.getGameLogic().getMap().removeConnection(origin, destination);

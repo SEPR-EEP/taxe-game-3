@@ -124,6 +124,19 @@ public class StationController {
 	 * @param color The color of the connections.
 	 */
 	public void drawConnections(List<Connection> connections, final Color color) {
+
+		// Reset everything
+		for ( Actor a: context.getStage().getActors() ) {
+			if ( a instanceof ConnectionActor ) {
+				for ( Connection c: connections ) {
+					if (c.getActor() == a) {
+						c.setActor(null);
+					}
+				}
+				a.remove();
+			}
+		}
+
 		for (Connection connection : connections) {
 			final IPositionable start = connection.getStation1().getLocation();
 			final IPositionable end = connection.getStation2().getLocation();
