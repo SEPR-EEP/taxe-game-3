@@ -19,7 +19,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="fvs.taxe.dialog.DialogButtonClicked" project="taxe-core" 
+  <class id="3" language="java" name="fvs.taxe.dialog.ResourceDialogButtonClicked" project="taxe-core"
     file="/taxe-core/src/fvs/taxe/dialog/DialogButtonClicked.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="153" width="224" x="611" y="114"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

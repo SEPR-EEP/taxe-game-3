@@ -1,15 +1,17 @@
 package Util;
 
 import fvs.taxe.actor.GenericActor;
+import gameLogic.resource.Train;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.io.Serializable;
 
 
 /**
  * Created by alfioemanuele on 3/2/15.
  */
-public class HasActor<Type> {
+public class HasActor<Type> implements Serializable {
     String myUniqueID;
 
     private void generateRandomUniqueID() {
@@ -32,6 +34,9 @@ public class HasActor<Type> {
 
     public void setActor(Type a) {
         ensureRandomUniqueID();
+        if ( this instanceof Train) {
+            ActorsManager.addTrainActor((GenericActor) a);
+        }
         ActorsManager.put(myUniqueID, (GenericActor) a);
     }
 

@@ -46,7 +46,7 @@ public class TrainActor extends Image implements GenericActor {
         rightDrawable = new Image(new CustomTexture(Gdx.files.internal(train.getRightImage()))).getDrawable();
 
         IPositionable position = train.getPosition();
-
+        this.setZIndex(20);
         train.setActor(this);
         this.train = train;
         setSize(width, height);

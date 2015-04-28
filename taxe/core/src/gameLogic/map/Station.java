@@ -70,5 +70,9 @@ public class Station extends HasActor<StationActor> {
 	public void clearObstacle() {
 		this.obstacle = null;
 	}
-	
+
+	public boolean equals(Station other) {
+		return this.getName().equals(other.getName());
+	}
+
 }

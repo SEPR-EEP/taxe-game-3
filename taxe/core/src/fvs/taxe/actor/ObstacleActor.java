@@ -5,6 +5,7 @@ import gameLogic.map.IPositionable;
 import gameLogic.obstacle.Obstacle;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 /**This class is a type of image specifically for creating Obstacles.*/
