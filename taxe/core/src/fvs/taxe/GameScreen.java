@@ -90,6 +90,12 @@ public class GameScreen extends ScreenAdapter {
 
 	/**Variable that is used to visibly "rumble" the game when an obstacle is placed.*/
 	private Rumble rumble;
+
+	/**Time passed from last execution of the replay timer*/
+	private float lastTimer;
+
+	/** Approximate time between executions of the replay timer task. */
+	private final float REPLAY_TIMER = 0.400f;
 	
 	/**Instantiation method. Sets up the game using the passed TaxeGame argument. 
 	 *@param game The instance of TaxeGame to be passed to the GameScreen to display.
@@ -192,8 +198,33 @@ public class GameScreen extends ScreenAdapter {
 		goalController.drawHeaderText();
 		scoreController.drawScoreDetails();
 		scoreController.drawFinalScoreDetails();
+
+		lastTimer += delta;
+		if ( lastTimer >= REPLAY_TIMER ) {
+			lastTimer = 0f;
+			timerTask();
+		}
+
+
 	}
 
+	public void timerTask() {
+
+		if ( !Game.getInstance().replayMode ) {
+			topBarController.replayButton.setText("Replay " + topBarController.replaySpeedSlider.getValue() + "x");
+			return;
+		}
+
+		if ( Game.getInstance().getState() == GameState.ANIMATING ) {
+			return;
+		}
+
+		int next = Game.getInstance().replayingSnapshot + 1;
+		Game.getInstance().replaySnapshot(next);
+		int percentage = (int) ( (float) next / (float) Game.getInstance().getSnapshotsNumber() * 100 );
+		topBarController.replayButton.setText(percentage + "%");
+
+	}
 	@Override
 	public void show() {
 		// order methods called matters for z-index!

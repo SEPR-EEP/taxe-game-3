@@ -228,6 +228,8 @@ public class Map implements Serializable {
 			{
 				discoveredStation = c.getStation1();
 			}
+
+            System.out.print("Found connection from " + station.getName() + " to " + discoveredStation.getName());
 			//Add the station if it is in the given list of stations or if the list of stations is empty
 			if(availableStations != null)
 			{
@@ -235,11 +237,15 @@ public class Map implements Serializable {
 				{
 					availableStations.remove(discoveredStation);
 					connectedStations.add(discoveredStation);
-				}
+                    System.out.println(" ADDED 1");
+				} else {
+                    System.out.println(" NOT ADDED");
+                }
 			}
 			else
 			{
 				connectedStations.add(discoveredStation);
+                System.out.println(" ADDED 2");
 			}
 		}
 		return connectedStations;

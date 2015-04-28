@@ -46,8 +46,8 @@ public class TopBarController {
 	private TextButton modifyConnectionButton;
 
 	/**The replay button.*/
-	private Slider replaySpeedSlider;
-	private TextButton replayButton;
+	public Slider replaySpeedSlider;
+	public TextButton replayButton;
 
 	/**Label for displaying a message to the player.*/
 	private Label flashMessage;
@@ -250,32 +250,10 @@ public class TopBarController {
 		});
 		context.getStage().addActor(replayButton);
 
-		Timer timer = new Timer("Replay Timer");
-
-		TimerTask replayTask = new ReplayTask();
-		timer.scheduleAtFixedRate(replayTask, 100, 75);
 
 	}
 
-	class ReplayTask extends TimerTask {
 
-		@Override
-		public void run() {
-			if ( !Game.getInstance().replayMode ) {
-				replayButton.setText("Replay " + replaySpeedSlider.getValue() + "x");
-				return;
-			}
-
-			if ( Game.getInstance().getState() == GameState.ANIMATING ) {
-				return;
-			}
-
-			int next = Game.getInstance().replayingSnapshot + 1;
-			Game.getInstance().replaySnapshot(next);
-			int percentage = (int) ( (float) next / (float) Game.getInstance().getSnapshotsNumber() * 100 );
-			replayButton.setText(percentage + "%");
-		}
-	}
 
 	/** This method adds a Modify Connection button the game the captures an on click event and
 	 * notifies the game to enter connection editing mode
