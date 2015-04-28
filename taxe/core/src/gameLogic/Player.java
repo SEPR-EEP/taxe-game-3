@@ -68,7 +68,11 @@ public class Player implements Serializable {
 
 
         ConnectionModifier connectionModifier = new ConnectionModifier("Connection Modifier", this);
+        ConnectionModifier connectionModifier2 = new ConnectionModifier("Connection Modifier", this);
+        ConnectionModifier connectionModifier3 = new ConnectionModifier("Connection Modifier", this);
         addResource(connectionModifier);
+        addResource(connectionModifier2);
+        addResource(connectionModifier3);
     }
 
     /**
