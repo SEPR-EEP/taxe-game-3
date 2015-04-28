@@ -4,11 +4,13 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
-
 import Util.ActorsManager;
+
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+
 import fvs.taxe.TaxeGame;
 import gameLogic.Game;
 import gameLogic.GameState;
@@ -17,6 +19,7 @@ import gameLogic.Player;
 import gameLogic.obstacle.Obstacle;
 import gameLogic.obstacle.ObstacleListener;
 import gameLogic.obstacle.ObstacleType;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -25,6 +28,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
 import gameLogic.resource.ConnectionModifier;
 import gameLogic.resource.Resource;
 
@@ -187,7 +191,7 @@ public class TopBarController {
 	/**This method adds an End Turn button to the game that captures an on click event and notifies the game when the turn is over.*/
 	public void drawEndTurnButton() {
 		endTurnButton = new TextButton("End Turn", context.getSkin());
-		endTurnButton.setPosition(TaxeGame.WIDTH - 100.0f, TaxeGame.HEIGHT - 33.0f);
+		endTurnButton.setPosition(TaxeGame.WIDTH - 80.0f, TaxeGame.HEIGHT - 33.0f);
 		endTurnButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -232,9 +236,28 @@ public class TopBarController {
 		replaySpeedSlider = new Slider(1.0f, 5.0f, 1.0f, false, context.getSkin());
 		replaySpeedSlider.setPosition(TaxeGame.WIDTH - 500.0f, TaxeGame.HEIGHT - 33.0f);
 		context.getStage().addActor(replaySpeedSlider);
+		
+		replaySpeedSlider.addListener(new ClickListener(){
 
-		replayButton = new TextButton("Loading", context.getSkin());
-		replayButton.setPosition(TaxeGame.WIDTH - 450.0f, TaxeGame.HEIGHT - 33.0f);
+			@Override
+			public void touchUp(InputEvent event, float x, float y,
+					int pointer, int button) {
+				super.touchUp(event, x, y, pointer, button);
+				replaySpeedSlider.setVisible(false);
+			}
+			
+			
+//			@Override
+//			public void exit(InputEvent event, float x, float y, int pointer,
+//					Actor toActor) {
+//				replaySpeedSlider.setVisible(false);
+//			}		
+			
+			
+		});
+
+		replayButton = new TextButton("    Loading    ", context.getSkin());
+		replayButton.setPosition(TaxeGame.WIDTH - 350.0f, TaxeGame.HEIGHT - 33.0f);
 		replayButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -247,10 +270,16 @@ public class TopBarController {
 				context.getStationController().drawConnections(Game.getInstance().getMap().getConnections(), Color.GRAY);
 				context.getStationController().drawStations();
 			}
+			
+			@Override
+			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+				replaySpeedSlider.setVisible(true);
+			}
 		});
+		
 		context.getStage().addActor(replayButton);
 
-
+		replaySpeedSlider.setVisible(false);
 	}
 
 
@@ -259,8 +288,8 @@ public class TopBarController {
 	 * notifies the game to enter connection editing mode
 	 * @author Team EEP*/
 	public void drawModifyConnectionButton() {
-		modifyConnectionButton = new TextButton("Modify Connection x" + (context.getGameLogic().getPlayerManager().getCurrentPlayer().getConnectionModifiers().size() ), context.getSkin());
-		modifyConnectionButton.setPosition(TaxeGame.WIDTH - 300.0f, TaxeGame.HEIGHT - 33.0f);
+		modifyConnectionButton = new TextButton("Mod Connection x" + (context.getGameLogic().getPlayerManager().getCurrentPlayer().getConnectionModifiers().size() + 1), context.getSkin());
+		modifyConnectionButton.setPosition(TaxeGame.WIDTH - 240.0f, TaxeGame.HEIGHT - 33.0f);
 		modifyConnectionButton.setVisible(false);
 
 
