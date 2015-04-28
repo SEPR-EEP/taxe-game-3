@@ -256,11 +256,25 @@ public class TopBarController {
 
 		});
 
+		replaySpeedSlider.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				if ( Game.getInstance().replayMode ) {
+					Game.getInstance().setGameSpeed(replaySpeedSlider.getValue());
+				}
+			}
+		});
+
 		replayButton = new TextButton("    Loading    ", context.getSkin());
 		replayButton.setPosition(TaxeGame.WIDTH - 350.0f, TaxeGame.HEIGHT - 33.0f);
 		replayButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+
+				if ( Game.getInstance().replayMode ) {
+					return;
+				}
+
 				// System.out.println("Replay speed is: " + replaySpeedSlider.getValue() + "x!");
 				ActorsManager.interruptAllTrains();
 				Game.getInstance().setGameSpeed(replaySpeedSlider.getValue());
@@ -283,7 +297,9 @@ public class TopBarController {
 				if (state == GameState.NORMAL) {
 					replayButton.setVisible(true);
 				} else {
-					replayButton.setVisible(false);
+					if ( !Game.getInstance().replayMode ) {
+						replayButton.setVisible(false);
+					}
 					replaySpeedSlider.setVisible(false);
 				}
 			}

@@ -95,7 +95,7 @@ public class GameScreen extends ScreenAdapter {
 	private float lastTimer;
 
 	/** Approximate time between executions of the replay timer task. */
-	private final float REPLAY_TIMER = 0.400f;
+	private final float REPLAY_TIMER = 0.250f;
 	
 	/**Instantiation method. Sets up the game using the passed TaxeGame argument. 
 	 *@param game The instance of TaxeGame to be passed to the GameScreen to display.
