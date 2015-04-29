@@ -1,7 +1,6 @@
 package gameLogic;
 
-import Util.ActorsManager;
-import fvs.taxe.controller.TrainMoveController;
+import fvs.taxe.controller.StationController;
 import gameLogic.goal.GoalManager;
 import gameLogic.map.IPositionable;
 import gameLogic.map.Map;
@@ -11,14 +10,17 @@ import gameLogic.obstacle.ObstacleListener;
 import gameLogic.obstacle.ObstacleManager;
 import gameLogic.resource.ResourceManager;
 import gameLogic.resource.Train;
-import org.apache.commons.lang3.SerializationUtils;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.SerializationUtils;
+
+import Util.ActorsManager;
 import Util.Tuple;
 
 import com.badlogic.gdx.math.MathUtils;
-import java.io.Serializable;
 
 /**Main Game class of the Game. Handles all of the game logic.*/
 public class Game implements Serializable {
@@ -163,6 +165,7 @@ public class Game implements Serializable {
 		goalManager = s.goalManager;
 		resourceManager = s.resourceManager; obstacleManager = s.obstacleManager; map = s.map;
 		state = s.state;
+		StationController.redrawTrains();
 		stateChanged(); // Forcefully triggers an update of the game interface.
 	}
 
