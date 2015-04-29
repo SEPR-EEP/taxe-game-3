@@ -149,6 +149,9 @@ public class StationController {
 	}
 	
 	public static void redrawTrains(){
+		if ( context == null ) {
+			return; // Nothing to draw
+		}
 		//Add all train actors to the stage again so they are on top
 		for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()){
 			for(Resource<?> train : player.getActiveTrains()){
